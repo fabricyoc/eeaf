@@ -1,21 +1,7 @@
-.cabecalhoCadastro {
-  /* background-color: red; */
-
+.register_container {
+  min-height: 80vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-}
-
-.cabecalhoCadastro .sigla, .subtitle{
-  color:  var(--blue-500);
-}
-
-.cabecalhoCadastro img {
-  width: 80px;
-}
-
-.cabecalhoCadastro p {
-  text-align: center;
+  padding: 20px;
 }

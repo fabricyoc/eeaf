@@ -1,15 +1,12 @@
-import FormCadastro from "../../components/FormCadastro";
-import styles from './Cadastro.module.css';
+import CadastroForm from "../../components/Login/CadastroForm";
+import styles from "./Cadastro.module.css";
 
-function Login() {
+function Cadastro() {
   return (
-    <section className={styles.cabecalhoCadastro}>
-      <img src="/sigef/sigef.png" alt="" />
-      <h2 className={styles.sigla}>SIGEF</h2>
-      <p className={styles.subtitle}>Sistema de Gestão Escolar e Feiras de Ciências</p>
-      <FormCadastro />
+    <section className={styles.register_container}>
+      <CadastroForm />
     </section>
   );
 }
 
-export default Login;
+export default Cadastro;

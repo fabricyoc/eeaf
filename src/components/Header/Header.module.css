@@ -66,6 +66,9 @@
 /* menu desktop */
 .nav {
   display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
   font-size: 1.125rem;
   list-style: none;
 }
@@ -81,8 +84,109 @@
   border-radius: 4px;
 }
 
-/* mobile */
+/* ========================= */
+/* PERFIL DO USUÁRIO */
+/* ========================= */
+
+.profileContainer {
+  position: relative;
+  margin-left: 10px;
+
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  font-size: 2.5rem;
+  color: var(--blue-500);
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.avatar:hover {
+  transform: scale(1.08);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.userName {
+  margin-top: 4px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  color: var(--blue-500);
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  user-select: none;
+}
+
+.profileMenu {
+  position: absolute;
+
+  top: 60px;
+  right: 0;
+
+  width: 190px;
+
+  background: white;
+
+  border-radius: 12px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 1200;
+}
+
+.profileMenu a,
+.profileMenu button {
+  width: 100%;
+
+  padding: 14px 18px;
+
+  border: none;
+  background: none;
+
+  text-align: left;
+
+  color: var(--blue-500);
+
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.profileMenu a:hover,
+.profileMenu button:hover {
+  background-color: var(--blue-200);
+}
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
 @media (max-width: 768px) {
+  .userName {
+    font-size: 0.9rem;
+  }
 
   .header {
     height: 80px;
@@ -117,12 +221,13 @@
     padding-top: 5rem;
 
     background-color: var(--blue-200);
+
     z-index: 1000;
 
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
   }
 
-  /* hove na sidebar */
+  /* hover na sidebar */
   .sidebarOpen a {
     width: 80%;
     text-align: center;
@@ -136,9 +241,21 @@
     transform: scale(1.05);
   }
 
+  .avatar {
+    font-size: 4rem;
+  }
+
+  .profileMenu {
+    top: 70px;
+    right: -20px;
+
+    width: 180px;
+  }
+
   /* overlay */
   .overlay {
     position: fixed;
+
     top: 0;
     left: 0;
 
@@ -146,6 +263,7 @@
     height: 100vh;
 
     background: rgba(0, 0, 0, 0.3);
+
     backdrop-filter: blur(6px);
 
     z-index: 900;

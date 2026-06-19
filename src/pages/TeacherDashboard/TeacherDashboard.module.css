@@ -1,0 +1,72 @@
+.container {
+  width: min(1200px, 95%);
+  margin: 150px auto 50px;
+}
+
+.header {
+  background: white;
+
+  padding: 2rem;
+
+  border-radius: 20px;
+
+  box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+
+  margin-bottom: 2rem;
+}
+
+.title {
+  color: var(--blue-500);
+
+  font-size: 2.2rem;
+
+  margin-bottom: .5rem;
+}
+
+.subtitle {
+  color: var(--blue-400);
+
+  font-size: 1rem;
+}
+
+/* Tablet */
+
+@media (max-width: 768px) {
+
+  .container {
+    margin-top: 110px;
+  }
+
+  .header {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+}
+
+/* Celulares */
+
+@media (max-width: 480px) {
+
+  .container {
+    width: 95%;
+  }
+
+  .header {
+    text-align: center;
+
+    padding: 1.2rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: .9rem;
+  }
+
+}

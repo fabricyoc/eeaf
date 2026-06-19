@@ -1,19 +1,7 @@
-.cabecalhoLogin {
-  /* background-color: red; */
-  color: var(--blue-500);
-
+.login_container {
+  min-height: 80vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-  height: 70vh;
-}
-
-.cabecalhoLogin img {
-  width: 80px;
-}
-
-.cabecalhoLogin p {
-  text-align: center;
+  padding: 20px;
 }
