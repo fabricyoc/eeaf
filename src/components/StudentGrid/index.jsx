@@ -5,10 +5,7 @@ function StudentGrid({ alunos }) {
   return (
     <div className={styles.grid}>
       {alunos.map((aluno, index) => (
-        <StudentCard
-          key={index}
-          aluno={aluno}
-        />
+        <StudentCard key={index} aluno={aluno} />
       ))}
     </div>
   );

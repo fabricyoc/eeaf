@@ -17,6 +17,10 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import RoleRoute from "./routes/RoleRoutes";
 
+import TeacherRoute from "./routes/TeacherRoute";
+import TeacherStudents from "./pages/TeacherStudents";
+import TeacherClassroom from "./pages/TeacherClassroom";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -68,16 +72,27 @@ function AppRoutes() {
             }
           />
 
-          {/* <Route
-            path="admin"
+          <Route
+            path="teacher/students"
             element={
               <ProtectedRoute>
-                <RoleRoute roles={["admin"]}>
-                  <AdminDashboard />
+                <RoleRoute roles={["teacher"]}>
+                  <TeacherStudents />
                 </RoleRoute>
               </ProtectedRoute>
             }
-          /> */}
+          />
+
+          <Route
+            path="teacher/maps"
+            element={
+              <ProtectedRoute>
+                <RoleRoute roles={["teacher"]}>
+                  <TeacherClassroom />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<PageNotFound />} />
         </Route>

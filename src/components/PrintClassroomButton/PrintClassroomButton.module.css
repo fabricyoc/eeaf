@@ -1,0 +1,50 @@
+.button {
+  background: #1f2937; /* azul escuro elegante */
+  color: #fff;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 0.8rem 1.2rem;
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover moderno */
+.button:hover {
+  background: #111827;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Clique */
+.button:active {
+  transform: scale(0.98);
+}
+
+/* Foco acessível */
+.button:focus {
+  outline: 3px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* ===================== */
+/* IMPRESSÃO             */
+/* ===================== */
+
+@media print {
+  .button {
+    display: none !important;
+  }
+}

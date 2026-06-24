@@ -1,0 +1,66 @@
+.container {
+  background: white;
+
+  padding: 2rem;
+
+  border-radius: 20px;
+
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+
+  margin-bottom: 2rem;
+}
+
+.title {
+  color: var(--blue-500);
+
+  margin-bottom: 1.5rem;
+
+  font-size: 1.6rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+
+  gap: .8rem;
+}
+
+.label {
+  color: gray;
+
+  font-size: .95rem;
+}
+
+.select {
+  width: 250px;
+
+  padding: 1rem;
+
+  border-radius: 12px;
+
+  border: 1px solid #dcdcdc;
+
+  outline: none;
+
+  font-size: 1rem;
+
+  transition: .3s;
+}
+
+.select:focus {
+
+  border-color: var(--blue-500);
+
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+
+}
+
+@media (max-width:768px){
+
+  .select{
+
+    width:100%;
+
+  }
+
+}

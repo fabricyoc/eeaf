@@ -1,0 +1,171 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* BOTÃO */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ALERTA */
+.alerta {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* ÁREA QUE VAI PARA PDF */
+.exportArea {
+  background: white;
+  padding: 1rem;
+}
+
+/* GRID WRAPPER */
+.gridWrapper {
+  overflow-x: auto;
+}
+
+/* GRID DA SALA */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  min-width: 900px;
+}
+
+/* CARTEIRAS */
+.carteira {
+  background: white;
+  border-radius: 15px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* FOTO */
+.foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+/* TEXTO */
+.nome {
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.posicao {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.vazia {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* QUADRO */
+.quadro {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* CABEÇALHO (PRINT) */
+.printHeader {
+  display: none;
+}
+
+/* RESPONSIVO */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .carteira {
+    min-height: 150px;
+  }
+
+  .foto {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* PRINT / PDF */
+@media print {
+
+  body {
+    background: white;
+  }
+
+  .actions,
+  .alerta {
+    display: none !important;
+  }
+
+  .printHeader {
+    display: block;
+  }
+
+  .container {
+    margin: 0;
+  }
+
+  .exportArea {
+    background: white !important;
+  }
+
+  .grid {
+    min-width: auto;
+  }
+
+  .carteira {
+    break-inside: avoid;
+  }
+}
+/* FOTO NORMAL (site) */
+.foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 🚨 DURANTE EXPORTAÇÃO: ESCONDE FOTO */
+body.exporting-pdf .foto {
+  display: none !important;
+}
+
+/* opcional: melhora visual do PDF */
+body.exporting-pdf .carteira {
+  box-shadow: none !important;
+  border: 1px solid #ccc;
+}

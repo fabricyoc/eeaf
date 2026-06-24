@@ -20,7 +20,6 @@
 }
 
 .container {
-  margin-block: 1rem;
   display: grid;
 
   grid-template-columns:
