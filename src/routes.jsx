@@ -30,6 +30,7 @@ function AppRoutes() {
 
           <Route path="arquivos" element={<Arquivos />} />
           <Route path="eventos" element={<Eventos />} />
+          <Route path="eventos/:year" element={<Eventos />} />
           <Route path="contatos" element={<Contatos />} />
 
           <Route
