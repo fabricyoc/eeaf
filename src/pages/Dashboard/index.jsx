@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../utils/supabase";
 import styles from "./Dashboard.module.css";
+import Loading from "../../components/Loading";
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -62,7 +63,7 @@ function Dashboard() {
           </button>
         </>
       ) : (
-        <p>Carregando...</p>
+        <Loading />
       )}
     </div>
   );

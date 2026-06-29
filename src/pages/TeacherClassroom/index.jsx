@@ -1,77 +1,46 @@
 import { useState } from "react";
 
 import Loading from "../../components/Loading";
-
-import ClassroomSelector
-  from "../../components/ClassroomSelector";
-
-import ClassroomMap
-  from "../../components/ClassroomMap";
-
-import {
-  useStudents
-} from "../../contexts/StudentsContext";
+import ClassroomSelector from "../../components/ClassroomSelector";
+import ClassroomMap from "../../components/ClassroomMap";
 
 import styles from "./TeacherClassroom.module.css";
 
+import { useTurmas } from "../../hooks/useTurmas";
+
 function TeacherClassroom() {
+  const [turmaSelecionada, setTurmaSelecionada] = useState("");
 
-  const {
-    todosAlunos,
-    loadingAlunos
-  } = useStudents();
+  const { turmas } = useTurmas();
 
-  const [
-    turmaSelecionada,
-    setTurmaSelecionada
-  ] = useState("");
-
-  if (loadingAlunos) {
-    return <Loading />;
-  }
-
-  const alunosDaTurma =
-    todosAlunos.filter(
-
-      aluno =>
-        aluno.turma ===
-        turmaSelecionada
-
-    );
-
-  return (
-
-    <section
-      className={styles.container}
-    >
-
-      <ClassroomSelector
-        turmaSelecionada={
-          turmaSelecionada
-        }
-        setTurmaSelecionada={
-          setTurmaSelecionada
-        }
-      />
-      {
-
-        turmaSelecionada && (
-
-          <ClassroomMap
-            alunos={
-              alunosDaTurma
-            }
-            turma={turmaSelecionada}
-          />
-
-        )
-
-      }
-
-    </section>
-
+  const turmaAtual = turmas.find(
+    (t) => t.id === turmaSelecionada
   );
 
+  if (!turmaSelecionada) {
+    return (
+      <section className={styles.container}>
+        <ClassroomSelector
+          turmaSelecionada={turmaSelecionada}
+          setTurmaSelecionada={setTurmaSelecionada}
+        />
+      </section>
+    );
+  }
+
+  return (
+    <section className={styles.container}>
+      <ClassroomSelector
+        turmaSelecionada={turmaSelecionada}
+        setTurmaSelecionada={setTurmaSelecionada}
+      />
+
+      <ClassroomMap
+        turmaId={turmaSelecionada}
+        turmaNome={turmaAtual?.nome || ""}
+      />
+    </section>
+  );
 }
 
 export default TeacherClassroom;

@@ -3,82 +3,28 @@
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 2rem;
+
+  align-items: center;
+  padding-bottom: 80px;
+
 }
 
-/* BOTÃO */
+/* BOTÕES */
 .actions {
   display: flex;
   justify-content: flex-end;
+  width: 100%;
+  max-width: 1100px;
 }
 
-/* ALERTA */
-.alerta {
-  background: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
-  padding: 1rem;
-  border-radius: 10px;
-  font-weight: 600;
-}
-
-/* ÁREA QUE VAI PARA PDF */
-.exportArea {
-  background: white;
-  padding: 1rem;
-}
-
-/* GRID WRAPPER */
-.gridWrapper {
-  overflow-x: auto;
-}
-
-/* GRID DA SALA */
+/* GRID PRINCIPAL */
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
-  min-width: 900px;
-}
 
-/* CARTEIRAS */
-.carteira {
-  background: white;
-  border-radius: 15px;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-  min-height: 180px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* FOTO */
-.foto {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
-}
-
-/* TEXTO */
-.nome {
-  font-size: 0.85rem;
-  font-weight: bold;
-}
-
-.posicao {
-  font-size: 0.8rem;
-  color: gray;
-}
-
-.vazia {
-  color: #aaa;
-  font-style: italic;
+  width: 100%;
+  max-width: 1100px; /* 🔥 IMPORTANTE */
 }
 
 /* QUADRO */
@@ -90,14 +36,20 @@
   border-radius: 12px;
   font-weight: bold;
   letter-spacing: 2px;
+
+  width: 100%;
+  max-width: 1100px;
 }
 
-/* CABEÇALHO (PRINT) */
+/* HEADER PRINT */
 .printHeader {
   display: none;
 }
 
-/* RESPONSIVO */
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
@@ -109,25 +61,33 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .carteira {
-    min-height: 150px;
+  .actions {
+    justify-content: center;
   }
 
-  .foto {
-    width: 60px;
-    height: 60px;
+  .quadro {
+    font-size: 14px;
   }
 }
 
-/* PRINT / PDF */
-@media print {
-
-  body {
-    background: white;
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
   }
 
-  .actions,
-  .alerta {
+  .container {
+    gap: 1rem;
+  }
+
+  .quadro {
+    font-size: 13px;
+    padding: 0.8rem;
+  }
+}
+
+/* PRINT */
+@media print {
+  .actions {
     display: none !important;
   }
 
@@ -139,33 +99,13 @@
     margin: 0;
   }
 
-  .exportArea {
-    background: white !important;
-  }
-
   .grid {
-    min-width: auto;
+    grid-template-columns: repeat(5, 1fr);
   }
 
-  .carteira {
-    break-inside: avoid;
+  .quadro {
+    background: #222 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
-}
-/* FOTO NORMAL (site) */
-.foto {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* 🚨 DURANTE EXPORTAÇÃO: ESCONDE FOTO */
-body.exporting-pdf .foto {
-  display: none !important;
-}
-
-/* opcional: melhora visual do PDF */
-body.exporting-pdf .carteira {
-  box-shadow: none !important;
-  border: 1px solid #ccc;
 }

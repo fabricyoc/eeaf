@@ -1,5 +1,8 @@
 .rodape {
-  min-width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* melhor que min-width */
   height: 40px;
 
   background-color: var(--blue-100);
@@ -9,12 +12,10 @@
   align-items: center;
 
   color: var(--blue-500);
-  /* font-weight: bold; */
-
-  position: fixed;
-  bottom: 0;
-
   box-shadow: 0 0 8px var(--blue-500);
+
+  /* garante que ele fique acima de tudo */
+  z-index: 1000; 
 }
 
 @media (max-width: 551px) {

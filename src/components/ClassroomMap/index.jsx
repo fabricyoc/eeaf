@@ -1,114 +1,152 @@
 import { useMemo, useEffect, useState } from "react";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import { toast } from "react-toastify";
 
+import { useClassroom } from "../../hooks/useClassroom";
+
+import SeatCard from "../SeatCard";
 import PrintHeader from "../PrintHeader";
 import PrintClassroomButton from "../PrintClassroomButton";
 
 import styles from "./ClassroomMap.module.css";
 
-function ClassroomMap({
-  alunos = [],
-  turma = "",
-}) {
-  const [mobile, setMobile] = useState(false);
+function ClassroomMap({ turmaId, turmaNome }) {
+  
+  const {
+    alunos,
+    loading,
+    trocarPosicoes,
+    moverParaPosicao,
+  } = useClassroom(turmaId);
 
+  const [toastMostrado, setToastMostrado] = useState(false);
+
+  /**
+   * Toast responsivo
+   */
   useEffect(() => {
     function verificarTela() {
-      setMobile(window.innerWidth < 900);
+      const pequeno = window.innerWidth < 768;
+
+      if (pequeno && !toastMostrado) {
+        toast.warn(
+          "Em telas pequenas o mapa pode ficar comprometido. Exporte o PDF para melhor visualização.",
+          { position: "top-right", autoClose: 5000 }
+        );
+
+        setToastMostrado(true);
+      }
     }
 
     verificarTela();
+
     window.addEventListener("resize", verificarTela);
 
     return () =>
       window.removeEventListener("resize", verificarTela);
-  }, []);
+  }, [toastMostrado]);
 
+  /**
+   * Gera grade 5x5
+   */
   const mapa = useMemo(() => {
     const linhas = 5;
     const colunas = 5;
 
     const grid = [];
 
-    for (let linha = linhas; linha >= 1; linha--) {
-      for (let coluna = 1; coluna <= colunas; coluna++) {
-
-        const posicao = `${linha}${coluna}`;
+    for (let l = linhas; l >= 1; l--) {
+      for (let c = 1; c <= colunas; c++) {
+        const posicao = `${l}${c}`;
 
         const aluno = alunos.find(
-          (a) => String(a["Posição"]).trim() === posicao
+          (a) => String(a.posicao) === posicao
         );
 
-        grid.push({
-          posicao,
-          aluno,
-        });
-
+        grid.push({ posicao, aluno });
       }
     }
 
     return grid;
   }, [alunos]);
 
+  /**
+   * DRAG END
+   */
+  async function handleDragEnd(event) {
+    const { active, over } = event;
+
+    if (!over) return;
+    if (active.id === over.id) return;
+
+    const posicaoOrigem = active.id;
+    const posicaoDestino = over.id;
+
+    const alunoOrigem = alunos.find(
+      (a) => String(a.posicao) === posicaoOrigem
+    );
+
+    const alunoDestino = alunos.find(
+      (a) => String(a.posicao) === posicaoDestino
+    );
+
+    try {
+      // aluno → aluno (troca)
+      if (alunoOrigem && alunoDestino) {
+        await trocarPosicoes(alunoOrigem, alunoDestino);
+      }
+
+      // ➜ aluno → cadeira vazia
+      if (alunoOrigem && !alunoDestino) {
+        await moverParaPosicao(
+          alunoOrigem.id,
+          posicaoDestino
+        );
+      }
+
+      toast.success("Mapa atualizado!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao atualizar mapa.");
+    }
+  }
+
+  if (loading) return <p>Carregando...</p>;
+
   return (
     <div className={styles.container}>
 
-      {/* HEADER VISUAL (TELA) */}
+      {/* HEADER (somente PDF + print) */}
       <div className={styles.printHeader}>
-        <PrintHeader turma={turma} />
+        <PrintHeader turma={turmaNome.toUpperCase()} />
       </div>
 
-      {/* BOTÃO PDF */}
+      {/* BOTÃO EXPORT PDF */}
       <div className={styles.actions}>
         <PrintClassroomButton
           alunos={alunos}
-          turma={turma}
+          turma={turmaNome.toUpperCase()}
         />
       </div>
 
-      {/* ALERTA MOBILE */}
-      {mobile && (
-        <div className={styles.alerta}>
-          ⚠️ Visualização pode ficar comprometida em telas pequenas.
-        </div>
-      )}
-
-      {/* MAPA VISUAL (SÓ SITE) */}
-      <div className={styles.gridWrapper}>
+      {/* MAPA */}
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
         <div className={styles.grid}>
-
           {mapa.map((item) => (
-            <div key={item.posicao} className={styles.carteira}>
-
-              {item.aluno ? (
-                <>
-                  <img
-                    className={styles.foto}
-                    src={`https://drive.google.com/thumbnail?id=${item.aluno.Foto_Id}&sz=w1000`}
-                    alt={item.aluno.Nome}
-                    onError={(e) => {
-                      e.target.src =
-                        "https://placehold.co/150x150?text=Sem+Foto";
-                    }}
-                  />
-
-                  <div className={styles.nome}>
-                    {item.aluno.Nome}
-                  </div>
-
-                  <div className={styles.posicao}>
-                    {item.posicao}
-                  </div>
-                </>
-              ) : (
-                <div className={styles.vazia}>Livre</div>
-              )}
-
-            </div>
+            <SeatCard
+              key={item.posicao}
+              id={item.posicao}
+              aluno={item.aluno}
+              posicao={item.posicao}
+            />
           ))}
-
         </div>
-      </div>
+      </DndContext>
 
+      {/* QUADRO */}
       <div className={styles.quadro}>
         QUADRO
       </div>

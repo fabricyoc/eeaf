@@ -20,6 +20,7 @@ import RoleRoute from "./routes/RoleRoutes";
 import TeacherRoute from "./routes/TeacherRoute";
 import TeacherStudents from "./pages/TeacherStudents";
 import TeacherClassroom from "./pages/TeacherClassroom";
+import TeacherClasses from "./pages/TeacherClasses";
 
 function AppRoutes() {
   return (
@@ -90,6 +91,17 @@ function AppRoutes() {
               <ProtectedRoute>
                 <RoleRoute roles={["teacher"]}>
                   <TeacherClassroom />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="teacher/classes"
+            element={
+              <ProtectedRoute>
+                <RoleRoute roles={["teacher"]}>
+                  <TeacherClasses />
                 </RoleRoute>
               </ProtectedRoute>
             }

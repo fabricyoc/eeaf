@@ -1,38 +1,18 @@
 import styles from "./ClassroomSelector.module.css";
+import { useTurmas } from "../../hooks/useTurmas";
 
 function ClassroomSelector({
   turmaSelecionada,
   setTurmaSelecionada
 }) {
-
-  const turmas = [
-    "1ST",
-    "2ST",
-    "3ST",
-
-    "1SR",
-    "2SR",
-    "3SR",
-
-    "6AEF",
-    "7AEF",
-    "8AEF",
-    "9AEF"
-  ];
+  const { turmas, loading } = useTurmas();
 
   return (
     <section className={styles.container}>
-
-      <h2 className={styles.title}>
-        Mapa da Sala
-      </h2>
+      <h2 className={styles.title}>Mapa da Sala</h2>
 
       <div className={styles.content}>
-
-        <label
-          htmlFor="turma"
-          className={styles.label}
-        >
+        <label htmlFor="turma" className={styles.label}>
           Selecione uma turma
         </label>
 
@@ -40,34 +20,19 @@ function ClassroomSelector({
           id="turma"
           className={styles.select}
           value={turmaSelecionada}
-          onChange={(e) =>
-            setTurmaSelecionada(
-              e.target.value
-            )
-          }
+          onChange={(e) => setTurmaSelecionada(e.target.value)}
         >
+          <option value="">Escolha uma turma</option>
 
-          <option value="">
-            Escolha uma turma
-          </option>
+          {loading && <option>Carregando...</option>}
 
-          {
-            turmas.map((turma) => (
-
-              <option
-                key={turma}
-                value={turma}
-              >
-                {turma}
-              </option>
-
-            ))
-          }
-
+          {turmas.map((turma) => (
+            <option key={turma.id} value={turma.id}>
+              {turma.nome.toUpperCase()}
+            </option>
+          ))}
         </select>
-
       </div>
-
     </section>
   );
 }

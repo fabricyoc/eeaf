@@ -1,0 +1,142 @@
+.card,
+.emptyCard {
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 1rem;
+
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+
+  cursor: grab;
+
+  user-select: none;
+
+  position: relative;
+}
+
+/* hover normal (só quando NÃO está arrastando) */
+.card:hover,
+.emptyCard:hover {
+  transform: translateY(-4px);
+}
+
+/* =========================
+   DRAG STATE (DND-KIT)
+========================= */
+
+.dragging {
+  transform: scale(1.08) rotate(1deg);
+  opacity: 0.85;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+  cursor: grabbing;
+  z-index: 999;
+}
+
+/* evita conflito hover + drag */
+.dragging:hover {
+  transform: scale(1.08) rotate(1deg);
+}
+
+/* =========================
+   FOTO DO ALUNO
+========================= */
+
+.photo {
+  width: 95px;
+  height: 95px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 4px solid var(--blue-500);
+
+  margin-bottom: 0.8rem;
+}
+
+/* =========================
+   TEXTO DO ALUNO
+========================= */
+
+.name {
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: var(--blue-600);
+
+  min-height: 36px;
+}
+
+.email {
+  margin-top: 0.4rem;
+
+  text-align: center;
+
+  font-size: 11px;
+
+  color: #777;
+
+  word-break: break-word;
+}
+
+.position {
+  margin-top: 0.8rem;
+
+  color: var(--blue-500);
+
+  font-weight: bold;
+
+  font-size: 13px;
+}
+
+/* =========================
+   EMPTY CARD (CADEIRA VAZIA)
+========================= */
+
+.circle {
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+
+  border: 3px dashed #c5c5c5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 36px;
+
+  color: #999;
+
+  margin-bottom: 1rem;
+}
+
+.emptyText {
+  font-size: 16px;
+
+  font-weight: bold;
+
+  color: #888;
+}
+
+/* =========================
+   ESTADO HOVER MAIS SUAVE
+========================= */
+
+.card:hover,
+.emptyCard:hover {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}

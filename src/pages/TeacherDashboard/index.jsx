@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import {
   FaUsers,
+  FaMapMarkerAlt,
   FaChalkboardTeacher
 } from "react-icons/fa";
 
@@ -47,7 +48,7 @@ function TeacherDashboard() {
           className={styles.card}
         >
 
-          <FaChalkboardTeacher
+          <FaMapMarkerAlt
             className={styles.icon}
           />
 
@@ -59,6 +60,20 @@ function TeacherDashboard() {
             Visualizar a
             disposição dos
             alunos em sala.
+          </p>
+
+        </Link>
+
+        <Link
+          to="/teacher/classes"
+          className={styles.card}
+        >
+          <FaChalkboardTeacher
+            className={styles.icon}
+          />
+          <h2>Minhas turmas</h2>
+          <p>
+            Gerenciar minhas turmas
           </p>
 
         </Link>

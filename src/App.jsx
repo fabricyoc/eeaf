@@ -4,10 +4,15 @@ import AppRoutes from './routes';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function App() {
+import { Buffer } from "buffer";
 
+
+function App() {
+  window.Buffer = Buffer;
+  
   return (
     <>
+    
       <AppRoutes />
       
       <ToastContainer

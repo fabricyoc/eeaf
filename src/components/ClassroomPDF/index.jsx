@@ -24,12 +24,11 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 5,
+    marginBottom: 8,
   },
 
   logo: {
     width: "80%",
-    objectFit: "cover",
   },
 
   title: {
@@ -38,13 +37,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#074495",
     marginBottom: 4,
-
   },
 
   subtitle: {
     textAlign: "center",
     fontSize: 12,
     color: "#6b7280",
+  },
+
+  date: {
+    fontSize: 10,
+    color: "#6b7280",
+    textAlign: "center",
+    marginTop: 4,
   },
 
   grid: {
@@ -99,14 +104,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     borderRadius: 4,
   },
-
-  date: {
-    fontSize: 10,
-    color: "#6b7280",
-    textAlign: "center",
-    paddingTop: "4",
-    marginBottom: 8,
-  },
 });
 
 function ClassroomPDF({ alunos = [], turma = "" }) {
@@ -124,18 +121,17 @@ function ClassroomPDF({ alunos = [], turma = "" }) {
       const posicao = `${l}${c}`;
 
       const aluno = alunos.find(
-        (a) => String(a["Posição"]).trim() === posicao
+        (a) => String(a.posicao).trim() === posicao
       );
 
       row.push({
         posicao,
-        nome: aluno?.Nome || "",
+        nome: aluno?.nome || "",
       });
     }
 
     grid.push(row);
   }
-
 
   return (
     <Document>
@@ -143,6 +139,7 @@ function ClassroomPDF({ alunos = [], turma = "" }) {
 
         {/* CABEÇALHO */}
         <View style={styles.header}>
+
           <View style={styles.logoWrapper}>
             <Image
               src="/imagens/cabecalho.png"
@@ -161,9 +158,10 @@ function ClassroomPDF({ alunos = [], turma = "" }) {
           <Text style={styles.date}>
             Data de emissão: {dataImpressao}
           </Text>
+
         </View>
 
-        {/* GRADE */}
+        {/* GRID */}
         <View style={styles.grid}>
           {grid.map((row, i) => (
             <View key={i} style={styles.row}>
@@ -195,6 +193,7 @@ function ClassroomPDF({ alunos = [], turma = "" }) {
           ))}
         </View>
 
+        {/* QUADRO */}
         <View style={styles.quadro}>
           <Text>QUADRO</Text>
         </View>
