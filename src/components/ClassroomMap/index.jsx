@@ -71,7 +71,7 @@ function ClassroomMap({ turmaId, turmaNome }) {
   }, [alunos]);
 
   /**
-   * DRAG END
+   * drag end
    */
   async function handleDragEnd(event) {
     const { active, over } = event;
@@ -116,12 +116,12 @@ function ClassroomMap({ turmaId, turmaNome }) {
   return (
     <div className={styles.container}>
 
-      {/* HEADER (somente PDF + print) */}
+      {/* header (somente PDF + print) */}
       <div className={styles.printHeader}>
         <PrintHeader turma={turmaNome.toUpperCase()} />
       </div>
 
-      {/* BOTÃO EXPORT PDF */}
+      {/* botão export pdf */}
       <div className={styles.actions}>
         <PrintClassroomButton
           alunos={alunos}
@@ -129,7 +129,7 @@ function ClassroomMap({ turmaId, turmaNome }) {
         />
       </div>
 
-      {/* MAPA */}
+      {/* mapa */}
       <DndContext
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
@@ -146,7 +146,7 @@ function ClassroomMap({ turmaId, turmaNome }) {
         </div>
       </DndContext>
 
-      {/* QUADRO */}
+      {/* quadro */}
       <div className={styles.quadro}>
         QUADRO
       </div>

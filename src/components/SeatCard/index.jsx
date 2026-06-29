@@ -21,7 +21,7 @@ function SeatCard({ id, aluno, posicao }) {
   const dragClass = isDragging ? styles.dragging : "";
 
   /**
-   * 🔴 EMPTY CARD
+   * empty card
    */
   if (!aluno) {
     return (
@@ -37,14 +37,14 @@ function SeatCard({ id, aluno, posicao }) {
         <span className={styles.emptyText}>Livre</span>
 
         <small className={styles.position}>
-          Carteira {posicao}
+          {posicao}
         </small>
       </div>
     );
   }
 
   /**
-   * 🔵 ALUNO
+   * aluno
    */
   const fotoUrl = aluno.foto_id
     ? `https://drive.google.com/thumbnail?id=${aluno.foto_id}&sz=w1000`
