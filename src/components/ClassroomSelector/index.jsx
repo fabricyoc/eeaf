@@ -1,37 +1,84 @@
+import { useState, useRef, useEffect } from "react";
 import styles from "./ClassroomSelector.module.css";
 import { useTurmas } from "../../hooks/useTurmas";
 
-function ClassroomSelector({
-  turmaSelecionada,
-  setTurmaSelecionada
-}) {
+function ClassroomSelector({ turmaSelecionada, setTurmaSelecionada }) {
   const { turmas, loading } = useTurmas();
+
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const selected = turmas.find(
+    (t) => t.id === turmaSelecionada
+  );
+
+  /**
+   * Fecha ao clicar fora
+   */
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>Mapa da Sala</h2>
 
       <div className={styles.content}>
-        <label htmlFor="turma" className={styles.label}>
+        <label className={styles.label}>
           Selecione uma turma
         </label>
 
-        <select
-          id="turma"
-          className={styles.select}
-          value={turmaSelecionada}
-          onChange={(e) => setTurmaSelecionada(e.target.value)}
-        >
-          <option value="">Escolha uma turma</option>
+        {/* DROPDOWN CUSTOM */}
+        <div className={styles.dropdown} ref={dropdownRef}>
+          
+          {/* BOTÃO */}
+          <div
+            className={styles.control}
+            onClick={() => setOpen(!open)}
+          >
+            {loading
+              ? "Carregando turmas..."
+              : selected
+              ? selected.nome.toUpperCase()
+              : "Escolha uma turma"}
 
-          {loading && <option>Carregando...</option>}
+            <span className={styles.arrow}>▾</span>
+          </div>
 
-          {turmas.map((turma) => (
-            <option key={turma.id} value={turma.id}>
-              {turma.nome.toUpperCase()}
-            </option>
-          ))}
-        </select>
+          {/* MENU */}
+          {open && (
+            <div className={styles.menu}>
+              {turmas.map((turma) => (
+                <div
+                  key={turma.id}
+                  className={`${styles.item} ${
+                    turmaSelecionada === turma.id
+                      ? styles.active
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setTurmaSelecionada(turma.id);
+                    setOpen(false);
+                  }}
+                >
+                  {turma.nome.toUpperCase()}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

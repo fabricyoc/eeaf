@@ -5,13 +5,13 @@
 
   border-radius: 20px;
 
-  box-shadow: 0 0 10px rgba(0,0,0,.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 
   margin-bottom: 2rem;
 }
 
 .title {
-  color: var(--blue-500);
+  color: #3b82f6;
 
   margin-bottom: 1.5rem;
 
@@ -21,46 +21,117 @@
 .content {
   display: flex;
   flex-direction: column;
-
   gap: .8rem;
 }
 
 .label {
-  color: gray;
-
+  color: #6b7280;
   font-size: .95rem;
 }
 
-.select {
-  width: 250px;
+/* =========================
+   DROPDOWN MODERNO
+========================= */
 
-  padding: 1rem;
-
-  border-radius: 12px;
-
-  border: 1px solid #dcdcdc;
-
-  outline: none;
-
-  font-size: 1rem;
-
-  transition: .3s;
+.dropdown {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
 }
 
-.select:focus {
+.control {
+  padding: 1rem 1.2rem;
 
-  border-color: var(--blue-500);
+  border-radius: 14px;
 
-  box-shadow: 0 0 10px rgba(0,0,0,.1);
+  background: linear-gradient(145deg, #ffffff, #f9fafb);
 
+  border: 1px solid #e5e7eb;
+
+  cursor: pointer;
+
+  font-weight: 500;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  transition: all 0.25s ease;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+
+  user-select: none;
 }
 
-@media (max-width:768px){
+.control:hover {
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(59,130,246,0.12);
+}
 
-  .select{
+.arrow {
+  font-size: 14px;
+  color: #6b7280;
+}
 
-    width:100%;
+/* MENU */
+.menu {
+  position: absolute;
 
+  top: 110%;
+  left: 0;
+
+  width: 100%;
+
+  background: white;
+
+  border-radius: 14px;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+
+  overflow: hidden;
+
+  z-index: 50;
+
+  animation: fadeIn 0.15s ease;
+}
+
+.item {
+  padding: 0.9rem 1rem;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+
+  font-size: 0.95rem;
+}
+
+.item:hover {
+  background: #f3f4f6;
+  padding-left: 1.2rem;
+}
+
+.active {
+  background: #eff6ff;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* animação */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .dropdown {
+    max-width: 100%;
+  }
 }
