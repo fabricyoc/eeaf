@@ -46,29 +46,52 @@ function ClassroomMap({ turmaId, turmaNome }) {
       window.removeEventListener("resize", verificarTela);
   }, [toastMostrado]);
 
-  /**
-   * Gera grade 5x5
-   */
-  const mapa = useMemo(() => {
-    const linhas = 5;
-    const colunas = 5;
+ /**
+ * Gera grade dinâmica
+ * Sempre 5 colunas
+ */
+const mapa = useMemo(() => {
 
-    const grid = [];
+  const colunas = 5;
 
-    for (let l = linhas; l >= 1; l--) {
-      for (let c = 1; c <= colunas; c++) {
-        const posicao = `${l}${c}`;
 
-        const aluno = alunos.find(
-          (a) => String(a.posicao) === posicao
-        );
+  // quantidade de linhas necessárias
+  const linhas = Math.max(
+    1,
+    Math.ceil(alunos.length / colunas)
+  );
 
-        grid.push({ posicao, aluno });
-      }
+
+  const grid = [];
+
+
+  for (let l = linhas; l >= 1; l--) {
+
+    for (let c = 1; c <= colunas; c++) {
+
+      const posicao = `${l}${c}`;
+
+
+      const aluno = alunos.find(
+        (a) =>
+          String(a.posicao) === posicao
+      );
+
+
+      grid.push({
+        posicao,
+        aluno
+      });
+
     }
 
-    return grid;
-  }, [alunos]);
+  }
+
+
+  return grid;
+
+
+}, [alunos]);
 
   /**
    * drag end

@@ -30,3 +30,57 @@ export async function createAluno(aluno) {
   return data;
 
 }
+
+/**
+ * 
+ * @param {última posição disponível} turmaId 
+ * @returns 
+ */
+export async function getUltimaPosicaoDisponivel(turmaId) {
+
+  const { data, error } = await supabase
+    .from("alunos")
+    .select("posicao")
+    .eq("turma_id", turmaId);
+
+
+  if(error) throw error;
+
+
+  const ocupadas =
+    data
+      .map(a => String(a.posicao))
+      .filter(Boolean);
+
+
+
+  const colunas = 5;
+
+
+  let linha = 1;
+
+
+  while(true){
+
+    for(
+      let coluna = 1;
+      coluna <= colunas;
+      coluna++
+    ){
+
+      const posicao =
+        `${linha}${coluna}`;
+
+
+      if(!ocupadas.includes(posicao)){
+        return posicao;
+      }
+
+    }
+
+
+    linha++;
+
+  }
+
+}

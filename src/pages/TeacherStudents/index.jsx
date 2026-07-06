@@ -14,8 +14,8 @@ import styles from "./TeacherStudents.module.css";
 import StudentForm from "../../components/StudentForm";
 
 function TeacherStudents() {
-const [showForm,setShowForm] =
-  useState(false);
+  const [showForm, setShowForm] =
+    useState(false);
 
   const {
     todosAlunos,
@@ -45,15 +45,15 @@ const [showForm,setShowForm] =
 
       <HeaderStudents
 
-  todosAlunos={todosAlunos}
+        todosAlunos={todosAlunos}
 
-  setAlunos={setAlunos}
+        setAlunos={setAlunos}
 
-  onNovoAluno={() =>
-    setShowForm(true)
-  }
+        onNovoAluno={() =>
+          setShowForm(true)
+        }
 
-/>
+      />
 
       <StatsCards
         alunos={
@@ -74,23 +74,23 @@ const [showForm,setShowForm] =
         }
       />
 
-{
- showForm && (
+      {
+        showForm && (
 
-  <StudentForm
+          <StudentForm
 
-    onClose={() =>
-      setShowForm(false)
-    }
+            onClose={() =>
+              setShowForm(false)
+            }
 
-    onSuccess={()=>{
-      window.location.reload();
-    }}
+            onSuccess={() => {
+              window.location.reload();
+            }}
 
-  />
+          />
 
- )
-}
+        )
+      }
 
     </section>
 

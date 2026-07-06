@@ -7,10 +7,10 @@ import {
 } from "../../hooks/useTurmas";
 
 import {
-  createAluno
+  createAluno, getUltimaPosicaoDisponivel
 } from "../../services/studentService";
 
-
+import { toast } from "react-toastify";
 import styles from "./StudentForm.module.css";
 
 
@@ -27,21 +27,19 @@ function StudentForm({
 
 
 
-  const [form,setForm] =
+  const [form, setForm] =
     useState({
 
-      matricula:"",
-      nome:"",
-      email:"",
-      foto_id:"",
-      turma_id:"",
-      posicao:""
-
+      matricula: "",
+      nome: "",
+      email: "",
+      foto_id: "",
+      turma_id: ""
     });
 
 
 
-  function handleChange(e){
+  function handleChange(e) {
 
     setForm({
 
@@ -55,44 +53,60 @@ function StudentForm({
   }
 
 
-
-  async function handleSubmit(e){
-
+  async function handleSubmit(e) {
     e.preventDefault();
 
+    try {
 
-    try{
+      const posicao =
+        await getUltimaPosicaoDisponivel(
+          form.turma_id
+        );
+
+
+      if (!posicao) {
+
+        toast.error(
+          "Essa turma não possui lugares disponíveis."
+        );
+
+        return;
+
+      }
 
 
       await createAluno({
 
         ...form,
 
-        posicao:
-          form.posicao || null
+        posicao
 
       });
 
 
-      alert(
-        "Aluno cadastrado!"
+      toast.success(
+        "Aluno cadastrado com sucesso!"
       );
 
 
       onSuccess();
 
-
       onClose();
 
 
-    }catch(error){
+    } catch (error) {
 
-      alert(
-        "Erro ao cadastrar aluno"
+      console.error(
+        "Erro ao cadastrar aluno:",
+        error
+      );
+
+
+      toast.error(
+        "Erro ao cadastrar aluno."
       );
 
     }
-
   }
 
 
@@ -160,7 +174,7 @@ function StudentForm({
 
           {
             !loading &&
-            turmas.map(turma=>(
+            turmas.map(turma => (
 
               <option
                 key={turma.id}
@@ -179,12 +193,6 @@ function StudentForm({
 
 
 
-        <input
-          name="posicao"
-          placeholder="Posição inicial (ex: 11)"
-          value={form.posicao}
-          onChange={handleChange}
-        />
 
 
 
