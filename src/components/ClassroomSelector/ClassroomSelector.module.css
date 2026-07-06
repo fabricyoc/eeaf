@@ -3,135 +3,390 @@
 
   padding: 2rem;
 
-  border-radius: 20px;
+  border-radius: 22px;
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, .08);
 
   margin-bottom: 2rem;
 }
 
-.title {
-  color: #3b82f6;
-
-  margin-bottom: 1.5rem;
-
-  font-size: 1.6rem;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: .8rem;
-}
-
-.label {
-  color: #6b7280;
-  font-size: .95rem;
-}
 
 /* =========================
-   DROPDOWN MODERNO
+   HEADER
 ========================= */
 
-.dropdown {
-  position: relative;
-  width: 100%;
-  max-width: 320px;
+.header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  margin-bottom: 1.8rem;
 }
 
-.control {
-  padding: 1rem 1.2rem;
 
-  border-radius: 14px;
+.backButton {
 
-  background: linear-gradient(145deg, #ffffff, #f9fafb);
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+
+  width: 42px;
+
+  height: 42px;
+
+
+  border-radius: 12px;
+
 
   border: 1px solid #e5e7eb;
 
-  cursor: pointer;
-
-  font-weight: 500;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  transition: all 0.25s ease;
-
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-
-  user-select: none;
-}
-
-.control:hover {
-  border-color: #3b82f6;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(59,130,246,0.12);
-}
-
-.arrow {
-  font-size: 14px;
-  color: #6b7280;
-}
-
-/* MENU */
-.menu {
-  position: absolute;
-
-  top: 110%;
-  left: 0;
-
-  width: 100%;
 
   background: white;
 
-  border-radius: 14px;
 
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  color: #475569;
 
-  overflow: hidden;
-
-  z-index: 50;
-
-  animation: fadeIn 0.15s ease;
-}
-
-.item {
-  padding: 0.9rem 1rem;
 
   cursor: pointer;
 
-  transition: 0.2s;
 
-  font-size: 0.95rem;
+  transition: .25s ease;
+
 }
+
+
+.backButton:hover {
+
+  color: #3b82f6;
+
+
+  border-color: #3b82f6;
+
+
+  background: #eff6ff;
+
+
+  transform: translateX(-3px);
+
+
+  box-shadow:
+    0 8px 18px rgba(59,130,246,.15);
+
+}
+
+
+.backButton svg {
+
+  font-size: 1rem;
+
+}
+
+
+
+/* TÍTULO */
+
+.title {
+
+  margin: 0;
+
+
+  color: #3b82f6;
+
+
+  font-size: 1.6rem;
+
+
+  font-weight: 700;
+
+}
+
+
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+
+.content {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: .8rem;
+
+}
+
+
+
+.label {
+
+  color: #64748b;
+
+
+  font-size: .95rem;
+
+
+  font-weight: 500;
+
+}
+
+
+
+/* =========================
+   DROPDOWN
+========================= */
+
+
+.dropdown {
+
+  position: relative;
+
+
+  width: 100%;
+
+
+  max-width: 360px;
+
+}
+
+
+
+.control {
+
+  padding: 1rem 1.2rem;
+
+
+  border-radius: 14px;
+
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fafc
+    );
+
+
+  border: 1px solid #e5e7eb;
+
+
+  cursor: pointer;
+
+
+  font-weight: 600;
+
+
+  color: #334155;
+
+
+  display: flex;
+
+
+  justify-content: space-between;
+
+
+  align-items: center;
+
+
+  transition: .25s ease;
+
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.04);
+
+
+  user-select: none;
+
+}
+
+
+
+.control:hover {
+
+  border-color: #3b82f6;
+
+
+  transform: translateY(-2px);
+
+
+  box-shadow:
+    0 8px 18px rgba(59,130,246,.12);
+
+}
+
+
+
+.arrow {
+
+  color: #64748b;
+
+
+  font-size: .9rem;
+
+}
+
+
+
+/* MENU */
+
+
+.menu {
+
+  position: absolute;
+
+
+  top: calc(100% + 8px);
+
+
+  left: 0;
+
+
+  width: 100%;
+
+
+  background: white;
+
+
+  border-radius: 14px;
+
+
+  overflow: hidden;
+
+
+  z-index: 100;
+
+
+  box-shadow:
+    0 20px 40px rgba(15,23,42,.15);
+
+
+  border: 1px solid #e5e7eb;
+
+
+  animation: fadeIn .15s ease;
+
+}
+
+
+
+.item {
+
+  padding: .9rem 1rem;
+
+
+  cursor: pointer;
+
+
+  font-size: .95rem;
+
+
+  color: #334155;
+
+
+  transition: .2s ease;
+
+}
+
+
 
 .item:hover {
-  background: #f3f4f6;
-  padding-left: 1.2rem;
+
+  background: #f1f5f9;
+
+
+  padding-left: 1.3rem;
+
 }
+
+
 
 .active {
+
   background: #eff6ff;
-  color: #3b82f6;
-  font-weight: 600;
+
+
+  color: #2563eb;
+
+
+  font-weight: 700;
+
 }
 
-/* animação */
+
+
+/* ANIMAÇÃO */
+
 @keyframes fadeIn {
+
   from {
+
     opacity: 0;
+
     transform: translateY(-8px);
+
   }
+
+
   to {
+
     opacity: 1;
+
     transform: translateY(0);
+
   }
+
 }
 
-/* RESPONSIVO */
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+
 @media (max-width: 768px) {
-  .dropdown {
-    max-width: 100%;
+
+
+  .container {
+
+    padding: 1.3rem;
+
+
+    border-radius: 18px;
+
   }
+
+
+  .title {
+
+    font-size: 1.3rem;
+
+  }
+
+
+  .dropdown {
+
+    max-width: 100%;
+
+  }
+
+
+  .backButton {
+
+    width: 38px;
+
+    height: 38px;
+
+  }
+
+
 }
