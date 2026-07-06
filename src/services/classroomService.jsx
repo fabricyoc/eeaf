@@ -106,3 +106,37 @@ export async function getTurmas() {
 
   return data || [];
 }
+
+/**
+ * Busca todos os alunos
+ */
+export async function getTodosAlunos() {
+  const { data, error } = await supabase
+    .from("alunos")
+    .select(`
+      id,
+      nome,
+      email,
+      foto_id,
+      posicao,
+      turma_id,
+      turmas (
+        id,
+        nome
+      )
+    `)
+    .order("nome", { ascending: true });
+
+  if (error) {
+    console.error("Erro ao buscar todos os alunos:", error);
+    throw error;
+  }
+
+  return (data || []).map((aluno) => ({
+    ...aluno,
+    turma: aluno.turmas?.nome ?? "",
+    foto_url: aluno.foto_id
+      ? `https://drive.google.com/uc?export=view&id=${aluno.foto_id}`
+      : null,
+  }));
+}

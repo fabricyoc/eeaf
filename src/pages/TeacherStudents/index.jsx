@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import SearchBar from "../../components/SearchBar";
+// import SearchBar from "../../components/SearchBar";
+import HeaderStudents from "../../components/HeaderStudents";
 import StatsCards from "../../components/StatsCards";
 import StudentGrid from "../../components/StudentGrid";
 import Loading from "../../components/Loading";
@@ -31,10 +32,17 @@ function TeacherStudents() {
       className={styles.container}
     >
 
-      <SearchBar
+      {/* <SearchBar
         todosAlunos={todosAlunos}
         setAlunos={setAlunos}
-      />
+      /> */}
+      <HeaderStudents
+  todosAlunos={todosAlunos}
+  setAlunos={setAlunos}
+  onNovoAluno={() => {
+    console.log("Novo aluno");
+  }}
+/>
 
       <StatsCards
         alunos={

@@ -1,20 +1,17 @@
 import styles from "./StudentCard.module.css";
 
 function StudentCard({ aluno }) {
-
-  const fotoId = aluno?.Foto_Id?.trim();
-
-  const fotoUrl = fotoId
-    ? `https://drive.google.com/thumbnail?id=${fotoId}&sz=w1000`
-    : "https://placehold.co/150x150?text=Sem+Foto";
+  const fotoUrl =
+    aluno?.foto_id
+      ? `https://drive.google.com/thumbnail?id=${aluno.foto_id}&sz=w1000`
+      : "https://placehold.co/150x150?text=Sem+Foto";
 
   return (
     <div className={styles.card}>
-
       <img
         className={styles.photo}
         src={fotoUrl}
-        alt={aluno?.Nome || "Aluno"}
+        alt={aluno?.nome || "Aluno"}
         onError={(e) => {
           e.target.src =
             "https://placehold.co/150x150?text=Sem+Foto";
@@ -22,23 +19,23 @@ function StudentCard({ aluno }) {
       />
 
       <h3 className={styles.name}>
-        {aluno?.Nome}
+        {aluno?.nome}
       </h3>
 
       <p className={styles.email}>
-        {aluno?.["E-mail"]}
+        {aluno?.email}
       </p>
 
       <p className={styles.classroom}>
-        {aluno?.turma}
+        {aluno?.turma.toUpperCase() || "Sem turma"}
       </p>
 
       <button className={styles.button}>
         Ver Perfil
       </button>
-
     </div>
   );
 }
 
 export default StudentCard;
+

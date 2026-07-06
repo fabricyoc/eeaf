@@ -7,20 +7,20 @@ function SearchBar({
 }) {
   const [pesquisa, setPesquisa] = useState("");
 
-  // Remove acentos e deixa tudo minúsculo
+  // Remove acentos e converte para minúsculas
   function normalizarTexto(texto) {
-    return texto
-      ?.toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "") || "";
+    return (
+      texto
+        ?.toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") || ""
+    );
   }
 
   function buscarAluno(e) {
     e.preventDefault();
 
-    const termo = normalizarTexto(
-      pesquisa.trim()
-    );
+    const termo = normalizarTexto(pesquisa.trim());
 
     // Campo vazio → mostra todos
     if (!termo) {
@@ -33,26 +33,19 @@ function SearchBar({
       .split(/\s+/)
       .filter(Boolean);
 
-    const filtrados = todosAlunos.filter(
-      (aluno) => {
-        const nome = normalizarTexto(
-          aluno.Nome
-        );
+    const filtrados = todosAlunos.filter((aluno) => {
+      const nome = normalizarTexto(aluno.nome);
 
-        const turma = normalizarTexto(
-          aluno.turma
-        );
+      const turma = normalizarTexto(aluno.turma);
 
-        // Junta nome + turma
-        const textoBusca =
-          `${nome} ${turma}`;
+      // Junta nome + turma para pesquisar
+      const textoBusca = `${nome} ${turma}`;
 
-        // Todas as palavras digitadas devem existir
-        return termos.every((palavra) =>
-          textoBusca.includes(palavra)
-        );
-      }
-    );
+      // Todas as palavras digitadas devem existir
+      return termos.every((palavra) =>
+        textoBusca.includes(palavra)
+      );
+    });
 
     setAlunos(filtrados);
   }
@@ -67,9 +60,7 @@ function SearchBar({
         type="text"
         placeholder="Nome ou turma (Ex: Maria 2SR)"
         value={pesquisa}
-        onChange={(e) =>
-          setPesquisa(e.target.value)
-        }
+        onChange={(e) => setPesquisa(e.target.value)}
       />
 
       <button
