@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// import SearchBar from "../../components/SearchBar";
 import HeaderStudents from "../../components/HeaderStudents";
 import StatsCards from "../../components/StatsCards";
 import StudentGrid from "../../components/StudentGrid";
@@ -12,7 +11,11 @@ import {
 
 import styles from "./TeacherStudents.module.css";
 
+import StudentForm from "../../components/StudentForm";
+
 function TeacherStudents() {
+const [showForm,setShowForm] =
+  useState(false);
 
   const {
     todosAlunos,
@@ -32,16 +35,24 @@ function TeacherStudents() {
       className={styles.container}
     >
 
-      {/* <SearchBar
+      {/* <HeaderStudents
         todosAlunos={todosAlunos}
         setAlunos={setAlunos}
+        onNovoAluno={() => {
+          console.log("Novo aluno");
+        }}
       /> */}
+
       <HeaderStudents
+
   todosAlunos={todosAlunos}
+
   setAlunos={setAlunos}
-  onNovoAluno={() => {
-    console.log("Novo aluno");
-  }}
+
+  onNovoAluno={() =>
+    setShowForm(true)
+  }
+
 />
 
       <StatsCards
@@ -62,6 +73,24 @@ function TeacherStudents() {
             : todosAlunos
         }
       />
+
+{
+ showForm && (
+
+  <StudentForm
+
+    onClose={() =>
+      setShowForm(false)
+    }
+
+    onSuccess={()=>{
+      window.location.reload();
+    }}
+
+  />
+
+ )
+}
 
     </section>
 
