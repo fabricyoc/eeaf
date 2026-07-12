@@ -22,6 +22,7 @@ import TeacherStudents from "./pages/TeacherStudents";
 import TeacherClassroom from "./pages/TeacherClassroom";
 import TeacherClasses from "./pages/TeacherClasses";
 import PendingApproval from "./pages/PendingApproval";
+import RedirectByRole from "./routes/RedirectByRole";
 
 function AppRoutes() {
   return (
@@ -57,9 +58,7 @@ function AppRoutes() {
             path="dashboard"
             element={
               <ProtectedRoute>
-                <RoleRoute roles={["common"]}>
-                  <Dashboard />
-                </RoleRoute>
+                <RedirectByRole />
               </ProtectedRoute>
             }
           />

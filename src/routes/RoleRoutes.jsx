@@ -7,15 +7,18 @@ function RoleRoute({
   children,
   roles = [],
 }) {
+
   const {
     loading,
     role,
     hasRole,
   } = useRole();
 
+
   if (loading) {
     return <Loading />;
   }
+
 
   // Usuário não autenticado
   if (!role) {
@@ -27,23 +30,26 @@ function RoleRoute({
     );
   }
 
-  // Verifica se o usuário possui
-  // pelo menos uma das roles exigidas
+
+  // console.log(
+  //   "Role atual:",
+  //   role,
+  //   "Permitido:",
+  //   roles
+  // );
+
+
   const permitido = roles.some(
     (requiredRole) =>
       hasRole(requiredRole)
   );
 
-  // if (!permitido) {
-  //   return (
-  //     <Navigate
-  //       to="/"
-  //       replace
-  //     />
-  //   );
-  // }
 
-  if (role === "common") {
+  // Usuário comum sem permissão
+  if (
+    role === "common" &&
+    !permitido
+  ) {
     return (
       <Navigate
         to="/pending"
@@ -52,14 +58,21 @@ function RoleRoute({
     );
   }
 
-  return (
-    <Navigate
-      to="/"
-      replace
-    />
-  );
+
+  // Usuário autenticado,
+  // mas sem autorização
+  if (!permitido) {
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    );
+  }
+
 
   return children;
 }
+
 
 export default RoleRoute;
