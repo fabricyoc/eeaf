@@ -1,6 +1,6 @@
 import styles from "./StudentCard.module.css";
 
-function StudentCard({ aluno }) {
+function StudentCard({ aluno, onView }) {
   const fotoUrl =
     aluno?.foto_id
       ? `https://drive.google.com/thumbnail?id=${aluno.foto_id}&sz=w1000`
@@ -30,7 +30,10 @@ function StudentCard({ aluno }) {
         {aluno?.turma.toUpperCase() || "Sem turma"}
       </p>
 
-      <button className={styles.button}>
+      <button
+        className={styles.button}
+        onClick={() => onView(aluno)}
+      >
         Ver Perfil
       </button>
     </div>

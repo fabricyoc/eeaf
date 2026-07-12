@@ -116,6 +116,7 @@ export async function getTodosAlunos() {
     .select(`
       id,
       nome,
+      matricula,
       email,
       foto_id,
       posicao,

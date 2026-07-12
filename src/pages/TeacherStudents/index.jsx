@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import HeaderStudents from "../../components/HeaderStudents";
 import StatsCards from "../../components/StatsCards";
 import StudentGrid from "../../components/StudentGrid";
 import Loading from "../../components/Loading";
+import StudentProfileModal from "../../components/StudentProfileModal";
 
 import {
   useStudents
@@ -19,11 +20,18 @@ function TeacherStudents() {
 
   const {
     todosAlunos,
-    loadingAlunos
+    loadingAlunos,
+    carregarTodosAlunos,
   } = useStudents();
 
-  const [alunos, setAlunos] =
-    useState(todosAlunos);
+  const [alunos, setAlunos] = useState([]);
+  useEffect(() => {
+    setAlunos(todosAlunos);
+  }, [todosAlunos]);
+
+
+  const [alunoSelecionado, setAlunoSelecionado] =
+    useState(null);
 
   if (loadingAlunos) {
     return <Loading />;
@@ -67,11 +75,10 @@ function TeacherStudents() {
       />
 
       <StudentGrid
-        alunos={
-          alunos.length
-            ? alunos
-            : todosAlunos
-        }
+        alunos={alunos.length ? alunos : todosAlunos}
+        onView={(aluno) => {
+          setAlunoSelecionado(aluno);
+        }}
       />
 
       {
@@ -89,6 +96,18 @@ function TeacherStudents() {
 
           />
 
+        )
+      }
+
+      {
+        alunoSelecionado && (
+          <StudentProfileModal
+            aluno={alunoSelecionado}
+            onClose={() => setAlunoSelecionado(null)}
+            onSuccess={async () => {
+              await carregarTodosAlunos();
+            }}
+          />
         )
       }
 
