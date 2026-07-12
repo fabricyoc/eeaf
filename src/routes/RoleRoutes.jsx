@@ -34,14 +34,30 @@ function RoleRoute({
       hasRole(requiredRole)
   );
 
-  if (!permitido) {
+  // if (!permitido) {
+  //   return (
+  //     <Navigate
+  //       to="/"
+  //       replace
+  //     />
+  //   );
+  // }
+
+  if (role === "common") {
     return (
       <Navigate
-        to="/"
+        to="/pending"
         replace
       />
     );
   }
+
+  return (
+    <Navigate
+      to="/"
+      replace
+    />
+  );
 
   return children;
 }

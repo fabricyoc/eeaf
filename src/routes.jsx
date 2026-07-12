@@ -21,6 +21,7 @@ import TeacherRoute from "./routes/TeacherRoute";
 import TeacherStudents from "./pages/TeacherStudents";
 import TeacherClassroom from "./pages/TeacherClassroom";
 import TeacherClasses from "./pages/TeacherClasses";
+import PendingApproval from "./pages/PendingApproval";
 
 function AppRoutes() {
   return (
@@ -103,6 +104,15 @@ function AppRoutes() {
                 <RoleRoute roles={["teacher"]}>
                   <TeacherClasses />
                 </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="pending"
+            element={
+              <ProtectedRoute>
+                <PendingApproval />
               </ProtectedRoute>
             }
           />
