@@ -1,25 +1,22 @@
 import { useEffect, useState } from "react";
-
 import { supabase } from "../utils/supabase";
 
+const hierarchy = {
+  common: 0,
+  teacher: 1,
+  coordinator: 2,
+  admin: 3,
+};
+
 export function useRole() {
-
   const [role, setRole] = useState(null);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [error, setError] =
-    useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-
     async function carregarRole() {
-
       try {
-
         setLoading(true);
-
         setError(null);
 
         const {
@@ -34,10 +31,7 @@ export function useRole() {
           return;
         }
 
-        const {
-          data,
-          error,
-        } = await supabase
+        const { data, error } = await supabase
           .from("users")
           .select("role")
           .eq("id", user.id)
@@ -46,52 +40,49 @@ export function useRole() {
         if (error) throw error;
 
         setRole(data.role);
-
       } catch (err) {
-
-        console.error(
-          "Erro ao carregar role:",
-          err
-        );
+        console.error("Erro ao carregar role:", err);
 
         setError(err);
-
         setRole(null);
-
       } finally {
-
         setLoading(false);
-
       }
-
     }
 
     carregarRole();
-
   }, []);
 
+  /**
+   * Verifica se a role atual possui
+   * a permissão mínima exigida
+   */
+  function hasRole(requiredRole) {
+    if (!role) return false;
+
+    return (
+      hierarchy[role] >= hierarchy[requiredRole]
+    );
+  }
+
   return {
-
     role,
-
     loading,
-
     error,
 
-    isAdmin:
-      role === "admin",
+    hasRole,
 
-    isCoordinator:
-      role === "coordinator",
+    isAdmin: role === "admin",
+    isCoordinator: role === "coordinator",
+    isTeacher: role === "teacher",
 
-    isTeacher:
-      role === "teacher",
+    // Permissões
+    canAccessTeacher: hasRole("teacher"),
+    canAccessCoordinator: hasRole("coordinator"),
+    canAccessAdmin: hasRole("admin"),
 
-    canEditStudents:
-      role === "admin" ||
-      role === "coordinator"||
-      role === "teacher",
-
+    canEditStudents: hasRole("teacher"),
+    canManageTeachers: hasRole("coordinator"),
+    canManageSystem: hasRole("admin"),
   };
-
 }

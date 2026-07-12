@@ -1,42 +1,49 @@
-import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { supabase } from "../utils/supabase";
 
-function RoleRoute({ children, roles }) {
-  const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState(null);
+import Loading from "../components/Loading";
+import { useRole } from "../hooks/useRole";
 
-  useEffect(() => {
-    async function carregarRole() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-
-      const { data } = await supabase
-        .from("users")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      setRole(data?.role);
-      setLoading(false);
-    }
-
-    carregarRole();
-  }, []);
+function RoleRoute({
+  children,
+  roles = [],
+}) {
+  const {
+    loading,
+    role,
+    hasRole,
+  } = useRole();
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <Loading />;
   }
 
-  return roles.includes(role)
-    ? children
-    : <Navigate to="/" replace />;
+  // Usuário não autenticado
+  if (!role) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+  // Verifica se o usuário possui
+  // pelo menos uma das roles exigidas
+  const permitido = roles.some(
+    (requiredRole) =>
+      hasRole(requiredRole)
+  );
+
+  if (!permitido) {
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    );
+  }
+
+  return children;
 }
 
 export default RoleRoute;
