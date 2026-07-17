@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import { useRole } from "../hooks/useRole";
 
-
 function RedirectByRole() {
 
   const {
@@ -11,11 +10,9 @@ function RedirectByRole() {
     loading,
   } = useRole();
 
-
   if (loading) {
     return <Loading />;
   }
-
 
   if (!role) {
     return (
@@ -26,8 +23,7 @@ function RedirectByRole() {
     );
   }
 
-
-  switch(role) {
+  switch (role) {
 
     case "common":
       return (
@@ -37,33 +33,15 @@ function RedirectByRole() {
         />
       );
 
-
     case "teacher":
-      return (
-        <Navigate
-          to="/teacher"
-          replace
-        />
-      );
-
-
     case "coordinator":
-      return (
-        <Navigate
-          to="/coordinator"
-          replace
-        />
-      );
-
-
     case "admin":
       return (
         <Navigate
-          to="/admin"
+          to="/dashboard"
           replace
         />
       );
-
 
     default:
       return (
@@ -72,10 +50,7 @@ function RedirectByRole() {
           replace
         />
       );
-
   }
-
 }
-
 
 export default RedirectByRole;

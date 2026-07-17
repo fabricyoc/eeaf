@@ -102,15 +102,23 @@ function Header() {
 
   function getDashboardRoute() {
 
-    if (role === "teacher") {
-      return "/teacher";
+    if (
+      role === "teacher"
+      || role === "coordinator"
+      || role === "admin"
+    ) {
+      return "/dashboard";
     }
 
-    if (role === "admin") {
-      return "/admin";
-    }
+    // if (role === "coordinator") {
+    //   return "/coordinator";
+    // }
 
-    return "/dashboard";
+    // if (role === "admin") {
+    //   return "/admin";
+    // }
+
+    return "/";
   }
 
   return (

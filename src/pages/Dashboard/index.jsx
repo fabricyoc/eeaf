@@ -1,72 +1,81 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../../utils/supabase";
+import { Link } from "react-router-dom";
+import {
+  FaUsers,
+  FaMapMarkerAlt,
+  FaChalkboardTeacher,
+} from "react-icons/fa";
+
+import { useRole } from "../../hooks/useRole";
+
 import styles from "./Dashboard.module.css";
-import Loading from "../../components/Loading";
 
 function Dashboard() {
-  const [userData, setUserData] = useState(null);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    carregarUsuario();
-  }, []);
+  const { role } = useRole();
 
-  async function carregarUsuario() {
-    // Usuário autenticado
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-
-    // Busca na tabela public.users
-    const { data, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", user.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    setUserData(data);
-  }
-
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    navigate("/login");
-  }
+  const roleLabel = {
+    teacher: "Professor",
+    coordinator: "Coordenador",
+    admin: "Administrador",
+  };
 
   return (
-    <div className={styles.container}>
-      <h1>Dashboard</h1>
+    <section className={styles.container}>
 
-      {userData ? (
-        <>
-          <h2>Bem-vindo, {userData.name}!</h2>
+      <h1 className={styles.title}>
+        Painel do {roleLabel[role] || "Usuário"}
+      </h1>
+
+      <div className={styles.cards}>
+
+        <Link
+          to="/students"
+          className={styles.card}
+        >
+          <FaUsers className={styles.icon} />
+
+          <h2>Gerenciar Alunos</h2>
 
           <p>
-            <strong>Perfil:</strong> {userData.role}
+            Buscar alunos,
+            visualizar perfis
+            e estatísticas.
           </p>
+        </Link>
 
-          <button
-            className={styles.btn_logout}
-            onClick={handleLogout}
-          >
-            Sair
-          </button>
-        </>
-      ) : (
-        <Loading />
-      )}
-    </div>
+        <Link
+          to="/teacher/maps"
+          className={styles.card}
+        >
+          <FaMapMarkerAlt className={styles.icon} />
+
+          <h2>Mapas de Sala</h2>
+
+          <p>
+            Visualizar a
+            disposição dos
+            alunos em sala.
+          </p>
+        </Link>
+
+        <Link
+          to="/teacher/classes"
+          className={styles.card}
+        >
+          <FaChalkboardTeacher className={styles.icon} />
+
+          <h2>Minhas Turmas</h2>
+
+          <p>
+            Gerenciar minhas turmas
+          </p>
+        </Link>
+
+      </div>
+
+    </section>
   );
+
 }
 
 export default Dashboard;

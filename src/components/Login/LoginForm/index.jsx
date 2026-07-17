@@ -52,19 +52,8 @@ function LoginForm() {
       setEmail("");
       setSenha("");
 
-      // Redireciona conforme o perfil
-      switch (userData.role) {
-        case "admin":
-          navigate("/admin");
-          break;
-
-        case "teacher":
-          navigate("/teacher");
-          break;
-
-        default:
-          navigate("/dashboard");
-      }
+      // Redirecionamento centralizado por role
+      navigate("/redirect");
 
     } catch (error) {
       console.error(error);

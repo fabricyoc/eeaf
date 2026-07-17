@@ -1,7 +1,7 @@
 import styles from "./StudentGrid.module.css";
 import StudentCard from "../StudentCard";
 
-function StudentGrid({ alunos, onView }) {
+function StudentGrid({ alunos, onView, role }) {
   return (
     <div className={styles.grid}>
       {
@@ -10,6 +10,7 @@ function StudentGrid({ alunos, onView }) {
             key={index}
             aluno={aluno}
             onView={onView}
+            role={role}
           />
         ))
       }

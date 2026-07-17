@@ -10,11 +10,13 @@ import {
   useStudents
 } from "../../contexts/StudentsContext";
 
-import styles from "./TeacherStudents.module.css";
+import styles from "./Students.module.css";
 
 import StudentForm from "../../components/StudentForm";
 
-function TeacherStudents() {
+import { useRole } from "../../hooks/useRole";
+
+function Students() {
   const [showForm, setShowForm] =
     useState(false);
 
@@ -36,6 +38,14 @@ function TeacherStudents() {
   if (loadingAlunos) {
     return <Loading />;
   }
+
+const {
+  role,
+  isTeacher,
+  isCoordinator,
+  isAdmin,
+  hasRole,
+} = useRole();
 
   return (
 
@@ -79,6 +89,7 @@ function TeacherStudents() {
         onView={(aluno) => {
           setAlunoSelecionado(aluno);
         }}
+        role={role}
       />
 
       {
@@ -117,4 +128,4 @@ function TeacherStudents() {
 
 }
 
-export default TeacherStudents;
+export default Students;

@@ -7,10 +7,8 @@ import Eventos from "./pages/Eventos";
 import Contatos from "./pages/Contatos";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
-import Dashboard from "./pages/Dashboard";
 
-import TeacherDashboard from "./pages/TeacherDashboard";
-// import AdminDashboard from "./pages/AdminDashboard";
+import Dashboard from "./pages/Dashboard";
 import PageNotFound from "./pages/PageNotFound";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -18,7 +16,7 @@ import PublicRoute from "./routes/PublicRoute";
 import RoleRoute from "./routes/RoleRoutes";
 
 import TeacherRoute from "./routes/TeacherRoute";
-import TeacherStudents from "./pages/TeacherStudents";
+import Students from "./pages/Students";
 import TeacherClassroom from "./pages/TeacherClassroom";
 import TeacherClasses from "./pages/TeacherClasses";
 import PendingApproval from "./pages/PendingApproval";
@@ -55,7 +53,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="dashboard"
+            path="redirect"
             element={
               <ProtectedRoute>
                 <RedirectByRole />
@@ -64,22 +62,22 @@ function AppRoutes() {
           />
 
           <Route
-            path="teacher"
+            path="dashboard"
             element={
               <ProtectedRoute>
                 <RoleRoute roles={["teacher"]}>
-                  <TeacherDashboard />
+                  <Dashboard />
                 </RoleRoute>
               </ProtectedRoute>
             }
           />
 
           <Route
-            path="teacher/students"
+            path="students"
             element={
               <ProtectedRoute>
                 <RoleRoute roles={["teacher"]}>
-                  <TeacherStudents />
+                  <Students />
                 </RoleRoute>
               </ProtectedRoute>
             }
