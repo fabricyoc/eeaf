@@ -14,87 +14,54 @@ import styles from "./Dashboard.module.css";
 
 function Dashboard() {
 
-
   const {
     role,
     canAccessCoordinator,
   } = useRole();
 
-
-
   const roleLabel = {
-
     common: "Comum",
-
     teacher: "Professor",
-
     coordinator: "Coordenador",
-
     admin: "Administrador",
-
   };
-
-
 
   return (
 
     <section
       className={styles.container}
     >
-
-
       <h1
         className={styles.title}
       >
-
         Painel do {
           roleLabel[role] || "Usuário"
         }
-
       </h1>
-
-
-
       <div
         className={styles.cards}
       >
-
-
-
         {/* GERENCIAR ALUNOS */}
-
         <Link
           to="/students"
           className={styles.card}
         >
-
           <FaUsers
             className={styles.icon}
           />
-
-
           <h2>
             Gerenciar Alunos
           </h2>
-
-
           <p>
             Buscar alunos,
             visualizar perfis
             e estatísticas.
           </p>
-
-
         </Link>
-
-
-
-
-
         {/* MAPA DE SALA */}
 
         <Link
-          to="/teacher/maps"
+          to="/roommap"
           className={styles.card}
         >
 
@@ -123,7 +90,7 @@ function Dashboard() {
         {/* TURMAS */}
 
         <Link
-          to="/teacher/classes"
+          to="/classes"
           className={styles.card}
         >
 

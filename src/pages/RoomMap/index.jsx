@@ -4,11 +4,11 @@ import Loading from "../../components/Loading";
 import ClassroomSelector from "../../components/ClassroomSelector";
 import ClassroomMap from "../../components/ClassroomMap";
 
-import styles from "./TeacherClassroom.module.css";
+import styles from "./RoomMap.module.css";
 
 import { useTurmas } from "../../hooks/useTurmas";
 
-function TeacherClassroom() {
+function RoomMap() {
   const [turmaSelecionada, setTurmaSelecionada] = useState("");
 
   const { turmas } = useTurmas();
@@ -43,4 +43,4 @@ function TeacherClassroom() {
   );
 }
 
-export default TeacherClassroom;
+export default RoomMap;

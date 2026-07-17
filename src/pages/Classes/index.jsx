@@ -1,4 +1,4 @@
-function TeacherClasses() {
+function Classes() {
   return (
     <>
       Em desenvolvimento
@@ -6,4 +6,4 @@ function TeacherClasses() {
   );
 }
 
-export default TeacherClasses;
+export default Classes;

@@ -17,8 +17,8 @@ import RoleRoute from "./routes/RoleRoutes";
 
 import TeacherRoute from "./routes/TeacherRoute";
 import Students from "./pages/Students";
-import TeacherClassroom from "./pages/TeacherClassroom";
-import TeacherClasses from "./pages/TeacherClasses";
+import RoomMap from "./pages/RoomMap";
+import Classes from "./pages/Classes";
 import PendingApproval from "./pages/PendingApproval";
 import RedirectByRole from "./routes/RedirectByRole";
 import ManagerUsers from "./pages/ManagerUsers";
@@ -104,22 +104,22 @@ function AppRoutes() {
           />
 
           <Route
-            path="teacher/maps"
+            path="/roommap"
             element={
               <ProtectedRoute>
                 <RoleRoute roles={["teacher"]}>
-                  <TeacherClassroom />
+                  <RoomMap />
                 </RoleRoute>
               </ProtectedRoute>
             }
           />
 
           <Route
-            path="teacher/classes"
+            path="/classes"
             element={
               <ProtectedRoute>
                 <RoleRoute roles={["teacher"]}>
-                  <TeacherClasses />
+                  <Classes />
                 </RoleRoute>
               </ProtectedRoute>
             }
