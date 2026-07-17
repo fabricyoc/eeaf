@@ -1,0 +1,315 @@
+.card {
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  padding: 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.08);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+
+}
+
+
+
+.card:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 12px 25px rgba(0,0,0,0.12);
+
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+
+.header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+}
+
+
+
+.avatar {
+
+  width: 55px;
+
+  height: 55px;
+
+  border-radius: 50%;
+
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+
+  background: #2563eb;
+
+  color: white;
+
+
+  font-size: 22px;
+
+}
+
+
+
+.info {
+
+  flex: 1;
+
+}
+
+
+
+.name {
+
+  margin: 0;
+
+  font-size: 1.1rem;
+
+  color: #1f2937;
+
+}
+
+
+
+.email {
+
+  margin-top: 6px;
+
+
+  display: flex;
+
+  align-items: center;
+
+
+  gap: 8px;
+
+
+  font-size: .9rem;
+
+
+  color: #6b7280;
+
+
+  word-break: break-word;
+
+}
+
+
+
+/* =========================
+   ROLE
+========================= */
+
+
+.role {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+
+  width: fit-content;
+
+
+  padding: 8px 14px;
+
+
+  border-radius: 20px;
+
+
+  font-size: .85rem;
+
+
+  font-weight: 600;
+
+
+  cursor: default;
+
+}
+
+
+
+/* =========================
+   CORES DAS ROLES
+========================= */
+
+
+/* Usuário pendente */
+
+.common {
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  border: 1px solid #fecaca;
+
+}
+
+
+
+/* Professor */
+
+.teacher {
+
+  background: #dcfce7;
+
+  color: #16a34a;
+
+  border: 1px solid #bbf7d0;
+
+}
+
+
+
+/* Coordenador */
+
+.coordinator {
+
+  background: #dbeafe;
+
+  color: #2563eb;
+
+  border: 1px solid #bfdbfe;
+
+}
+
+
+
+/* Administrador */
+
+.admin {
+
+  background: #ede9fe;
+
+  color: #7c3aed;
+
+  border: 1px solid #ddd6fe;
+
+}
+
+
+
+/* =========================
+   BOTÃO
+========================= */
+
+
+.button {
+
+  width: 100%;
+
+
+  border: none;
+
+
+  border-radius: 10px;
+
+
+  padding: 10px 15px;
+
+
+  cursor: pointer;
+
+
+  display: flex;
+
+
+  align-items: center;
+
+
+  justify-content: center;
+
+
+  gap: 8px;
+
+
+  font-size: .9rem;
+
+
+  font-weight: 600;
+
+
+  background: #2563eb;
+
+
+  color: white;
+
+
+  transition: .2s;
+
+}
+
+
+
+.button:hover {
+
+  background: #1d4ed8;
+
+}
+
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+
+@media(max-width:768px){
+
+
+  .card {
+
+    padding: 16px;
+
+  }
+
+
+  .avatar {
+
+    width: 48px;
+
+    height: 48px;
+
+    font-size: 18px;
+
+  }
+
+
+  .name {
+
+    font-size: 1rem;
+
+  }
+
+
+}

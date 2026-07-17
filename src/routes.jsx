@@ -21,6 +21,7 @@ import TeacherClassroom from "./pages/TeacherClassroom";
 import TeacherClasses from "./pages/TeacherClasses";
 import PendingApproval from "./pages/PendingApproval";
 import RedirectByRole from "./routes/RedirectByRole";
+import ManagerUsers from "./pages/ManagerUsers";
 
 function AppRoutes() {
   return (
@@ -79,6 +80,25 @@ function AppRoutes() {
                 <RoleRoute roles={["teacher"]}>
                   <Students />
                 </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="manager/users"
+            element={
+              <ProtectedRoute>
+
+                <RoleRoute
+                  roles={[
+                    "coordinator"
+                  ]}
+                >
+
+                  <ManagerUsers />
+
+                </RoleRoute>
+
               </ProtectedRoute>
             }
           />
