@@ -1,29 +1,22 @@
 .container {
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
 
   margin-top: 10rem;
 }
 
 /* DESKTOP */
-
 .grid {
   display: grid;
-
   grid-template-columns: repeat(5, 1fr);
-
   gap: 1rem;
 }
 
 .carteira {
   background: white;
-
   border-radius: 15px;
-
   padding: 1rem;
-
   text-align: center;
-
   box-shadow: 0 0 10px rgba(0,0,0,.1);
 }
 
@@ -53,22 +46,16 @@
 
 .quadro {
   background: #222;
-
   color: white;
-
   text-align: center;
-
   padding: 1rem;
-
   border-radius: 12px;
-
   font-weight: bold;
 }
 
 /* TABLET */
 
 @media (max-width: 1024px) {
-
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -78,7 +65,6 @@
 /* CELULAR */
 
 @media (max-width: 768px) {
-
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -101,9 +87,7 @@
 /* CELULAR PEQUENO */
 
 @media (max-width: 480px) {
-
   .grid {
     grid-template-columns: 1fr;
   }
-
 }

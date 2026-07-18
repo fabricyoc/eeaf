@@ -1,0 +1,34 @@
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #475569;
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+
+.backButton:hover {
+  color: #3b82f6;
+  border-color: #3b82f6;
+  background: #eff6ff;
+  transform: translateX(-3px);
+  box-shadow: 0 8px 18px rgba(59, 130, 246, .15);
+}
+
+
+.backButton svg {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .backButton {
+    width: 38px;
+    height: 38px;
+  }
+}

@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 import styles from "./ClassroomSelector.module.css";
@@ -11,7 +10,6 @@ function ClassroomSelector({
 }) {
   const { turmas, loading } = useTurmas();
 
-  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
 
@@ -47,110 +45,81 @@ function ClassroomSelector({
   }, []);
 
   return (
-    <section className={styles.container}>
+    <div className={styles.content}>
 
-      {/* CABEÇALHO */}
-      <div className={styles.header}>
-
-        <button
-          type="button"
-          className={styles.backButton}
-          onClick={() => navigate(-1)}
-          title="Voltar"
-        >
-          <FaArrowLeft />
-        </button>
-
-        <h2 className={styles.title}>
-          Mapa da Sala
-        </h2>
-
-      </div>
+      <label className={styles.label}>
+        Selecione uma turma
+      </label>
 
 
-      <div className={styles.content}>
+      {/* DROPDOWN CUSTOM */}
+      <div
+        className={styles.dropdown}
+        ref={dropdownRef}
+      >
 
-        <label className={styles.label}>
-          Selecione uma turma
-        </label>
-
-
-        {/* DROPDOWN CUSTOM */}
+        {/* CONTROLE */}
         <div
-          className={styles.dropdown}
-          ref={dropdownRef}
+          className={styles.control}
+          onClick={() => setOpen(!open)}
         >
 
-          {/* CONTROLE */}
-          <div
-            className={styles.control}
-            onClick={() => setOpen(!open)}
-          >
-
-            {
-              loading
-                ? "Carregando turmas..."
-                : selected
-                  ? selected.nome.toUpperCase()
-                  : "Escolha uma turma"
-            }
-
-
-            <span className={styles.arrow}>
-              ▾
-            </span>
-
-          </div>
-
-
-          {/* MENU */}
           {
-            open && (
-
-              <div className={styles.menu}>
-
-                {
-                  turmas.map((turma) => (
-
-                    <div
-                      key={turma.id}
-                      className={`
-                        ${styles.item}
-                        ${
-                          turmaSelecionada === turma.id
-                            ? styles.active
-                            : ""
-                        }
-                      `}
-                      onClick={() => {
-
-                        setTurmaSelecionada(
-                          turma.id
-                        );
-
-                        setOpen(false);
-
-                      }}
-                    >
-                      {
-                        turma.nome.toUpperCase()
-                      }
-
-                    </div>
-
-                  ))
-                }
-
-              </div>
-
-            )
+            loading
+              ? "Carregando turmas..."
+              : selected
+                ? selected.nome.toUpperCase()
+                : "Escolha uma turma"
           }
+
+
+          <span className={styles.arrow}>
+            ▾
+          </span>
 
         </div>
 
-      </div>
 
-    </section>
+        {/* MENU */}
+        {
+          open && (
+
+            <div className={styles.menu}>
+
+              {
+                turmas.map((turma) => (
+
+                  <div
+                    key={turma.id}
+                    className={`
+                        ${styles.item}
+                        ${turmaSelecionada === turma.id
+                        ? styles.active
+                        : ""
+                      }
+                      `}
+                    onClick={() => {
+
+                      setTurmaSelecionada(
+                        turma.id
+                      );
+
+                      setOpen(false);
+
+                    }}
+                  >
+                    {
+                      turma.nome.toUpperCase()
+                    }
+                  </div>
+                ))
+              }
+            </div>
+          )
+        }
+      </div>
+    </div>
+
   );
 }
 
