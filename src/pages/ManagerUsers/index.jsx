@@ -1,34 +1,23 @@
+import styles from "./ManagerUsers.module.css";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-
-
-import {
-  useUsers
-} from "../../hooks/useUsers";
-
+import { useUsers } from "../../hooks/useUsers";
 
 import Loading from "../../components/Loading";
 import UserGrid from "../../components/UserGrid";
 import UserRoleModal from "../../components/UserRoleModal";
-
-
-import styles from "./ManagerUsers.module.css";
-
-
+import HeaderDashboard from "../../components/HeaderDashboard";
 
 function ManagerUsers() {
 
-
   const navigate = useNavigate();
-
 
   const [
     usuarioSelecionado,
     setUsuarioSelecionado
   ] = useState(null);
-
-
 
   const {
     users,
@@ -36,134 +25,54 @@ function ManagerUsers() {
     carregarUsers
   } = useUsers();
 
-
-
-
   if (loading) {
-
-    return <Loading />;
-
+    return <Loading text="Carregando usuários..." />;
   }
 
-
-
-
   return (
+    <section className={styles.manager_users}>
+      <HeaderDashboard
+        title="Gerenciamento de Usuários"
+      >
+      </HeaderDashboard>
 
-    <section
-      className={styles.container}
-    >
-
-
-      {/* CABEÇALHO */}
 
       <div
-        className={styles.header}
+        className={styles.container_content}
       >
-
-
-        <button
-          type="button"
-          className={styles.backButton}
-          onClick={() => navigate(-1)}
-          title="Voltar"
+        {/* CONTEÚDO */}
+        <div
+          className={styles.content}
         >
-
-          <FaArrowLeft />
-
-        </button>
-
-
-
-
-        <h1
-          className={styles.title}
-        >
-
-          Gerenciamento de Usuários
-
-        </h1>
-
-
-
-      </div>
-
-
-
-
-
-      {/* CONTEÚDO */}
-
-      <div
-        className={styles.content}
-      >
-
-
-        <UserGrid
-
-          users={users}
-
-          onEdit={
-            (usuario) =>
+          <UserGrid
+            users={users}
+            onEdit={(usuario) =>
               setUsuarioSelecionado(usuario)
-          }
+            }
+          />
+        </div>
 
-        />
-
+        {
+          usuarioSelecionado && (
+            <UserRoleModal
+              usuario={usuarioSelecionado}
+              onClose={() =>
+                setUsuarioSelecionado(null)
+              }
+              onSuccess={() => {
+                carregarUsers();
+                setUsuarioSelecionado(null);
+              }
+              }
+            />
+          )
+        }
 
       </div>
-
-
-
-
-
-
-
-      {
-        usuarioSelecionado && (
-
-          <UserRoleModal
-
-
-            usuario={
-              usuarioSelecionado
-            }
-
-
-
-            onClose={
-              () =>
-                setUsuarioSelecionado(null)
-            }
-
-
-
-            onSuccess={
-
-              () => {
-
-                carregarUsers();
-
-                setUsuarioSelecionado(null);
-
-              }
-
-            }
-
-
-          />
-
-        )
-      }
-
-
-
     </section>
 
   );
 
 }
-
-
 
 export default ManagerUsers;

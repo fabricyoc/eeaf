@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import HeaderStudents from "../../components/HeaderStudents";
+// import HeaderStudents from "../../components/HeaderStudents";
 import StatsCards from "../../components/StatsCards";
 import StudentGrid from "../../components/StudentGrid";
 import Loading from "../../components/Loading";
@@ -15,6 +15,9 @@ import styles from "./Students.module.css";
 import StudentForm from "../../components/StudentForm";
 
 import { useRole } from "../../hooks/useRole";
+import HeaderDashboard from "../../components/HeaderDashboard";
+import SearchBarStudents from "../../components/ui/SearchBarStudents";
+import ButtonNewStudent from "../../components/ui/ButtonNewStudent";
 
 function Students() {
   const [showForm, setShowForm] =
@@ -26,7 +29,16 @@ function Students() {
     carregarTodosAlunos,
   } = useStudents();
 
+  const {
+    role,
+    isTeacher,
+    isCoordinator,
+    isAdmin,
+    hasRole,
+  } = useRole();
+
   const [alunos, setAlunos] = useState([]);
+  
   useEffect(() => {
     setAlunos(todosAlunos);
   }, [todosAlunos]);
@@ -39,13 +51,7 @@ function Students() {
     return <Loading />;
   }
 
-const {
-  role,
-  isTeacher,
-  isCoordinator,
-  isAdmin,
-  hasRole,
-} = useRole();
+  
 
   return (
 
@@ -53,25 +59,17 @@ const {
       className={styles.container}
     >
 
-      {/* <HeaderStudents
-        todosAlunos={todosAlunos}
-        setAlunos={setAlunos}
-        onNovoAluno={() => {
-          console.log("Novo aluno");
-        }}
-      /> */}
-
-      <HeaderStudents
-
-        todosAlunos={todosAlunos}
-
-        setAlunos={setAlunos}
-
-        onNovoAluno={() =>
-          setShowForm(true)
-        }
-
-      />
+      <HeaderDashboard
+        title="Gerenciar Alunos"
+      >
+        <SearchBarStudents
+          todosAlunos={todosAlunos}
+          setAlunos={setAlunos}
+        />
+        <ButtonNewStudent
+          onNovoAluno={() => setShowForm(true)}
+        />
+      </HeaderDashboard>
 
       <StatsCards
         alunos={

@@ -1,10 +1,10 @@
 import styles from "./Loading.module.css";
 
-function Loading() {
+function Loading({ text = "Carregando..." }) {
   return (
     <div className={styles.container}>
       <div className={styles.spinner}></div>
-      <p>Carregando alunos...</p>
+      <p>{text}</p>
     </div>
   );
 }

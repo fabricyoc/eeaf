@@ -1,16 +1,13 @@
+import styles from "./Dashboard.module.css";
 import { Link } from "react-router-dom";
-
 import {
   FaUsers,
   FaMapMarkerAlt,
   FaChalkboardTeacher,
   FaUserCog,
 } from "react-icons/fa";
-
 import { useRole } from "../../hooks/useRole";
-
-import styles from "./Dashboard.module.css";
-
+import CardDashboard from "../../components/CardDashboard";
 
 function Dashboard() {
 
@@ -34,128 +31,51 @@ function Dashboard() {
       <h1
         className={styles.title}
       >
-        Painel do {
-          roleLabel[role] || "Usuário"
-        }
+        Painel do {roleLabel[role] || "Usuário"}
       </h1>
       <div
         className={styles.cards}
       >
         {/* GERENCIAR ALUNOS */}
-        <Link
+        <CardDashboard
           to="/students"
-          className={styles.card}
-        >
-          <FaUsers
-            className={styles.icon}
-          />
-          <h2>
-            Gerenciar Alunos
-          </h2>
-          <p>
-            Buscar alunos,
-            visualizar perfis
-            e estatísticas.
-          </p>
-        </Link>
+          icon={FaUsers}
+          title="Gerenciar Alunos"
+          subtitle="Buscar alunos, visualizar perfis e estatísticas."
+        />
+
         {/* MAPA DE SALA */}
-
-        <Link
+        <CardDashboard
           to="/roommap"
-          className={styles.card}
-        >
-
-          <FaMapMarkerAlt
-            className={styles.icon}
-          />
-
-
-          <h2>
-            Mapas de Sala
-          </h2>
-
-
-          <p>
-            Visualizar a disposição
-            dos alunos em sala.
-          </p>
-
-
-        </Link>
-
-
-
-
+          icon={FaMapMarkerAlt}
+          title="Mapas de Sala"
+          subtitle="Visualizar a disposição dos alunos em sala."
+        />
 
         {/* TURMAS */}
-
-        <Link
+        {/* <CardDashboard
           to="/classes"
-          className={styles.card}
-        >
-
-          <FaChalkboardTeacher
-            className={styles.icon}
-          />
-
-
-          <h2>
-            Minhas Turmas
-          </h2>
-
-
-          <p>
-            Gerenciar minhas turmas.
-          </p>
-
-
-        </Link>
-
-
+          icon={FaChalkboardTeacher}
+          title="Minhas Turmas"
+          subtitle="Gerenciar minhas turmas."
+        /> */}
 
 
 
         {/* GERENCIAR USUÁRIOS */}
-
         {
           canAccessCoordinator && (
-
-            <Link
+            <CardDashboard
               to="/manager/users"
-              className={styles.card}
-            >
-
-              <FaUserCog
-                className={styles.icon}
-              />
-
-
-              <h2>
-                Gerenciar Usuários
-              </h2>
-
-
-              <p>
-                Aprovar cadastros,
-                alterar permissões
-                e controlar acessos.
-              </p>
-
-
-            </Link>
-
+              icon={FaUserCog}
+              title="Gerenciar Usuários"
+              subtitle="Aprovar cadastros, alterar permissões e controlar acessos."
+            />
           )
         }
-
-
-
       </div>
-
-
     </section>
-
   );
-
 }
 
 

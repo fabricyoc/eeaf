@@ -1,16 +1,18 @@
 .overlay {
-  position: fixed;
+   position: fixed;
   inset: 0;
-
-  background: rgba(15, 23, 42, .55);
-
-  backdrop-filter: blur(5px);
 
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
-  padding: 2rem;
+  padding: 2rem 1rem;
+
+  background: rgba(15, 23, 42, .55);
+  backdrop-filter: blur(5px);
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   z-index: 9999;
 
@@ -22,6 +24,8 @@
 
   width: 100%;
   max-width: 760px;
+
+  margin: auto 0;
 
   background: white;
 
@@ -247,38 +251,46 @@
 
 }
 
-@media(max-width:768px){
+@media (max-width: 768px) {
 
-  .modal{
-
-    padding:1.5rem;
-
+  .overlay {
+    padding: 1rem;
+    align-items: flex-start;
   }
 
-  .header{
-
-    flex-direction:column;
-
-    text-align:center;
-
+  .modal {
+    margin: 0;
+    padding: 1.25rem;
+    border-radius: 18px;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
   }
 
-  .grid{
-
-    grid-template-columns:1fr;
-
+  .header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
   }
 
-  .actions{
-
-    flex-direction:column;
-
+  .photo {
+    width: 110px;
+    height: 110px;
   }
 
-  .actions button{
-
-    width:100%;
-
+  .header h2 {
+    justify-content: center;
+    font-size: 1.35rem;
   }
 
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
 }

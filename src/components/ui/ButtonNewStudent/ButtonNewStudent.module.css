@@ -1,0 +1,42 @@
+.button_new_student {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+
+  padding: .95rem 1.6rem;
+
+  border: none;
+  border-radius: 14px;
+
+  background-color: var(--green-100);
+
+  color: #fff;
+
+  font-size: .95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s,
+    box-shadow .2s,
+    filter .2s;
+    
+}
+
+.button_new_student:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, .25);
+}
+
+.button_new_student:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .button_new_student {
+    width: 100%;
+  }
+}

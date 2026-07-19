@@ -12,24 +12,24 @@ const hierarchy = {
 
 export function useRole() {
 
-  const [role,setRole] = useState(null);
+  const [role, setRole] = useState(null);
 
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [error,setError] = useState(null);
+  const [error, setError] = useState(null);
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    async function carregarRole(){
+    async function carregarRole() {
 
-      try{
+      try {
 
         setLoading(true);
 
 
         const {
-          data:{
+          data: {
             user
           },
           error
@@ -37,12 +37,12 @@ export function useRole() {
 
 
 
-        if(error)
+        if (error)
           throw error;
 
 
 
-        if(!user){
+        if (!user) {
 
           setRole(null);
 
@@ -50,11 +50,9 @@ export function useRole() {
 
         }
 
-
-
         const {
           data,
-          error:userError
+          error: userError
 
         } = await supabase
           .from("users")
@@ -64,138 +62,67 @@ export function useRole() {
             user.id
           )
           .single();
-
-
-
-        if(userError)
+        if (userError)
           throw userError;
-
-
-
         setRole(
           data.role
         );
-
-
-
-      }catch(err){
-
+      } catch (err) {
         console.error(
           "Erro role:",
           err
         );
-
         setError(err);
-
         setRole(null);
-
-
-      }finally{
-
+      } finally {
         setLoading(false);
-
       }
-
     }
-
-
     carregarRole();
+  }, []);
 
+  function hasRole(requiredRole) {
 
-  },[]);
-
-
-
-  function hasRole(requiredRole){
-
-    if(!role)
-      return false;
-
+    if (!role) return false;
 
     return (
       hierarchy[role] >=
       hierarchy[requiredRole]
     );
-
   }
-
-
 
   /*
     Regra para alteração de permissões
   */
-  function canChangeRole(targetRole){
-
+  function canChangeRole(targetRole) {
 
     // ADMIN pode tudo
-
-    if(role === "admin")
-      return true;
-
-
+    if (role === "admin") return true;
 
     // COORDENADOR NÃO PROMOVE PARA ADMIN
-
-    if(role === "coordinator"){
-
+    if (role === "coordinator") {
       return (
         targetRole === "common" ||
         targetRole === "teacher" ||
         targetRole === "coordinator"
       );
-
     }
-
-
-
     return false;
-
   }
 
-
-
   return {
-
-
     role,
-
     loading,
-
     error,
-
-
     hasRole,
-
-
     canChangeRole,
 
-
-    isAdmin:
-      role === "admin",
-
-
-    isCoordinator:
-      role === "coordinator",
-
-
-    isTeacher:
-      role === "teacher",
-
-
-
-    canAccessTeacher:
-      hasRole("teacher"),
-
-
-    canAccessCoordinator:
-      hasRole("coordinator"),
-
-
-    canAccessAdmin:
-      hasRole("admin"),
-
-
-
+    isAdmin: role === "admin",
+    isCoordinator: role === "coordinator",
+    isTeacher: role === "teacher",
+    canEditStudents: hasRole("teacher"),
+    canAccessTeacher: hasRole("teacher"),
+    canAccessCoordinator: hasRole("coordinator"),
+    canAccessAdmin: hasRole("admin"),
   };
-
 }

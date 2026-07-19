@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from "./SearchBar.module.css";
+import styles from "./SearchBarStudents.module.css";
 
-function SearchBar({
+function SearchBarStudents({
   todosAlunos,
   setAlunos
 }) {
@@ -73,4 +73,4 @@ function SearchBar({
   );
 }
 
-export default SearchBar;
+export default SearchBarStudents;
