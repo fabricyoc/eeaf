@@ -1,13 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SearchBarStudents.module.css";
 
-function SearchBarStudents({
-  todosAlunos,
-  setAlunos
-}) {
+function SearchBarStudents({ todosAlunos, setAlunos, setBuscaAtiva }) {
   const [pesquisa, setPesquisa] = useState("");
 
-  // Remove acentos e converte para minúsculas
   function normalizarTexto(texto) {
     return (
       texto
@@ -17,44 +13,42 @@ function SearchBarStudents({
     );
   }
 
-  function buscarAluno(e) {
-    e.preventDefault();
+useEffect(() => {
+  const termo = normalizarTexto(pesquisa.trim());
 
-    const termo = normalizarTexto(pesquisa.trim());
-
-    // Campo vazio → mostra todos
-    if (!termo) {
-      setAlunos(todosAlunos);
-      return;
-    }
-
-    // Divide a pesquisa em palavras
-    const termos = termo
-      .split(/\s+/)
-      .filter(Boolean);
-
-    const filtrados = todosAlunos.filter((aluno) => {
-      const nome = normalizarTexto(aluno.nome);
-
-      const turma = normalizarTexto(aluno.turma);
-
-      // Junta nome + turma para pesquisar
-      const textoBusca = `${nome} ${turma}`;
-
-      // Todas as palavras digitadas devem existir
-      return termos.every((palavra) =>
-        textoBusca.includes(palavra)
-      );
-    });
-
-    setAlunos(filtrados);
+  // Menos de 1 caracteres → mostra todos
+  if (termo.length < 1) {
+    setAlunos(todosAlunos);
+    setBuscaAtiva(false);
+    return;
   }
 
+  setBuscaAtiva(true);
+
+  const termos = termo.split(/\s+/).filter(Boolean);
+
+  const filtrados = todosAlunos.filter((aluno) => {
+    const nome = normalizarTexto(aluno.nome);
+    const turma = normalizarTexto(aluno.turma);
+
+    const textoBusca = `${nome} ${turma}`;
+
+    return termos.every((palavra) =>
+      textoBusca.includes(palavra)
+    );
+  });
+
+  setAlunos(filtrados);
+
+}, [
+  pesquisa,
+  todosAlunos,
+  setAlunos,
+  setBuscaAtiva
+]);
+
   return (
-    <form
-      className={styles.container}
-      onSubmit={buscarAluno}
-    >
+    <div className={styles.container}>
       <input
         className={styles.input}
         type="text"
@@ -62,14 +56,7 @@ function SearchBarStudents({
         value={pesquisa}
         onChange={(e) => setPesquisa(e.target.value)}
       />
-
-      <button
-        type="submit"
-        className={styles.button}
-      >
-        Buscar
-      </button>
-    </form>
+    </div>
   );
 }
 

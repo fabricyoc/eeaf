@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-// import HeaderStudents from "../../components/HeaderStudents";
 import StatsCards from "../../components/StatsCards";
 import StudentGrid from "../../components/StudentGrid";
 import Loading from "../../components/Loading";
@@ -29,6 +28,8 @@ function Students() {
     carregarTodosAlunos,
   } = useStudents();
 
+  const [buscaAtiva, setBuscaAtiva] = useState(false);
+
   const {
     role,
     isTeacher,
@@ -38,7 +39,7 @@ function Students() {
   } = useRole();
 
   const [alunos, setAlunos] = useState([]);
-  
+
   useEffect(() => {
     setAlunos(todosAlunos);
   }, [todosAlunos]);
@@ -48,10 +49,10 @@ function Students() {
     useState(null);
 
   if (loadingAlunos) {
-    return <Loading />;
+    return <Loading text="Carregando estudantes..." />;
   }
 
-  
+
 
   return (
 
@@ -65,25 +66,33 @@ function Students() {
         <SearchBarStudents
           todosAlunos={todosAlunos}
           setAlunos={setAlunos}
+          setBuscaAtiva={setBuscaAtiva}
+
         />
         <ButtonNewStudent
           onNovoAluno={() => setShowForm(true)}
         />
       </HeaderDashboard>
 
-      <StatsCards
-        alunos={
-          alunos.length
-            ? alunos
-            : todosAlunos
-        }
-        totalAlunos={
-          todosAlunos.length
-        }
-      />
+      {
+        buscaAtiva && alunos.length === 0 ? (
+
+          <div className={styles.emptyMessage}>
+            Nenhum estudante foi encontrado.
+          </div>
+
+        ) : (
+
+          <StatsCards
+            alunos={alunos}
+            totalAlunos={todosAlunos.length}
+          />
+
+        )
+      }
 
       <StudentGrid
-        alunos={alunos.length ? alunos : todosAlunos}
+        alunos={alunos}
         onView={(aluno) => {
           setAlunoSelecionado(aluno);
         }}

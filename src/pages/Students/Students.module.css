@@ -4,3 +4,24 @@
   gap: 2rem;
   padding-top: 2rem;
 }
+
+.emptyMessage{
+  width: 100%;
+  padding: 40px 20px;
+  margin: 20px 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  font-size: 1.1rem;
+  font-weight: 500;
+
+  color: #64748b;
+
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+}
