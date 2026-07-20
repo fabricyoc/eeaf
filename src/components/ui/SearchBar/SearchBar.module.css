@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  align-items: center;
+
+  position: relative;
+
+  width: 100%;
+}
+
+
+.icon {
+
+  position: absolute;
+
+  left: 16px;
+
+  color: #94a3b8;
+
+}
+
+
+
+.input {
+
+  width: 100%;
+
+  padding:
+    .95rem
+    1rem
+    .95rem
+    2.8rem;
+
+
+  background: #f8fafc;
+
+  border:
+    1px solid #e5e7eb;
+
+
+  border-radius: 14px;
+
+
+  outline: none;
+
+
+  font-size: .95rem;
+
+
+  transition:
+    .2s;
+
+}
+
+
+
+.input:focus {
+
+  background: #fff;
+
+  border-color:
+    var(--blue-500);
+
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      37,
+      99,
+      235,
+      .12
+    );
+
+}
