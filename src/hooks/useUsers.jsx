@@ -8,70 +8,40 @@ import {
   getUsers
 } from "../services/userService";
 
-
-
-export function useUsers(){
+export function useUsers() {
 
   const [
     users,
     setUsers
   ] = useState([]);
 
-
   const [
     loading,
     setLoading
   ] = useState(true);
 
-
-
-  async function carregarUsers(){
-
-    try{
-
+  async function carregarUsers() {
+    try {
       setLoading(true);
-
-
-      const data =
-        await getUsers();
-
-
+      const data = await getUsers();
       setUsers(data);
-
-
-    }catch(error){
-
+    }
+    catch (error) {
       console.error(error);
-
       setUsers([]);
-
     }
-    finally{
-
+    finally {
       setLoading(false);
-
     }
-
   }
 
-
-
-  useEffect(()=>{
-
+  useEffect(() => {
     carregarUsers();
-
-  },[]);
-
-
+  }, []);
 
   return {
-
     users,
-
     loading,
-
     carregarUsers
-
   };
-
 }
