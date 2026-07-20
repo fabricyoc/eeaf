@@ -5,6 +5,21 @@
   padding-top: 2rem;
 }
 
+.search_student {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.search_student > :first-child {
+  flex: 1;
+}
+
+.search_student > :last-child {
+  flex-shrink: 0;
+}
+
 .emptyMessage{
   width: 100%;
   padding: 40px 20px;
@@ -24,4 +39,15 @@
   background-color: #f8fafc;
   border: 1px dashed #cbd5e1;
   border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .search_student {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search_student > * {
+    width: 100%;
+  }
 }

@@ -63,15 +63,17 @@ function Students() {
       <HeaderDashboard
         title="Gerenciar Alunos"
       >
-        <SearchBarStudents
-          todosAlunos={todosAlunos}
-          setAlunos={setAlunos}
-          setBuscaAtiva={setBuscaAtiva}
+        <div className={styles.search_student}>
+          <SearchBarStudents
+            todosAlunos={todosAlunos}
+            setAlunos={setAlunos}
+            setBuscaAtiva={setBuscaAtiva}
 
-        />
-        <ButtonNewStudent
-          onNovoAluno={() => setShowForm(true)}
-        />
+          />
+          <ButtonNewStudent
+            onNovoAluno={() => setShowForm(true)}
+          />
+        </div>
       </HeaderDashboard>
 
       {

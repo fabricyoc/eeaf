@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./SearchBarStudents.module.css";
+import { FaSearch } from "react-icons/fa";
 
 function SearchBarStudents({ todosAlunos, setAlunos, setBuscaAtiva }) {
   const [pesquisa, setPesquisa] = useState("");
@@ -13,42 +14,44 @@ function SearchBarStudents({ todosAlunos, setAlunos, setBuscaAtiva }) {
     );
   }
 
-useEffect(() => {
-  const termo = normalizarTexto(pesquisa.trim());
+  useEffect(() => {
+    const termo = normalizarTexto(pesquisa.trim());
 
-  // Menos de 1 caracteres → mostra todos
-  if (termo.length < 1) {
-    setAlunos(todosAlunos);
-    setBuscaAtiva(false);
-    return;
-  }
+    // Menos de 1 caracteres → mostra todos
+    if (termo.length < 1) {
+      setAlunos(todosAlunos);
+      setBuscaAtiva(false);
+      return;
+    }
 
-  setBuscaAtiva(true);
+    setBuscaAtiva(true);
 
-  const termos = termo.split(/\s+/).filter(Boolean);
+    const termos = termo.split(/\s+/).filter(Boolean);
 
-  const filtrados = todosAlunos.filter((aluno) => {
-    const nome = normalizarTexto(aluno.nome);
-    const turma = normalizarTexto(aluno.turma);
+    const filtrados = todosAlunos.filter((aluno) => {
+      const nome = normalizarTexto(aluno.nome);
+      const turma = normalizarTexto(aluno.turma);
 
-    const textoBusca = `${nome} ${turma}`;
+      const textoBusca = `${nome} ${turma}`;
 
-    return termos.every((palavra) =>
-      textoBusca.includes(palavra)
-    );
-  });
+      return termos.every((palavra) =>
+        textoBusca.includes(palavra)
+      );
+    });
 
-  setAlunos(filtrados);
+    setAlunos(filtrados);
 
-}, [
-  pesquisa,
-  todosAlunos,
-  setAlunos,
-  setBuscaAtiva
-]);
+  }, [
+    pesquisa,
+    todosAlunos,
+    setAlunos,
+    setBuscaAtiva
+  ]);
 
   return (
     <div className={styles.container}>
+      <FaSearch className={styles.icon} />
+
       <input
         className={styles.input}
         type="text"
