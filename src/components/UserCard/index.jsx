@@ -6,23 +6,23 @@ import {
   FaUserShield,
   FaEdit
 } from "react-icons/fa";
+
 import { useRole } from "../../hooks/useRole";
 
 function UserCard({
   usuario,
   onEdit
 }) {
-  const {
-    canChangeRole
-  } = useRole();
-
+  
+  const { canChangeRole } = useRole();
+  
   const roleLabel = {
     common: "Comum",
     teacher: "Professor",
     coordinator: "Coordenador",
     admin: "Administrador"
   };
-
+  
   const roleClass = {
     common: styles.common,
     teacher: styles.teacher,
@@ -35,7 +35,7 @@ function UserCard({
       className={styles.card}
     >
       <div
-        className={styles.header}
+        className={styles.top}
       >
         <div
           className={styles.avatar}
@@ -44,37 +44,42 @@ function UserCard({
         </div>
 
         <div
-          className={styles.info}
-        >
-          <h3
-            className={styles.name}
-          >
-            {usuario.name}
-          </h3>
-          <p
-            className={styles.email}
-          >
-            <FaEnvelope />
-            {usuario.email || "Sem email"}
-          </p>
-        </div>
+          className={styles.status}
+        />
       </div>
 
       <div
-        className={`
-          ${styles.role}
-          ${roleClass[usuario.role]}
-        `}
-        title={
-          usuario.role === "common"
-            ? "Usuário pendente de atribuição de permissão"
-            : undefined
-        }
+        className={styles.content}
       >
-        <FaUserShield />
-        <span>
-          {roleLabel[usuario.role]}
-        </span>
+        <h3
+          className={styles.name}
+        >
+          {usuario.name}
+        </h3>
+
+        <p
+          className={styles.email}
+        >
+
+          <FaEnvelope />
+          {
+            usuario.email || "Sem email"
+          }
+        </p>
+
+        <div
+          className={`
+            ${styles.role}
+            ${roleClass[usuario.role]}
+          `}
+        >
+          <FaUserShield />
+          <span>
+            {
+              roleLabel[usuario.role] || "Sem permissão"
+            }
+          </span>
+        </div>
       </div>
 
       {
@@ -86,7 +91,7 @@ function UserCard({
             }
           >
             <FaEdit />
-            Alterar permissão
+            Editar usuário
           </button>
         )
       }

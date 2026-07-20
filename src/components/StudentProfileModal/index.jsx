@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { FaTimes, FaUserGraduate } from "react-icons/fa";
+import { FaUserGraduate } from "react-icons/fa";
 import { toast } from "react-toastify";
+
+import ProfileModal from "../ui/ProfileModal";
+import styles from "../ui/ProfileModal/ProfileModal.module.css";
 
 import { useTurmas } from "../../hooks/useTurmas";
 import { useRole } from "../../hooks/useRole";
-import { updateAluno } from "../../services/studentService";
 
-import styles from "./StudentProfileModal.module.css";
+import { updateAluno } from "../../services/studentService";
 
 const initialForm = {
   matricula: "",
@@ -16,29 +18,6 @@ const initialForm = {
   turma_id: "",
   posicao: "",
 };
-
-const campos = [
-  {
-    name: "matricula",
-    label: "Matrícula",
-  },
-  {
-    name: "nome",
-    label: "Nome",
-  },
-  {
-    name: "email",
-    label: "Email",
-  },
-  {
-    name: "foto_id",
-    label: "Foto ID",
-  },
-  {
-    name: "posicao",
-    label: "Posição",
-  },
-];
 
 function preencherFormulario(aluno) {
   return {
@@ -63,8 +42,6 @@ function StudentProfileModal({
 
   const [form, setForm] = useState(initialForm);
 
-  const somenteLeitura = !canEditStudents;
-
   useEffect(() => {
 
     if (aluno) {
@@ -73,12 +50,7 @@ function StudentProfileModal({
 
   }, [aluno]);
 
-  function handleChange(e) {
-
-    const {
-      name,
-      value
-    } = e.target;
+  function handleChange(name, value) {
 
     setForm((prev) => ({
       ...prev,
@@ -124,140 +96,102 @@ function StudentProfileModal({
 
   }, [form.foto_id]);
 
+  const campos = [
+    {
+      name: "matricula",
+      label: "Matrícula",
+    },
+    {
+      name: "nome",
+      label: "Nome",
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+    },
+    {
+      name: "foto_id",
+      label: "Foto ID",
+    },
+    {
+      name: "posicao",
+      label: "Posição",
+      type: "number",
+    },
+  ];
+
   return (
 
-    <div
-      className={styles.overlay}
-      onClick={onClose}
+    <ProfileModal
+
+      title={form.nome}
+
+      subtitle={
+        canEditStudents
+          ? "Modo edição"
+          : "Somente leitura"
+      }
+
+      image={foto}
+
+      icon={<FaUserGraduate />}
+
+      form={form}
+
+      fields={campos}
+
+      readOnly={!canEditStudents}
+
+      onChange={handleChange}
+
+      onSave={salvar}
+
+      onClose={onClose}
+
     >
 
-      <div
-        className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={styles.field}>
 
-        <button
-          className={styles.close}
-          onClick={onClose}
+        <label>
+          Turma
+        </label>
+
+        <select
+
+          name="turma_id"
+
+          value={form.turma_id}
+
+          onChange={(e) =>
+            handleChange(
+              "turma_id",
+              e.target.value
+            )
+          }
+
+          disabled={!canEditStudents}
+
         >
-          <FaTimes />
-        </button>
-
-        <div className={styles.header}>
-
-          <img
-            src={foto}
-            alt={form.nome}
-            className={styles.photo}
-          />
-
-          <div>
-
-            <h2>
-              <FaUserGraduate />
-              {form.nome}
-            </h2>
-
-            <span>
-              {
-                canEditStudents
-                  ? "Modo edição"
-                  : "Somente leitura"
-              }
-            </span>
-
-          </div>
-
-        </div>
-
-        <div className={styles.grid}>
 
           {
-            campos.map(({
-              name,
-              label,
-            }) => (
+            turmas.map((turma) => (
 
-              <div
-                key={name}
-                className={styles.field}
+              <option
+                key={turma.id}
+                value={turma.id}
               >
-
-                <label>
-                  {label}
-                </label>
-
-                <input
-                  name={name}
-                  value={form[name]}
-                  onChange={handleChange}
-                  readOnly={somenteLeitura}
-                />
-
-              </div>
+                {turma.nome.toUpperCase()}
+              </option>
 
             ))
           }
 
-          <div className={styles.field}>
-
-            <label>
-              Turma
-            </label>
-
-            <select
-              name="turma_id"
-              value={form.turma_id}
-              onChange={handleChange}
-              disabled={somenteLeitura}
-            >
-
-              {
-                turmas.map((turma) => (
-
-                  <option
-                    key={turma.id}
-                    value={turma.id}
-                  >
-                    {turma.nome.toUpperCase()}
-                  </option>
-
-                ))
-              }
-
-            </select>
-
-          </div>
-
-        </div>
-
-        <div className={styles.actions}>
-
-          <button
-            className={styles.cancel}
-            onClick={onClose}
-          >
-            Fechar
-          </button>
-
-          {
-            canEditStudents && (
-
-              <button
-                className={styles.save}
-                onClick={salvar}
-              >
-                Salvar Alterações
-              </button>
-
-            )
-          }
-
-        </div>
+        </select>
 
       </div>
 
-    </div>
+    </ProfileModal>
 
   );
 

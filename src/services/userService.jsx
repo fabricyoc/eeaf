@@ -1,11 +1,9 @@
 import { supabase } from "../utils/supabase";
 
-
 /**
  * Busca usuários cadastrados
  */
 export async function getUsers() {
-
   const {
     data,
     error
@@ -21,44 +19,38 @@ export async function getUsers() {
     .order(
       "created_at",
       {
-        ascending:false
+        ascending: false
       }
     );
 
-
-  if(error){
-
+  if (error) {
     console.error(
       "Erro ao buscar usuários:",
       error
     );
-
     throw error;
-
   }
 
-
   return data || [];
-
 }
 
 
-
 /**
- * Atualiza permissão do usuário
+ * Atualiza dados do usuário
  */
-export async function updateUserRole(
+export async function updateUser(
   id,
-  role
-){
-
+  dados
+) {
   const {
     data,
     error
   } = await supabase
     .from("users")
     .update({
-      role
+      name: dados.name?.trim().toUpperCase(),
+      email: dados.email.trim().toLowerCase(),
+      role: dados.role
     })
     .eq(
       "id",
@@ -67,20 +59,13 @@ export async function updateUserRole(
     .select()
     .single();
 
-
-
-  if(error){
-
+  if (error) {
     console.error(
-      "Erro ao atualizar role:",
+      "Erro ao atualizar usuário:",
       error
     );
-
     throw error;
-
   }
 
-
   return data;
-
 }

@@ -1,36 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { updateUserRole } from "../../services/userService";
+
+import ProfileModal from "../ui/ProfileModal";
+import styles from "../ui/ProfileModal/ProfileModal.module.css";
+
 import { useRole } from "../../hooks/useRole";
+import { updateUser } from "../../services/userService";
 
-import styles from "./UserRoleModal.module.css";
-
+const initialForm = {
+  name: "",
+  email: "",
+  role: "",
+};
 
 function UserRoleModal({
   usuario,
   onClose,
-  onSuccess
+  onSuccess,
 }) {
 
   const { role } = useRole();
 
-  const [novaRole, setNovaRole] = useState(
-    usuario.role
-  );
+  const [form, setForm] = useState(initialForm);
+
+  useEffect(() => {
+
+    if (usuario) {
+
+      setForm({
+        name: usuario.name ?? "",
+        email: usuario.email ?? "",
+        role: usuario.role ?? "common",
+      });
+
+    }
+
+  }, [usuario]);
+
+
+
+  function handleChange(name, value) {
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+  }
+
+
 
   const permissoes = {
     admin: [
       "common",
       "teacher",
       "coordinator",
-      "admin"
+      "admin",
     ],
+
     coordinator: [
       "common",
       "teacher",
-      "coordinator"
-    ]
+      "coordinator",
+    ],
   };
+
+
+
   const roleLabel = {
     common: "Comum",
     teacher: "Professor",
@@ -38,107 +75,124 @@ function UserRoleModal({
     admin: "Administrador",
   };
 
+
+
   const opcoes =
-    permissoes[role] || [];
+    permissoes[role] ?? [];
+
+
 
   async function salvar() {
+
     try {
-      await updateUserRole(
+
+      await updateUser(
         usuario.id,
-        novaRole
+        form
       );
 
       toast.success(
-        "Permissão atualizada."
+        "Usuário atualizado com sucesso!"
       );
 
-      onSuccess();
+      await onSuccess?.();
+
       onClose();
+
     } catch (error) {
+
       console.error(error);
+
       toast.error(
-        "Erro ao atualizar."
+        "Erro ao atualizar usuário."
       );
+
     }
+
   }
 
+
+
+  const campos = [
+    {
+      name: "name",
+      label: "Nome",
+    },
+    {
+      name: "email",
+      label: "E-mail",
+      type: "email",
+    },
+  ];
 
 
 
   return (
 
-    <div
-      className={styles.overlay}
+    <ProfileModal
+
+      title={form.name}
+
+      subtitle="Editar usuário"
+
+      icon={<FaUser />}
+
+      form={form}
+
+      fields={campos}
+
+      readOnly={false}
+
+      onChange={handleChange}
+
+      onSave={salvar}
+
+      onClose={onClose}
+
     >
 
+      <div className={styles.field}>
 
-      <div
-        className={styles.modal}
-      >
-
-
-        <h2>
-
-          Alterar permissão
-
-        </h2>
-
-
-        <p>
-
-          {usuario.name}
-
-        </p>
-
-
+        <label>
+          Permissão
+        </label>
 
         <select
 
-          value={novaRole}
+          name="role"
 
-          onChange={
-            e => setNovaRole(
+          value={form.role}
+
+          onChange={(e) =>
+            handleChange(
+              "role",
               e.target.value
             )
           }
 
         >
 
-
           {
-            opcoes.map(item => (
+            opcoes.map((item) => (
+
               <option
                 key={item}
                 value={item}
               >
                 {roleLabel[item]}
               </option>
+
             ))
-
           }
-
 
         </select>
 
-        <div
-          className={styles.actions}
-        >
-          <button
-            onClick={salvar}
-          >
-            Salvar
-          </button>
-
-          <button
-            onClick={onClose}
-          >
-            Cancelar
-          </button>
-
-        </div>
-
       </div>
-    </div>
+
+    </ProfileModal>
+
   );
+
 }
+
 export default UserRoleModal;
