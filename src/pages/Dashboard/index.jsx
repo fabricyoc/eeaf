@@ -53,15 +53,25 @@ function Dashboard() {
         />
 
         {/* TURMAS */}
-        {/* <CardDashboard
+        <CardDashboard
           to="/classes"
           icon={FaChalkboardTeacher}
           title="Minhas Turmas"
           subtitle="Gerenciar minhas turmas."
-        /> */}
+        />
 
-
-
+        {/* DISCIPLINAS */}
+        {
+          canAccessCoordinator && (
+            <CardDashboard
+              to="/disciplines"
+              icon={FaChalkboardTeacher}
+              title="Componentes Curriculares"
+              subtitle="Gerenciar os componentes curriculares."
+            />
+          )
+        }
+        
         {/* GERENCIAR USUÁRIOS */}
         {
           canAccessCoordinator && (

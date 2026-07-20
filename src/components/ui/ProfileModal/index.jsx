@@ -13,6 +13,8 @@ function ProfileModal({
 
   readOnly = false,
 
+  showSaveButton = true,
+
   onChange,
   onClose,
   onSave,
@@ -146,7 +148,8 @@ function ProfileModal({
             {closeText}
           </button>
           {
-            !readOnly && (
+            showSaveButton && (
+
               <button
                 className={styles.save}
                 type="button"
@@ -154,6 +157,7 @@ function ProfileModal({
               >
                 {saveText}
               </button>
+
             )
           }
         </div>

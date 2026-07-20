@@ -22,6 +22,7 @@ import Classes from "./pages/Classes";
 import PendingApproval from "./pages/PendingApproval";
 import RedirectByRole from "./routes/RedirectByRole";
 import ManagerUsers from "./pages/ManagerUsers";
+import Disciplines from "./pages/Disciplines";
 
 function AppRoutes() {
   return (
@@ -88,17 +89,28 @@ function AppRoutes() {
             path="manager/users"
             element={
               <ProtectedRoute>
-
                 <RoleRoute
                   roles={[
                     "coordinator"
                   ]}
                 >
-
                   <ManagerUsers />
-
                 </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
 
+          <Route
+            path="disciplines"
+            element={
+              <ProtectedRoute>
+                <RoleRoute
+                  roles={[
+                    "coordinator"
+                  ]}
+                >
+                  <Disciplines />
+                </RoleRoute>
               </ProtectedRoute>
             }
           />
