@@ -14,6 +14,7 @@ export async function getUsers() {
     .select(`
       id,
       name,
+      email,
       role,
       created_at
     `)

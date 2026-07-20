@@ -22,6 +22,8 @@ function CadastroForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    
+
     if (!nome || !email || !senha || !confirmarSenha) {
       toast.error("Preencha todos os campos.");
       return;
@@ -41,6 +43,7 @@ function CadastroForm() {
         password: senha,
       });
 
+
       if (error) throw error;
 
       // Salva informações adicionais na tabela users
@@ -50,9 +53,11 @@ function CadastroForm() {
           {
             id: data.user.id,
             name: nome,
+            email: data.user.email,
             role: "common",
           },
         ]);
+
 
       if (insertError) throw insertError;
 
