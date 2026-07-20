@@ -1,12 +1,11 @@
+import styles from "./PendingApproval.module.css";
+
 import { FaClock, FaSignOutAlt, FaSyncAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { supabase } from "../../utils/supabase";
 import { useRole } from "../../hooks/useRole";
-
-import styles from "./PendingApproval.module.css";
-
 
 function PendingApproval() {
 
@@ -17,52 +16,42 @@ function PendingApproval() {
     loading,
   } = useRole();
 
-
   async function atualizarAcesso() {
-
     window.location.reload();
-
   }
-
 
   async function sair() {
-
     await supabase.auth.signOut();
-
-    toast.info(
-      "Sessão encerrada."
-    );
-
+    toast.info("Sessão encerrada.");
     navigate("/login");
-
   }
 
+  const roleLabels = {
+    common: "COMUM",
+    teacher: "PROFESSOR",
+    coordinator: "COORDENADOR",
+    admin: "ADMIN",
+  };
 
   return (
 
     <section
       className={styles.container}
     >
-
       <div
         className={styles.card}
       >
-
         <div
           className={styles.icon}
         >
-
           <FaClock />
-
         </div>
-
 
         <h1
           className={styles.title}
         >
           Solicitação recebida
         </h1>
-
 
         <p
           className={styles.text}
@@ -72,7 +61,6 @@ function PendingApproval() {
           para acessar o sistema.
         </p>
 
-
         <p
           className={styles.text}
         >
@@ -80,11 +68,9 @@ function PendingApproval() {
           precisa liberar seu acesso.
         </p>
 
-
         <div
           className={styles.status}
         >
-
           <span>
             Perfil atual:
           </span>
@@ -92,51 +78,33 @@ function PendingApproval() {
           <strong>
             {loading
               ? "Carregando..."
-              : role?.toUpperCase() || "SEM PERFIL"
+              : roleLabels[role]?.toUpperCase() || "SEM PERFIL"
             }
           </strong>
-
         </div>
-
 
         <div
           className={styles.actions}
         >
-
           <button
             className={styles.refresh}
             onClick={atualizarAcesso}
           >
-
             <FaSyncAlt />
-
             Atualizar acesso
-
           </button>
-
 
           <button
             className={styles.logout}
             onClick={sair}
           >
-
             <FaSignOutAlt />
-
             Sair
-
           </button>
-
         </div>
-
-
       </div>
-
-
     </section>
-
   );
-
 }
-
 
 export default PendingApproval;
