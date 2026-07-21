@@ -5,7 +5,10 @@ import {
   FaMapMarkerAlt,
   FaChalkboardTeacher,
   FaUserCog,
-  FaNotesMedical
+  FaNotesMedical,
+  FaSchool,
+  FaBookOpen,
+  FaUserTie
 } from "react-icons/fa";
 
 import { useRole } from "../../hooks/useRole";
@@ -179,7 +182,7 @@ function Dashboard() {
 
               to="/disciplines"
 
-              icon={FaChalkboardTeacher}
+              icon={FaBookOpen}
 
               title="Componentes Curriculares"
 
@@ -203,7 +206,7 @@ function Dashboard() {
 
               to="/teacher/assignment"
 
-              icon={FaChalkboardTeacher}
+              icon={FaUserTie}
 
               title="Alocação Docente"
 

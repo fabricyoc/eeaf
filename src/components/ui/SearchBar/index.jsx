@@ -4,190 +4,109 @@ import {
   useMemo
 } from "react";
 
-import {
-  FaSearch
-} from "react-icons/fa";
-
+import { FaSearch } from "react-icons/fa";
 import styles from "./SearchBar.module.css";
 
-
 function SearchBar({
-
   items = [],
-
   onSearch,
-
   setBuscaAtiva,
-
   fields = [],
-
   placeholder = "Pesquisar..."
-
 }) {
 
+  const [pesquisa, setPesquisa] = useState("");
 
-  const [
-    pesquisa,
-    setPesquisa
-  ] = useState("");
+  function getNestedValue(obj, path) {
+    return path
+      .split(".")
+      .reduce((acc, key) => acc?.[key], obj);
+  }
 
+  function formatarData(valor) {
 
+    if (!valor) return "";
+
+    if (
+      typeof valor === "string" &&
+      /^\d{4}-\d{2}-\d{2}/.test(valor)
+    ) {
+      const [ano, mes, dia] = valor.substring(0, 10).split("-");
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    return valor.toString();
+  }
 
   function normalizarTexto(texto) {
-
     return (
-
       texto
         ?.toString()
         .toLowerCase()
         .normalize("NFD")
-        .replace(
-          /[\u0300-\u036f]/g,
-          ""
-        )
-
+        .replace(/[\u0300-\u036f]/g, "")
       || ""
-
     );
-
   }
 
+  const resultadoBusca = useMemo(() => {
 
+    const termo = normalizarTexto(pesquisa.trim());
 
-  const resultadoBusca =
-    useMemo(() => {
+    if (!termo) return items;
 
+    const termos = termo.split(/\s+/).filter(Boolean);
 
-      const termo =
-        normalizarTexto(
-          pesquisa.trim()
-        );
+    return items.filter((item) => {
 
+      const textoBusca = fields
+        .map((field) => {
 
+          const valor = getNestedValue(item, field);
 
-      // Sem pesquisa
-      if (!termo) {
-
-        return items;
-
-      }
-
-
-
-      const termos =
-        termo
-          .split(/\s+/)
-          .filter(Boolean);
-
-
-
-      return items.filter(
-        (item) => {
-
-
-          const textoBusca =
-            fields
-              .map((field) =>
-                normalizarTexto(
-                  item[field]
-                )
-              )
-              .join(" ");
-
-
-
-          return termos.every(
-            (palavra) =>
-              textoBusca.includes(
-                palavra
-              )
+          return normalizarTexto(
+            formatarData(valor)
           );
 
+        })
+        .join(" ");
 
-        }
+      return termos.every((palavra) =>
+        textoBusca.includes(palavra)
       );
 
+    });
 
-    }, [
-      pesquisa,
-      items,
-      fields
-    ]);
-
-
-
+  }, [pesquisa, items, fields]);
 
   useEffect(() => {
 
-
-    if (!onSearch) {
-      return;
-    }
-
-
-    onSearch(
-      resultadoBusca
-    );
-
+    onSearch?.(resultadoBusca);
 
     setBuscaAtiva?.(
       pesquisa.trim().length > 0
     );
 
-
-  }, [
-    resultadoBusca
-  ]);
-
-
-
-
+  }, [resultadoBusca]);
 
   return (
 
-    <div
-      className={
-        styles.container
-      }
-    >
+    <div className={styles.container}>
 
-      <FaSearch
-        className={
-          styles.icon
-        }
-      />
-
+      <FaSearch className={styles.icon} />
 
       <input
-
-        className={
-          styles.input
-        }
-
+        className={styles.input}
         type="text"
-
-        placeholder={
-          placeholder
-        }
-
-        value={
-          pesquisa
-        }
-
-        onChange={(e) =>
-          setPesquisa(
-            e.target.value
-          )
-        }
-
+        placeholder={placeholder}
+        value={pesquisa}
+        onChange={(e) => setPesquisa(e.target.value)}
       />
-
 
     </div>
 
   );
 
 }
-
 
 export default SearchBar;

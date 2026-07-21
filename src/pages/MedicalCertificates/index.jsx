@@ -472,7 +472,7 @@ function MedicalCertificates() {
 
           fields={SEARCH_FIELDS}
 
-          placeholder="Pesquisar aluno ou período"
+          placeholder="Pesquise aluno(a), turma ou data..."
 
         />
 
