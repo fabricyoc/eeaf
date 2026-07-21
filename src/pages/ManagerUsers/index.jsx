@@ -55,7 +55,7 @@ function ManagerUsers() {
           onSearch={setUsuarios}
           setBuscaAtiva={setBuscaAtiva}
           fields={USER_SEARCH_FIELDS}
-          placeholder="Nome, email ou permissão (common, teacher, coordinator)"
+          placeholder="Nome, email ou permissão (common, secretary, teacher, coordinator)"
         />
       </HeaderDashboard>
 

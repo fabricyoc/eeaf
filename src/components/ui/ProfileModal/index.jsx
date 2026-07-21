@@ -126,6 +126,8 @@ function ProfileModal({
                         value={form[field.name] ?? ""}
                         onChange={handleChange}
                         readOnly={readOnly}
+                        min={field.min}
+                        max={field.max}
                       />
                     )
                 }

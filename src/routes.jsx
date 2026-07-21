@@ -69,7 +69,7 @@ function AppRoutes() {
             path="dashboard"
             element={
               <ProtectedRoute>
-                <RoleRoute roles={["teacher"]}>
+                <RoleRoute roles={["secretary"]}>
                   <Dashboard />
                 </RoleRoute>
               </ProtectedRoute>
@@ -80,7 +80,7 @@ function AppRoutes() {
             path="students"
             element={
               <ProtectedRoute>
-                <RoleRoute roles={["teacher"]}>
+                <RoleRoute roles={["secretary"]}>
                   <Students />
                 </RoleRoute>
               </ProtectedRoute>
@@ -161,6 +161,7 @@ function AppRoutes() {
                 <RoleRoute
                   roles={[
                     "secretary",
+                    "teacher",
                     "coordinator",
                     "admin"
                   ]}

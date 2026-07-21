@@ -103,22 +103,22 @@ function Header() {
   function getDashboardRoute() {
 
     if (
-      role === "teacher"
-      || role === "coordinator"
-      || role === "admin"
+      role === "secretary" ||
+      role === "teacher" ||
+      role === "coordinator" ||
+      role === "admin"
     ) {
       return "/dashboard";
     }
 
-    // if (role === "coordinator") {
-    //   return "/coordinator";
-    // }
 
-    // if (role === "admin") {
-    //   return "/admin";
-    // }
+    if (role === "common") {
+      return "/pending";
+    }
+
 
     return "/";
+
   }
 
   return (

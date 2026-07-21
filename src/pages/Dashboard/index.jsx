@@ -1,109 +1,278 @@
 import styles from "./Dashboard.module.css";
-import { Link } from "react-router-dom";
+
 import {
   FaUsers,
   FaMapMarkerAlt,
   FaChalkboardTeacher,
   FaUserCog,
+  FaNotesMedical
 } from "react-icons/fa";
+
 import { useRole } from "../../hooks/useRole";
 import CardDashboard from "../../components/CardDashboard";
 
+
 function Dashboard() {
 
+
   const {
+
     role,
+
+    canAccessStudents,
+
     canAccessCoordinator,
+
+    canViewCertificates,
+
+    isTeacher,
+
+    isCoordinator,
+
+    isAdmin
+
   } = useRole();
 
+
+
+
   const roleLabel = {
+
     common: "Comum",
-    teacher: "Professor",
-    coordinator: "Coordenador",
+
+    secretary: "Secretário(a)",
+
+    teacher: "Professor(a)",
+
+    coordinator: "Coordenador(a)",
+
     admin: "Administrador",
+
   };
+
+
+
+
+
+  /*
+    Área docente
+    Professor, Coordenador e Admin
+  */
+
+  const canAccessTeacherArea =
+
+    isTeacher ||
+
+    isCoordinator ||
+
+    isAdmin;
+
+
+
+
 
   return (
 
     <section
       className={styles.container}
     >
+
+
       <h1
         className={styles.title}
       >
+
         Painel do {roleLabel[role] || "Usuário"}
+
       </h1>
+
+
+
+
+
       <div
         className={styles.cards}
       >
+
+
+
+
+
         {/* GERENCIAR ALUNOS */}
-        <CardDashboard
-          to="/students"
-          icon={FaUsers}
-          title="Gerenciar Alunos"
-          subtitle="Buscar alunos, visualizar perfis e estatísticas."
-        />
+
+        {
+          canAccessStudents && (
+
+            <CardDashboard
+
+              to="/students"
+
+              icon={FaUsers}
+
+              title="Gerenciar Alunos"
+
+              subtitle="Buscar alunos, visualizar perfis e estatísticas."
+
+            />
+
+          )
+        }
+
+
+
+
 
         {/* MAPA DE SALA */}
-        <CardDashboard
-          to="/roommap"
-          icon={FaMapMarkerAlt}
-          title="Mapas de Sala"
-          subtitle="Visualizar a disposição dos alunos em sala."
-        />
+
+        {
+          canAccessTeacherArea && (
+
+            <CardDashboard
+
+              to="/roommap"
+
+              icon={FaMapMarkerAlt}
+
+              title="Mapas de Sala"
+
+              subtitle="Visualizar disposição dos alunos em sala."
+
+            />
+
+          )
+        }
+
+
+
+
 
         {/* TURMAS */}
-        <CardDashboard
-          to="/classes"
-          icon={FaChalkboardTeacher}
-          title="Minhas Turmas"
-          subtitle="Gerenciar minhas turmas."
-        />
 
-        {/* DISCIPLINAS */}
         {
-          canAccessCoordinator && (
+          canAccessTeacherArea && (
+
             <CardDashboard
-              to="/disciplines"
+
+              to="/classes"
+
               icon={FaChalkboardTeacher}
-              title="Componentes Curriculares"
-              subtitle="Cadastre componentes curriculares, defina seu código (sigla) e vincule-os a uma ou mais turmas."
+
+              title="Minhas Turmas"
+
+              subtitle="Gerenciar turmas e informações acadêmicas."
+
             />
+
           )
         }
+
+
+
+
+
+        {/* COMPONENTES CURRICULARES */}
+
+        {
+          canAccessCoordinator && (
+
+            <CardDashboard
+
+              to="/disciplines"
+
+              icon={FaChalkboardTeacher}
+
+              title="Componentes Curriculares"
+
+              subtitle="Cadastrar componentes e vínculos com turmas."
+
+            />
+
+          )
+        }
+
+
+
+
 
         {/* ALOCAÇÃO DOCENTE */}
+
         {
           canAccessCoordinator && (
+
             <CardDashboard
+
               to="/teacher/assignment"
+
               icon={FaChalkboardTeacher}
+
               title="Alocação Docente"
-              subtitle="Atribua disciplinas e turmas aos docentes."
+
+              subtitle="Atribuir disciplinas e turmas aos professores."
+
             />
+
           )
         }
-        <CardDashboard
+
+
+
+
+
+        {/* ATESTADOS */}
+
+        {
+          canViewCertificates && (
+
+            <CardDashboard
+
               to="/medical/certificates"
-              icon={FaChalkboardTeacher}
+
+              icon={FaNotesMedical}
+
               title="Atestados Médicos"
-              subtitle=""
+
+              subtitle="Consultar e gerenciar atestados dos alunos."
+
             />
-        
+
+          )
+        }
+
+
+
+
+
         {/* GERENCIAR USUÁRIOS */}
+
         {
           canAccessCoordinator && (
+
             <CardDashboard
+
               to="/manager/users"
+
               icon={FaUserCog}
+
               title="Gerenciar Usuários"
+
               subtitle="Aprovar cadastros, alterar permissões e controlar acessos."
+
             />
+
           )
         }
+
+
+
+
+
       </div>
+
+
     </section>
+
   );
+
 }
 
 

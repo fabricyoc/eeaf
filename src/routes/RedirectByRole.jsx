@@ -15,17 +15,20 @@ function RedirectByRole() {
   }
 
   if (!role) {
+
     return (
       <Navigate
         to="/login"
         replace
       />
     );
+
   }
 
   switch (role) {
 
     case "common":
+
       return (
         <Navigate
           to="/pending"
@@ -33,9 +36,14 @@ function RedirectByRole() {
         />
       );
 
+    case "secretary":
+
     case "teacher":
+
     case "coordinator":
+
     case "admin":
+
       return (
         <Navigate
           to="/dashboard"
@@ -44,13 +52,16 @@ function RedirectByRole() {
       );
 
     default:
+
       return (
         <Navigate
           to="/pending"
           replace
         />
       );
+
   }
+
 }
 
 export default RedirectByRole;

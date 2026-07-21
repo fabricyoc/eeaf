@@ -52,26 +52,32 @@ function UserRoleModal({
 
 
   const permissoes = {
+
     admin: [
       "common",
+      "secretary",
       "teacher",
       "coordinator",
       "admin",
     ],
 
+
     coordinator: [
       "common",
+      "secretary",
       "teacher",
       "coordinator",
     ],
+
   };
 
 
 
   const roleLabel = {
     common: "Comum",
-    teacher: "Professor",
-    coordinator: "Coordenador",
+    secretary: "Secretário(a)",
+    teacher: "Professor(a)",
+    coordinator: "Coordenador(a)",
     admin: "Administrador",
   };
 

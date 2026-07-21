@@ -3,172 +3,328 @@
     linear-gradient(145deg,
       #ffffff,
       #f8fafc);
+
   border-radius: 22px;
   padding: 24px;
+
   display: flex;
   flex-direction: column;
   gap: 22px;
-  
+
   border: 1px solid #e5e7eb;
-  box-shadow:    0 10px 30px rgba(0, 0, 0, .08);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, .08);
+
   transition:
     transform .25s ease,
     box-shadow .25s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow:    0 18px 40px rgba(37, 99, 235, .15);
+
+  transform:
+    translateY(-6px);
+
+  box-shadow:
+    0 18px 40px rgba(37, 99, 235, .15);
+
 }
 
 /* ======================
    TOPO
 ====================== */
+
 .top {
+
   display: flex;
   justify-content: center;
   position: relative;
+
 }
 
 .avatar {
+
   width: 90px;
   height: 90px;
+
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       #2563eb,
-      #1d4ed8);
+      #1d4ed8
+    );
+
   color: white;
+
   font-size: 36px;
+
   box-shadow:
-    0 10px 25px rgba(37, 99, 235, .35);
-  border: 5px solid white;
+    0 10px 25px rgba(37,99,235,.35);
+
+  border:
+    5px solid white;
+
 }
 
 .status {
+
   position: absolute;
+
   width: 16px;
   height: 16px;
+
   border-radius: 50%;
-  background: #22c55e;
-  border: 3px solid white;
-  right: 35%;
-  bottom: 5px;
+
+  background:
+    #22c55e;
+
+  border:
+    3px solid white;
+
+  right:
+    35%;
+
+  bottom:
+    5px;
+
 }
 
 /* ======================
    CONTEÚDO
 ====================== */
+
 .content {
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   text-align: center;
+
   gap: 12px;
+
 }
 
 .name {
+
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1f2937;
+
+  font-size:
+    1.25rem;
+
+  font-weight:
+    700;
+
+  color:
+    #1f2937;
+
 }
 
 .email {
+
   margin: 0;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 8px;
-  color: #6b7280;
-  font-size: .9rem;
-  word-break: break-word;
+
+  color:
+    #6b7280;
+
+  font-size:
+    .9rem;
+
+  word-break:
+    break-word;
+
 }
 
 /* ======================
    ROLE BADGE
 ====================== */
+
 .role {
+
   display: flex;
+
   align-items: center;
+
   gap: 8px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: .85rem;
-  font-weight: 700;
+
+  padding:
+    8px 16px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    .85rem;
+
+  font-weight:
+    700;
+
 }
 
-/* comum */
+/* Usuário comum */
+
 .common {
-  background: #fee2e2;
-  color: #dc2626;
+
+  background:
+    #fee2e2;
+
+  color:
+    #dc2626;
+
 }
 
-/* professor */
+/* Secretário */
+
+.secretary {
+
+  background:
+    #fef3c7;
+
+  color:
+    #92400e;
+
+}
+
+/* Professor */
+
 .teacher {
-  background: #dcfce7;
-  color: #15803d;
+
+  background:
+    #dcfce7;
+
+  color:
+    #15803d;
+
 }
 
-/* coordenador */
+/* Coordenador */
+
 .coordinator {
-  background: #dbeafe;
-  color: #2563eb;
+
+  background:
+    #dbeafe;
+
+  color:
+    #2563eb;
+
 }
 
-/* admin */
+/* Administrador */
+
 .admin {
-  background: #ede9fe;
-  color: #7c3aed;
+
+  background:
+    #ede9fe;
+
+  color:
+    #7c3aed;
+
 }
 
 /* ======================
    BOTÃO
 ====================== */
+
 .button {
+
   width: 100%;
+
   display: flex;
+
   justify-content: center;
+
   align-items: center;
 
   gap: 10px;
-  padding: 12px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 700;
-  color: white;
+
+  padding:
+    12px;
+
+  border:
+    none;
+
+  border-radius:
+    14px;
+
+  cursor:
+    pointer;
+
+  font-weight:
+    700;
+
+  color:
+    white;
+
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       #2563eb,
-      #1d4ed8);
-  transition: .25s;
+      #1d4ed8
+    );
+
+  transition:
+    .25s;
+
 }
 
 .button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(37, 99, 235, .25);
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(37,99,235,.25);
+
 }
 
 /* ======================
    RESPONSIVO
 ====================== */
+
 @media(max-width:768px) {
+
   .card {
-    padding: 20px;
+
+    padding:
+      20px;
+
   }
 
   .avatar {
-    width: 75px;
-    height: 75px;
-    font-size: 30px;
+
+    width:
+      75px;
+
+    height:
+      75px;
+
+    font-size:
+      30px;
+
   }
 
   .name {
-    font-size: 1.1rem;
+
+    font-size:
+      1.1rem;
+
   }
+
 }

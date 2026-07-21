@@ -27,9 +27,15 @@ import {
   useAtestados
 } from "../../hooks/useAtestados";
 
+import {
+  useRole
+} from "../../hooks/useRole";
+
 const SEARCH_FIELDS = [
 
   "alunos.nome",
+
+  "alunos.turmas.nome",
 
   "turno",
 
@@ -53,7 +59,34 @@ const initialForm = {
 
 };
 
+function somenteData(data) {
+
+  if (!data) {
+    return "";
+  }
+
+  return data.substring(0, 10);
+
+}
+
+function hoje() {
+
+  return new Date()
+    .toISOString()
+    .substring(0, 10);
+
+}
+
 function MedicalCertificates() {
+
+  const {
+    canCreateCertificates,
+    canEditCertificates,
+    canDeleteCertificates,
+    isSecretary,
+    isCoordinator,
+    isAdmin
+  } = useRole();
 
   const {
 
@@ -126,9 +159,7 @@ function MedicalCertificates() {
     );
 
     setAlunoSelecionado(
-
       atestado.alunos || null
-
     );
 
     setForm({
@@ -137,10 +168,10 @@ function MedicalCertificates() {
         atestado.aluno_id,
 
       data_inicio:
-        atestado.data_inicio,
+        somenteData(atestado.data_inicio),
 
       data_fim:
-        atestado.data_fim,
+        somenteData(atestado.data_fim),
 
       turno:
         atestado.turno || "",
@@ -170,6 +201,15 @@ function MedicalCertificates() {
   }
 
   async function salvar() {
+    if (!canCreateCertificates) {
+
+      toast.error(
+        "Você não possui permissão para cadastrar atestados."
+      );
+
+      return;
+
+    }
 
     if (
       !form.aluno_id ||
@@ -185,7 +225,7 @@ function MedicalCertificates() {
 
     }
     if (
-      new Date(form.data_fim) < new Date(form.data_inicio)
+      form.data_fim < form.data_inicio
     ) {
 
       toast.warning(
@@ -265,12 +305,9 @@ function MedicalCertificates() {
 
   function selecionarAluno(aluno) {
 
-
     if (!aluno) {
 
-
       setAlunoSelecionado(null);
-
 
       setForm(prev => ({
 
@@ -280,19 +317,13 @@ function MedicalCertificates() {
 
       }));
 
-
       return;
 
     }
 
-
-
-
     setAlunoSelecionado(
       aluno
     );
-
-
 
     setForm(prev => ({
 
@@ -302,7 +333,6 @@ function MedicalCertificates() {
         aluno.id
 
     }));
-
 
   }
 
@@ -339,10 +369,9 @@ function MedicalCertificates() {
   const columns = [
 
     {
-
       key: "aluno",
 
-      label: "Aluno",
+      label: "Aluno(a)",
 
       render: (row) =>
 
@@ -353,39 +382,47 @@ function MedicalCertificates() {
     },
 
     {
+      key: "turma",
 
+      label: "Turma",
+
+      render: (row) =>
+
+        row.alunos?.turmas?.nome?.toUpperCase()
+        ||
+        "-"
+
+    },
+
+    {
       key: "inicio",
 
       label: "Início",
 
       render: (row) =>
 
-        new Date(
-          row.data_inicio
-        ).toLocaleDateString(
-          "pt-BR"
-        )
+        somenteData(row.data_inicio)
+          .split("-")
+          .reverse()
+          .join("/")
 
     },
 
     {
-
       key: "fim",
 
       label: "Fim",
 
       render: (row) =>
 
-        new Date(
-          row.data_fim
-        ).toLocaleDateString(
-          "pt-BR"
-        )
+        somenteData(row.data_fim)
+          .split("-")
+          .reverse()
+          .join("/")
 
     },
 
     {
-
       key: "turno",
 
       label: "Turno",
@@ -405,6 +442,11 @@ function MedicalCertificates() {
     }
 
   ];
+
+  const canShowActions =
+  isSecretary ||
+  isCoordinator ||
+  isAdmin;
 
   return (
 
@@ -434,19 +476,25 @@ function MedicalCertificates() {
 
         />
 
-        <button
+        {
+          canCreateCertificates && (
 
-          className={styles.button}
+            <button
 
-          onClick={abrirNovo}
+              className={styles.button}
 
-        >
+              onClick={abrirNovo}
 
-          <FaPlus />
+            >
 
-          Novo Atestado
+              <FaPlus />
 
-        </button>
+              Novo Atestado
+
+            </button>
+
+          )
+        }
 
       </HeaderDashboard>
 
@@ -476,47 +524,44 @@ function MedicalCertificates() {
 
             <DataTable
 
-              columns={columns}
+  columns={columns}
 
-              data={lista}
+  data={lista}
 
-              actions={
+  actions={
+    canShowActions
+      ?
+      (row) => (
+        <>
+          {
+            canEditCertificates && (
+              <button
+                className={styles.edit}
+                onClick={() => editar(row)}
+              >
+                <FaEdit />
+              </button>
+            )
+          }
 
-                (row) => (
+          {
+            canDeleteCertificates && (
+              <button
+                className={styles.delete}
+                onClick={() => excluir(row)}
+              >
+                <FaTrash />
+              </button>
+            )
+          }
 
-                  <>
+        </>
+      )
+      :
+      null
+  }
 
-                    <button
-
-                      className={styles.edit}
-
-                      onClick={() => editar(row)}
-
-                    >
-
-                      <FaEdit />
-
-                    </button>
-
-                    <button
-
-                      className={styles.delete}
-
-                      onClick={() => excluir(row)}
-
-                    >
-
-                      <FaTrash />
-
-                    </button>
-
-                  </>
-
-                )
-
-              }
-
-            />
+/>
 
         }
 
@@ -544,13 +589,16 @@ function MedicalCertificates() {
             {
               name: "data_inicio",
               label: "Data inicial",
-              type: "date"
+              type: "date",
+              max: hoje()
             },
 
             {
               name: "data_fim",
               label: "Data final",
-              type: "date"
+              type: "date",
+              max: hoje()
+
             },
 
             {
@@ -592,16 +640,13 @@ function MedicalCertificates() {
 
           ]}
 
-
           onChange={alterarCampo}
 
           onSave={salvar}
 
           onClose={fecharModal}
 
-
         >
-
 
           <StudentSearch
 
@@ -614,7 +659,6 @@ function MedicalCertificates() {
             }
 
           />
-
 
         </ProfileModal>
 
