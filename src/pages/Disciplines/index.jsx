@@ -188,9 +188,8 @@ function Disciplines() {
       label: "Turmas",
       render: (disciplina) =>
         disciplina.turma_disciplina?.length
-          ? disciplina.turma_disciplina.map(
-            t => t.turmas?.nome
-          )
+          ? disciplina.turma_disciplina
+            .map(t => t.turmas?.nome.toUpperCase())
             .filter(Boolean)
             .join(", ")
           : "Sem turma"

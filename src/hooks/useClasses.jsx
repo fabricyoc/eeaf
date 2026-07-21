@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useState
 } from "react";
@@ -11,81 +12,54 @@ import {
   useRole
 } from "./useRole";
 
+export function useClasses() {
 
-export function useClasses(){
+  const { role } = useRole();
 
+  const [classes, setClasses] = useState([]);
 
-  const {
-    role
-  } = useRole();
+  const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState(null);
 
+  const carregarClasses = useCallback(async () => {
 
-  const [
-    classes,
-    setClasses
-  ] = useState([]);
+    if (!role) {
+      setClasses([]);
+      setLoading(false);
+      return;
+    }
 
-
-
-  const [
-    loading,
-    setLoading
-  ] = useState(true);
-
-
-
-  const [
-    error,
-    setError
-  ] = useState(null);
-
-
-
-  async function carregarClasses(){
-
-
-    try{
+    try {
 
       setLoading(true);
+      setError(null);
 
+      const data = await getClasses(role);
 
-      const resultado =
-        await getClasses(role);
+      setClasses(data ?? []);
 
+    } catch (err) {
 
-      setClasses(resultado);
-
-
-    }catch(err){
-
-      console.error(err);
+      console.error("Erro ao carregar turmas:", err);
 
       setError(err);
 
-    }finally{
+      setClasses([]);
+
+    } finally {
 
       setLoading(false);
 
     }
 
-  }
+  }, [role]);
 
+  useEffect(() => {
 
+    carregarClasses();
 
-  useEffect(()=>{
-
-
-    if(role){
-
-      carregarClasses();
-
-    }
-
-
-  },[role]);
-
-
+  }, [carregarClasses]);
 
   return {
 
@@ -98,6 +72,5 @@ export function useClasses(){
     carregarClasses
 
   };
-
 
 }

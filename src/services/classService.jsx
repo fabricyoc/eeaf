@@ -1,14 +1,15 @@
 import { supabase } from "../utils/supabase";
 import { getCurrentUser } from "./authService";
 
-
 /**
- * Busca turmas conforme permissão
+ * Busca turmas conforme o perfil do usuário
  */
 export async function getClasses(role) {
 
+  // ==========================
+  // ADMIN / COORDENADOR
+  // ==========================
 
-  // COORDENADOR E ADMIN VEEM TODAS AS TURMAS
   if (
     role === "admin" ||
     role === "coordinator"
@@ -25,29 +26,22 @@ export async function getClasses(role) {
         ano,
         turno
       `)
-      .order(
-        "nome"
-      );
+      .order("nome");
 
-
-    if(error)
+    if (error) {
       throw error;
+    }
 
-
-    return data || [];
-
+    return data ?? [];
   }
 
+  // ==========================
+  // PROFESSOR
+  // ==========================
 
+  if (role === "teacher") {
 
-  // PROFESSOR BUSCA APENAS SUAS TURMAS
-  if(role === "teacher") {
-
-
-    const user =
-      await getCurrentUser();
-
-
+    const user = await getCurrentUser();
 
     const {
       data,
@@ -56,51 +50,78 @@ export async function getClasses(role) {
       .from("professor_turma_disciplina")
       .select(`
         turma_id,
+
         turmas (
           id,
           nome,
           ano,
           turno
+        ),
+
+        disciplinas (
+          id,
+          nome,
+          codigo
         )
       `)
-      .eq(
-        "professor_id",
-        user.id
-      );
+      .eq("professor_id", user.id);
 
-
-
-    if(error)
+    if (error) {
       throw error;
+    }
 
+    const turmas = new Map();
 
+    data.forEach(item => {
 
-    /*
-      Remove duplicadas
+      const turma = item.turmas;
+      const disciplina = item.disciplinas;
 
-      Um professor pode ter:
-      Turma A + Matemática
-      Turma A + Português
+      if (!turma) {
+        return;
+      }
 
-      Queremos apenas uma Turma A
-    */
+      if (!turmas.has(turma.id)) {
 
-    const turmasUnicas =
-      data
-      .map(item => item.turmas)
-      .filter(Boolean)
-      .filter(
-        (turma,index,self)=>
-          index === self.findIndex(
-            t=>t.id===turma.id
-          )
-      );
+        turmas.set(turma.id, {
 
+          ...turma,
 
-    return turmasUnicas;
+          disciplinas: [],
+
+          totalDisciplinas: 0
+
+        });
+
+      }
+
+      const turmaAtual = turmas.get(turma.id);
+
+      if (disciplina) {
+
+        turmaAtual.disciplinas.push({
+
+          id: disciplina.id,
+
+          nome: disciplina.nome,
+
+          codigo: disciplina.codigo
+
+        });
+
+      }
+
+    });
+
+    return Array.from(turmas.values()).map(turma => ({
+
+      ...turma,
+
+      totalDisciplinas: turma.disciplinas.length
+
+    }));
 
   }
-
 
   return [];
 

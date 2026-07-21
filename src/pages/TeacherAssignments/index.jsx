@@ -176,7 +176,7 @@ function TeacherAssignments() {
     {
       key: "turma",
       label: "Turma",
-      render: (row) => row.turmas?.nome || "-"
+      render: (row) => row.turmas?.nome.toUpperCase() || "-"
     },
 
     {
@@ -258,7 +258,7 @@ function TeacherAssignments() {
                 ...turmas.map(
                   t => ({
                     value: t.id,
-                    label: t.nome
+                    label: t.nome.toUpperCase()
                   })
                 )
               ]
