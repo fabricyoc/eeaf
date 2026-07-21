@@ -24,6 +24,7 @@ import RedirectByRole from "./routes/RedirectByRole";
 import ManagerUsers from "./pages/ManagerUsers";
 import Disciplines from "./pages/Disciplines";
 import TeacherAssignments from "./pages/TeacherAssignments";
+import MedicalCertificates from "./pages/MedicalCertificates";
 
 function AppRoutes() {
   return (
@@ -148,6 +149,23 @@ function AppRoutes() {
               <ProtectedRoute>
                 <RoleRoute roles={["teacher"]}>
                   <Classes />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/medical/certificates"
+            element={
+              <ProtectedRoute>
+                <RoleRoute
+                  roles={[
+                    "secretary",
+                    "coordinator",
+                    "admin"
+                  ]}
+                >
+                  <MedicalCertificates />
                 </RoleRoute>
               </ProtectedRoute>
             }

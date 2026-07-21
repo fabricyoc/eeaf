@@ -83,6 +83,12 @@ function Dashboard() {
             />
           )
         }
+        <CardDashboard
+              to="/medical/certificates"
+              icon={FaChalkboardTeacher}
+              title="Atestados Médicos"
+              subtitle=""
+            />
         
         {/* GERENCIAR USUÁRIOS */}
         {
