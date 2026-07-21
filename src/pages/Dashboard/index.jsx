@@ -67,7 +67,19 @@ function Dashboard() {
               to="/disciplines"
               icon={FaChalkboardTeacher}
               title="Componentes Curriculares"
-              subtitle="Gerenciar os componentes curriculares."
+              subtitle="Cadastre componentes curriculares, defina seu código (sigla) e vincule-os a uma ou mais turmas."
+            />
+          )
+        }
+
+        {/* ALOCAÇÃO DOCENTE */}
+        {
+          canAccessCoordinator && (
+            <CardDashboard
+              to="/teacher/assignment"
+              icon={FaChalkboardTeacher}
+              title="Alocação Docente"
+              subtitle="Atribua disciplinas e turmas aos docentes."
             />
           )
         }

@@ -23,6 +23,7 @@ import PendingApproval from "./pages/PendingApproval";
 import RedirectByRole from "./routes/RedirectByRole";
 import ManagerUsers from "./pages/ManagerUsers";
 import Disciplines from "./pages/Disciplines";
+import TeacherAssignments from "./pages/TeacherAssignments";
 
 function AppRoutes() {
   return (
@@ -110,6 +111,21 @@ function AppRoutes() {
                   ]}
                 >
                   <Disciplines />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="teacher/assignment"
+            element={
+              <ProtectedRoute>
+                <RoleRoute
+                  roles={[
+                    "coordinator"
+                  ]}
+                >
+                  <TeacherAssignments />
                 </RoleRoute>
               </ProtectedRoute>
             }

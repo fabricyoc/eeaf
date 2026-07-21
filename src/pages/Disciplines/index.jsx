@@ -1,120 +1,159 @@
+import {
+  useState
+} from "react";
 import styles from "./Disciplines.module.css";
-
-import { useState } from "react";
-
+import {
+  FaBook,
+  FaPlus,
+  FaUsers
+} from "react-icons/fa";
+import {
+  toast
+} from "react-toastify";
 import Loading from "../../components/Loading";
 import HeaderDashboard from "../../components/HeaderDashboard";
 import ProfileModal from "../../components/ui/ProfileModal";
-import { FaBook, FaPlus } from "react-icons/fa";
-import { toast } from "react-toastify";
-import { useDisciplines } from "../../hooks/useDisciplines";
-
+import DataTable from "../../components/ui/DataTable";
+import {
+  useDisciplines
+} from "../../hooks/useDisciplines";
 import {
   createDisciplina,
   updateDisciplina,
-  deleteDisciplina
+  deleteDisciplina,
+  salvarTurmasDisciplina
 } from "../../services/disciplineService";
-
+import ClassroomCheckboxSelector from "../../components/ClassroomCheckboxSelector";
 const initialForm = {
   nome: "",
-  codigo: "",
+  codigo: ""
 };
-
 function Disciplines() {
   const {
     disciplines,
     loading,
     carregarDisciplinas
   } = useDisciplines();
-
-  const [modalAberto, setModalAberto] = useState(false);
-  const [disciplinaSelecionada, setDisciplinaSelecionada] = useState(null);
-  const [disciplinaExcluir, setDisciplinaExcluir] = useState(null);
-  const [form, setForm] = useState(initialForm);
-
+  const [
+    modal,
+    setModal
+  ] = useState(false);
+  const [
+    turmaModal,
+    setTurmaModal
+  ] = useState(false);
+  const [
+    disciplinaSelecionada,
+    setDisciplinaSelecionada
+  ] = useState(null);
+  const [
+    form,
+    setForm
+  ] = useState(initialForm);
+  const [
+    turmasSelecionadas,
+    setTurmasSelecionadas
+  ] = useState([]);
   function abrirNova() {
     setDisciplinaSelecionada(null);
-
-    setForm({
-      ...initialForm
-    });
-    setModalAberto(true);
+    setForm(
+      initialForm
+    );
+    setModal(true);
   }
-
-  function abrirEditar(disciplina) {
-    setDisciplinaSelecionada(disciplina);
-
+  function editar(disciplina) {
+    setDisciplinaSelecionada(
+      disciplina
+    );
     setForm({
-      nome: disciplina.nome ?? "",
-      codigo: disciplina.codigo ?? "",
+      nome: disciplina.nome,
+      codigo: disciplina.codigo || ""
     });
-
-    setModalAberto(true);
+    setModal(true);
   }
-
-  function handleChange(name, value) {
+  function abrirTurmas(disciplina) {
+    setDisciplinaSelecionada(
+      disciplina
+    );
+    const ids =
+      disciplina.turma_disciplina?.map(
+        item => item.turma_id
+      ) || [];
+    setTurmasSelecionadas(ids);
+    setTurmaModal(true);
+  }
+  function alterarCampo(
+    name,
+    value
+  ) {
     setForm(prev => ({
       ...prev,
       [name]: value
     }));
   }
-
   async function salvar() {
-
     try {
       if (disciplinaSelecionada) {
         await updateDisciplina(
           disciplinaSelecionada.id,
           form
         );
-        toast.success("Disciplina atualizada!");
+        toast.success(
+          "Disciplina atualizada!"
+        );
       }
       else {
-        await createDisciplina(form);
-        toast.success("Disciplina criada!");
+        await createDisciplina(
+          form
+        );
+        toast.success(
+          "Disciplina criada!"
+        );
       }
-
-      await carregarDisciplinas();
-      fecharModal();
-    }
-
-    catch (error) {
-      console.error(
-        "Erro ao salvar disciplina:",
-        error
-      );
-      toast.error("Erro ao salvar disciplina.");
-    }
-  }
-
-  function abrirExcluir(disciplina) {
-    setDisciplinaExcluir(disciplina);
-  }
-
-  async function confirmarExclusao() {
-
-    try {
-      await deleteDisciplina(disciplinaExcluir.id);
-      toast.success("Disciplina excluída!");
-
-      await carregarDisciplinas();
-      setDisciplinaExcluir(null);
-    }
-    catch (error) {
-
+      carregarDisciplinas();
+      setModal(false);
+    } catch (error) {
       console.error(error);
-      toast.error("Erro ao excluir disciplina.");
+      toast.error(
+        "Erro ao salvar disciplina"
+      );
     }
   }
-
-  function fecharModal() {
-    setModalAberto(false);
-    setDisciplinaSelecionada(null);
-    setForm({
-      ...initialForm
-    });
+  async function salvarTurmas() {
+    try {
+      await salvarTurmasDisciplina(
+        disciplinaSelecionada.id,
+        turmasSelecionadas
+      );
+      toast.success(
+        "Turmas atualizadas!"
+      );
+      carregarDisciplinas();
+      setTurmaModal(false);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "Erro ao vincular turmas"
+      );
+    }
   }
-
+  async function excluir(
+    disciplina
+  ) {
+    try {
+      await deleteDisciplina(
+        disciplina.id
+      );
+      toast.success(
+        "Disciplina removida!"
+      );
+      carregarDisciplinas();
+    } catch (error) {
+      toast.error(
+        "Erro ao excluir"
+      );
+    }
+  }
   if (loading) {
     return (
       <Loading
@@ -122,25 +161,33 @@ function Disciplines() {
       />
     );
   }
-
-  const campos = [
+  const columns = [
     {
-      name: "nome",
-      label: "Nome da disciplina"
+      key: "nome",
+      label: "Disciplina"
     },
-
     {
-      name: "codigo",
+      key: "codigo",
       label: "Código"
+    },
+    {
+      key: "turmas",
+      label: "Turmas",
+      render: (disciplina) => (
+        disciplina.turma_disciplina?.length
+          ?
+          disciplina.turma_disciplina
+            .map(
+              t => t.turmas.nome
+            )
+            .join(", ")
+          :
+          "Sem turma"
+      )
     }
   ];
-
   return (
-
-    <section
-      className={styles.container}
-    >
-
+    <section className={styles.container}>
       <HeaderDashboard
         title="Componentes Curriculares"
       >
@@ -149,108 +196,92 @@ function Disciplines() {
           onClick={abrirNova}
         >
           <FaPlus />
-          Novo Componente Curricular
+          Nova Disciplina
         </button>
       </HeaderDashboard>
-
-      <div
-        className={styles.grid}
-      >
-
-        {
-          disciplines.map(
-            disciplina => (
-              <article
-                key={disciplina.id}
-                className={styles.card}
+      <DataTable
+        columns={columns}
+        data={disciplines}
+        actions={
+          (disciplina) => (
+            <>
+              <button
+                className={styles.edit}
+                onClick={() => editar(disciplina)}
               >
-
-                <div
-                  className={styles.icon}
-                >
-                  <FaBook />
-                </div>
-
-                <div>
-                  <h2>
-                    {disciplina.nome}
-                  </h2>
-                  <p>
-                    Código:
-                    {" "}
-                    {disciplina.codigo || "Sem código"}
-                  </p>
-                </div>
-
-                <div
-                  className={styles.actions}
-                >
-                  <button
-                    className={styles.edit}
-                    onClick={() =>
-                      abrirEditar(disciplina)
-                    }
-                  >
-                    Editar
-                  </button>
-
-                  <button
-                    className={styles.delete}
-                    onClick={() =>
-                      abrirExcluir(disciplina)
-                    }
-                  >
-                    Excluir
-                  </button>
-                </div>
-              </article>
-            )
+                Editar
+              </button>
+              <button
+                className={styles.edit}
+                onClick={() => abrirTurmas(disciplina)}
+              >
+                <FaUsers />
+                Turmas
+              </button>
+              <button
+                className={styles.delete}
+                onClick={() => excluir(disciplina)}
+              >
+                Excluir
+              </button>
+            </>
           )
         }
-      </div>
-
+      />
       {
-        modalAberto && (
-          <ProfileModal
-            title={disciplinaSelecionada
-              ? "Editar Disciplina"
-              : "Nova Disciplina"
+        modal &&
+        <ProfileModal
+          title={
+            disciplinaSelecionada
+              ?
+              "Editar disciplina"
+              :
+              "Nova disciplina"
+          }
+          icon={<FaBook />}
+          form={form}
+          fields={[
+            {
+              name: "nome",
+              label: "Nome"
+            },
+            {
+              name: "codigo",
+              label: "Código"
             }
-            subtitle="Cadastro de componente curricular"
-            icon={<FaBook />}
-            form={form}
-            fields={campos}
-            readOnly={false}
-            onChange={handleChange}
-            onSave={salvar}
-            onClose={fecharModal}
-          />
-        )
+          ]}
+          onChange={alterarCampo}
+          onSave={salvar}
+          onClose={() => setModal(false)}
+        />
       }
-
       {
-        disciplinaExcluir && (
-          <ProfileModal
-            title="Excluir disciplina"
-            subtitle={
-              `Deseja realmente excluir "${disciplinaExcluir.nome}"?`
-            }
-            icon={<FaBook />}
-            form={{}}
-            fields={[]}
-            readOnly={true}
-            showSaveButton={true}
-            saveText="Excluir"
-            closeText="Cancelar"
-            onSave={
-              confirmarExclusao
-            }
-            onClose={() =>
-              setDisciplinaExcluir(null)
-            }
+        turmaModal &&
+        <ProfileModal
+          title="Associar turmas"
+          subtitle={
+            disciplinaSelecionada.nome
+          }
+          icon={<FaUsers />}
+          form={{}}
+          fields={[]}
+          onSave={salvarTurmas}
+          saveText="Salvar turmas"
+          onClose={() => setTurmaModal(false)}
+        >
+          <ClassroomCheckboxSelector
 
-          />
-        )
+turmasSelecionadas={
+  turmasSelecionadas
+}
+
+
+setTurmasSelecionadas={
+  setTurmasSelecionadas
+}
+
+/>
+        </ProfileModal>
       }
     </section>
   );

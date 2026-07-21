@@ -1,85 +1,50 @@
 import { supabase } from "../utils/supabase";
 
-
-
 /**
- * Busca disciplinas
- * 
- * Sem turmaId:
- * retorna todas as disciplinas cadastradas
- * 
- * Com turmaId:
- * retorna apenas disciplinas vinculadas à turma
+ * Busca todas as disciplinas
+ * com suas turmas associadas
  */
-export async function getDisciplines(
-  turmaId
-){
-
-  let query;
-
-
-  if(turmaId){
-
-
-    query = supabase
-
-      .from("turma_disciplina")
-
-      .select(`
-
-        id,
-
-        disciplinas (
-
-          id,
-          nome,
-          codigo,
-          created_at
-
-        )
-
-      `)
-
-      .eq(
-        "turma_id",
-        turmaId
-      );
-
-
-  } else {
-
-
-    query = supabase
-
-      .from("disciplinas")
-
-      .select(`
-
-        id,
-        nome,
-        codigo,
-        created_at
-
-      `)
-
-      .order(
-        "nome",
-        {
-          ascending:true
-        }
-      );
-
-
-  }
-
-
+export async function getDisciplines(){
 
   const {
     data,
     error
-  } = await query;
+  } = await supabase
 
+    .from("disciplinas")
 
+    .select(`
+
+      id,
+
+      nome,
+
+      codigo,
+
+      created_at,
+
+      turma_disciplina(
+
+        turma_id,
+
+        turmas(
+
+          id,
+
+          nome
+
+        )
+
+      )
+
+    `)
+
+    .order(
+      "nome",
+      {
+        ascending:true
+      }
+    );
 
   if(error){
 
@@ -92,32 +57,12 @@ export async function getDisciplines(
 
   }
 
-
-
-  if(turmaId){
-
-    return (
-      data || []
-    )
-    .map(
-      item => item.disciplinas
-    )
-    .filter(Boolean);
-
-  }
-
-
-
   return data || [];
 
 }
 
-
-
-
-
 /**
- * Cria uma nova disciplina
+ * Cria disciplina
  */
 export async function createDisciplina(
   dados
@@ -137,21 +82,20 @@ export async function createDisciplina(
           .trim()
           .toUpperCase(),
 
-
       codigo:
         dados.codigo
-          ? dados.codigo
-              .trim()
-              .toUpperCase()
-          : null
+          ?
+          dados.codigo
+            .trim()
+            .toUpperCase()
+          :
+          null
 
     })
 
     .select()
 
     .single();
-
-
 
   if(error){
 
@@ -164,24 +108,17 @@ export async function createDisciplina(
 
   }
 
-
-
   return data;
 
 }
 
-
-
-
-
 /**
- * Atualiza uma disciplina
+ * Atualiza disciplina
  */
 export async function updateDisciplina(
   id,
   dados
 ){
-
 
   const {
     data,
@@ -197,13 +134,14 @@ export async function updateDisciplina(
           .trim()
           .toUpperCase(),
 
-
       codigo:
         dados.codigo
-          ? dados.codigo
-              .trim()
-              .toUpperCase()
-          : null
+          ?
+          dados.codigo
+            .trim()
+            .toUpperCase()
+          :
+          null
 
     })
 
@@ -216,8 +154,6 @@ export async function updateDisciplina(
 
     .single();
 
-
-
   if(error){
 
     console.error(
@@ -229,23 +165,41 @@ export async function updateDisciplina(
 
   }
 
-
-
   return data;
 
 }
 
-
-
-
-
 /**
- * Exclui uma disciplina
+ * Exclui disciplina
+ * remove vínculos antes
  */
 export async function deleteDisciplina(
   id
 ){
 
+  const {
+    error: erroVinculo
+  } = await supabase
+
+    .from("turma_disciplina")
+
+    .delete()
+
+    .eq(
+      "disciplina_id",
+      id
+    );
+
+  if(erroVinculo){
+
+    console.error(
+      "Erro ao remover vínculos:",
+      erroVinculo
+    );
+
+    throw erroVinculo;
+
+  }
 
   const {
     error
@@ -260,8 +214,6 @@ export async function deleteDisciplina(
       id
     );
 
-
-
   if(error){
 
     console.error(
@@ -273,22 +225,12 @@ export async function deleteDisciplina(
 
   }
 
-
 }
 
-
-
-
-
-
 /**
- * Vincula uma disciplina a uma turma
- * 
- * Relação N:N
- * turma_disciplina
+ * Busca turmas associadas a uma disciplina
  */
-export async function vincularDisciplinaTurma(
-  turmaId,
+export async function getTurmasDaDisciplina(
   disciplinaId
 ){
 
@@ -299,26 +241,29 @@ export async function vincularDisciplinaTurma(
 
     .from("turma_disciplina")
 
-    .insert({
+    .select(`
 
-      turma_id:
-        turmaId,
+      turma_id,
 
-      disciplina_id:
-        disciplinaId
+      turmas(
 
-    })
+        id,
 
-    .select()
+        nome
 
-    .single();
+      )
 
+    `)
 
+    .eq(
+      "disciplina_id",
+      disciplinaId
+    );
 
   if(error){
 
     console.error(
-      "Erro ao vincular disciplina:",
+      "Erro ao buscar turmas:",
       error
     );
 
@@ -326,28 +271,34 @@ export async function vincularDisciplinaTurma(
 
   }
 
+  return (
 
+    data || []
 
-  return data;
+  )
+
+  .map(
+    item =>
+      item.turmas
+  )
+
+  .filter(Boolean);
 
 }
 
-
-
-
-
-
 /**
- * Remove vínculo disciplina/turma
+ * Salva as turmas associadas
+ *
+ * Remove associações antigas
+ * e cria as novas
  */
-export async function removerDisciplinaTurma(
-  turmaId,
-  disciplinaId
+export async function salvarTurmasDisciplina(
+  disciplinaId,
+  turmas
 ){
 
-
   const {
-    error
+    error: erroDelete
   } = await supabase
 
     .from("turma_disciplina")
@@ -355,21 +306,56 @@ export async function removerDisciplinaTurma(
     .delete()
 
     .eq(
-      "turma_id",
-      turmaId
-    )
-
-    .eq(
       "disciplina_id",
       disciplinaId
     );
 
+  if(erroDelete){
 
+    console.error(
+      "Erro ao limpar turmas:",
+      erroDelete
+    );
+
+    throw erroDelete;
+
+  }
+
+  if(
+    !turmas ||
+    turmas.length === 0
+  ){
+
+    return;
+
+  }
+
+  const registros = turmas.map(
+    turmaId => ({
+
+      disciplina_id:
+        disciplinaId,
+
+      turma_id:
+        turmaId
+
+    })
+  );
+
+  const {
+    error
+  } = await supabase
+
+    .from("turma_disciplina")
+
+    .insert(
+      registros
+    );
 
   if(error){
 
     console.error(
-      "Erro ao remover vínculo:",
+      "Erro ao salvar turmas:",
       error
     );
 

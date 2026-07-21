@@ -1,35 +1,46 @@
 import { useState, useRef, useEffect } from "react";
-import { FaArrowLeft } from "react-icons/fa";
 
 import styles from "./ClassroomSelector.module.css";
 import { useTurmas } from "../../hooks/useTurmas";
 
 function ClassroomSelector({
-  turmaSelecionada,
-  setTurmaSelecionada
-}) {
-  const { turmas, loading } = useTurmas();
 
+  multiple = false,
+
+  turmaSelecionada,
+  setTurmaSelecionada,
+
+  turmasSelecionadas = [],
+  setTurmasSelecionadas,
+
+}) {
+
+  const {
+    turmas,
+    loading
+  } = useTurmas();
 
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef(null);
 
   const selected = turmas.find(
-    (t) => t.id === turmaSelecionada
+    turma => turma.id === turmaSelecionada
   );
 
-  /**
-   * Fecha dropdown ao clicar fora
-   */
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (
+
+    function handleClickOutside(event){
+
+      if(
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target)
-      ) {
+      ){
+
         setOpen(false);
+
       }
+
     }
 
     document.addEventListener(
@@ -38,40 +49,99 @@ function ClassroomSelector({
     );
 
     return () =>
+
       document.removeEventListener(
         "mousedown",
         handleClickOutside
       );
+
   }, []);
 
-  return (
+  function toggleTurma(id){
+
+    if(!setTurmasSelecionadas){
+      return;
+    }
+
+    const existe =
+      turmasSelecionadas.includes(id);
+
+    if(existe){
+
+      setTurmasSelecionadas(
+
+        turmasSelecionadas.filter(
+          turmaId => turmaId !== id
+        )
+
+      );
+
+    }else{
+
+      setTurmasSelecionadas([
+        ...turmasSelecionadas,
+        id
+      ]);
+
+    }
+
+  }
+
+  function textoSelecionado(){
+
+    if(loading){
+
+      return "Carregando turmas...";
+
+    }
+
+    if(multiple){
+
+      if(turmasSelecionadas.length === 0){
+
+        return "Selecione uma ou mais turmas";
+
+      }
+
+      if(turmasSelecionadas.length === 1){
+
+        const turma = turmas.find(
+          t => t.id === turmasSelecionadas[0]
+        );
+
+        return turma?.nome ?? "";
+
+      }
+
+      return `${turmasSelecionadas.length} turmas selecionadas`;
+
+    }
+
+    return selected
+      ? selected.nome.toUpperCase()
+      : "Escolha uma turma";
+
+  }
+
+  return(
+
     <div className={styles.content}>
 
       <label className={styles.label}>
-        Selecione uma turma
+        Selecione a turma
       </label>
 
-
-      {/* DROPDOWN CUSTOM */}
       <div
         className={styles.dropdown}
         ref={dropdownRef}
       >
 
-        {/* CONTROLE */}
         <div
           className={styles.control}
           onClick={() => setOpen(!open)}
         >
 
-          {
-            loading
-              ? "Carregando turmas..."
-              : selected
-                ? selected.nome.toUpperCase()
-                : "Escolha uma turma"
-          }
-
+          {textoSelecionado()}
 
           <span className={styles.arrow}>
             ▾
@@ -79,48 +149,92 @@ function ClassroomSelector({
 
         </div>
 
-
-        {/* MENU */}
         {
+
           open && (
 
             <div className={styles.menu}>
 
               {
-                turmas.map((turma) => (
 
-                  <div
-                    key={turma.id}
-                    className={`
-                        ${styles.item}
-                        ${turmaSelecionada === turma.id
-                        ? styles.active
-                        : ""
-                      }
-                      `}
-                    onClick={() => {
+                turmas.map(turma => (
 
-                      setTurmaSelecionada(
-                        turma.id
-                      );
+                  multiple ? (
 
-                      setOpen(false);
+                    <label
+                      key={turma.id}
+                      className={styles.checkboxItem}
+                    >
 
-                    }}
-                  >
-                    {
-                      turma.nome.toUpperCase()
-                    }
-                  </div>
+                      <input
+
+                        type="checkbox"
+
+                        checked={
+                          turmasSelecionadas.includes(
+                            turma.id
+                          )
+                        }
+
+                        onChange={() =>
+                          toggleTurma(
+                            turma.id
+                          )
+                        }
+
+                      />
+
+                      {turma.nome.toUpperCase()}
+
+                    </label>
+
+                  ) : (
+
+                    <div
+
+                      key={turma.id}
+
+                      className={`${styles.item}
+                        ${
+                          turmaSelecionada === turma.id
+                            ? styles.active
+                            : ""
+                        }`}
+
+                      onClick={() => {
+
+                        setTurmaSelecionada(
+                          turma.id
+                        );
+
+                        setOpen(false);
+
+                      }}
+
+                    >
+
+                      {turma.nome.toUpperCase()}
+
+                    </div>
+
+                  )
+
                 ))
+
               }
+
             </div>
+
           )
+
         }
+
       </div>
+
     </div>
 
   );
+
 }
 
 export default ClassroomSelector;

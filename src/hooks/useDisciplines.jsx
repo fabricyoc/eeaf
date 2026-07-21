@@ -4,9 +4,18 @@ import {
   useState
 } from "react";
 
-
 import {
-  getDisciplines
+
+  getDisciplines,
+
+  createDisciplina,
+
+  updateDisciplina,
+
+  deleteDisciplina,
+
+  getTurmasDaDisciplina
+
 } from "../services/disciplineService";
 
 
@@ -14,7 +23,6 @@ import {
 export function useDisciplines(
   turmaId = null
 ){
-
 
   const [
     disciplines,
@@ -38,67 +46,108 @@ export function useDisciplines(
 
 
 
-
   const carregarDisciplinas = useCallback(
+
     async()=>{
 
-
-      try {
-
+      try{
 
         setLoading(true);
 
         setError(null);
-
-
 
         const data =
           await getDisciplines(
             turmaId
           );
 
-
-
         setDisciplines(
           data
         );
 
+      }
 
-
-      } catch(error){
-
+      catch(error){
 
         console.error(
           "Erro ao carregar disciplinas:",
           error
         );
 
-
-        setError(
-          error
-        );
-
+        setError(error);
 
         setDisciplines([]);
 
+      }
 
-
-      } finally {
-
+      finally{
 
         setLoading(false);
 
-
       }
 
-
     },
-    [
-      turmaId
-    ]
+
+    [turmaId]
+
   );
 
 
+
+
+
+  async function salvarDisciplina(
+    disciplina
+  ){
+
+    if(disciplina.id){
+
+      await updateDisciplina(
+        disciplina.id,
+        disciplina
+      );
+
+    }else{
+
+      await createDisciplina(
+        disciplina
+      );
+
+    }
+
+    await carregarDisciplinas();
+
+  }
+
+
+
+
+
+  async function excluirDisciplina(
+    id
+  ){
+
+    await deleteDisciplina(
+      id
+    );
+
+    await carregarDisciplinas();
+
+  }
+
+
+
+
+
+  async function carregarTurmasDaDisciplina(
+    disciplinaId
+  ){
+
+    return await getTurmasDaDisciplina(
+      disciplinaId
+    );
+
+  }
 
 
 
@@ -106,10 +155,7 @@ export function useDisciplines(
 
   useEffect(()=>{
 
-
     carregarDisciplinas();
-
-
 
   },[
     carregarDisciplinas
@@ -119,25 +165,22 @@ export function useDisciplines(
 
 
 
-
-
-  return {
-
+  return{
 
     disciplines,
 
-
     loading,
-
 
     error,
 
+    carregarDisciplinas,
 
-    carregarDisciplinas
+    salvarDisciplina,
 
+    excluirDisciplina,
 
+    carregarTurmasDaDisciplina
 
   };
-
 
 }

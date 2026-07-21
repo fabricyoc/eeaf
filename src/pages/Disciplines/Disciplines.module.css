@@ -1,254 +1,59 @@
 .container {
-
   width: 100%;
-
+  min-height: 100%;
   padding: 24px;
 
+  animation: fadeIn .35s ease;
 }
 
 
-
-/* =========================
-   GRID
-========================= */
-
-.grid {
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit, minmax(280px, 1fr));
-
-  gap: 24px;
-
-  margin-top: 30px;
-
-}
-
-
-
-/* =========================
-   CARD
-========================= */
-
-.card {
-
-  background: #ffffff;
-
-  border-radius: 20px;
-
-  padding: 24px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 20px;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.08);
-
-  border: 1px solid #eef2ff;
-
-  transition: .25s ease;
-
-}
-
-
-
-.card:hover {
-
-  transform: translateY(-5px);
-
-  box-shadow:
-    0 18px 40px rgba(0,0,0,.12);
-
-}
-
-
-
-/* =========================
-   ÍCONE
-========================= */
-
-.icon {
-
-  width: 60px;
-
-  height: 60px;
-
-  border-radius: 18px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--blue-500),
-      var(--blue-600)
-    );
-
-  color: white;
-
-  font-size: 28px;
-
-}
-
-
-
-/* =========================
-   TEXTO
-========================= */
-
-.card h2 {
-
-  margin: 0;
-
-  color: var(--blue-700);
-
-  font-size: 1.25rem;
-
-  font-weight: 700;
-
-}
-
-
-
-.card p {
-
-  margin-top: 8px;
-
-  color: var(--gray-500);
-
-  font-size: .95rem;
-
-}
-
-
-
-/* =========================
-   AÇÕES
-========================= */
-
-.actions {
-
-  display: flex;
-
-  gap: 12px;
-
-  margin-top: auto;
-
-}
-
-
-
-.actions button {
-
-  flex: 1;
-
-  border: none;
-
-  padding: 12px;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  font-weight: 600;
-
-  font-size: .9rem;
-
-  transition: .25s;
-
-}
-
-
-
-/* EDITAR */
-
-.edit {
-
-  background: #dbeafe;
-
-  color: #2563eb;
-
-}
-
-
-
-.edit:hover {
-
-  background: #bfdbfe;
-
-}
-
-
-
-/* EXCLUIR */
-
-.delete {
-
-  background: #fee2e2;
-
-  color: #dc2626;
-
-}
-
-
-
-.delete:hover {
-
-  background: #fecaca;
-
-}
-
-
-
-/* =========================
-   BOTÃO NOVO
-========================= */
+/* ==========================
+   BOTÃO NOVA DISCIPLINA
+========================== */
 
 
 .button {
 
-  display: flex;
+  display:flex;
 
-  align-items: center;
+  align-items:center;
 
-  gap: 10px;
-
-
-  border: none;
-
-  border-radius: 14px;
+  gap:10px;
 
 
-  padding: 14px 22px;
+  background:linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
 
 
-  cursor: pointer;
+  color:white;
 
 
-  color: white;
+  border:none;
 
 
-  font-weight: 600;
+  padding:12px 20px;
 
 
-  background:
-
-    linear-gradient(
-      135deg,
-      var(--blue-500),
-      var(--blue-600)
-    );
+  border-radius:12px;
 
 
-  transition: .25s;
+  font-size:14px;
+
+
+  font-weight:600;
+
+
+  cursor:pointer;
+
+
+  transition:.25s;
+
+
+  box-shadow:
+  0 8px 20px rgba(37,99,235,.25);
 
 }
 
@@ -256,43 +61,370 @@
 
 .button:hover {
 
-  transform: translateY(-2px);
+
+  transform:translateY(-2px);
 
 
   box-shadow:
+  0 12px 28px rgba(37,99,235,.35);
 
-    0 10px 25px rgba(37,99,235,.25);
 
 }
 
 
 
-/* =========================
-   RESPONSIVO
-========================= */
+.button svg {
+
+  font-size:16px;
+
+}
+
+
+
+
+
+/* ==========================
+   BOTÕES DE AÇÃO DA TABELA
+========================== */
+
+
+.edit {
+
+
+  display:inline-flex;
+
+
+  align-items:center;
+
+
+  justify-content:center;
+
+
+  gap:8px;
+
+
+  padding:8px 14px;
+
+
+  border-radius:10px;
+
+
+  border:1px solid #bfdbfe;
+
+
+  background:white;
+
+
+  color:#2563eb;
+
+
+  font-size:13px;
+
+
+  font-weight:600;
+
+
+  cursor:pointer;
+
+
+  transition:.2s;
+
+
+}
+
+
+
+.edit:hover {
+
+
+  background:#2563eb;
+
+
+  color:white;
+
+
+  border-color:#2563eb;
+
+
+  transform:translateY(-1px);
+
+
+}
+
+
+
+
+.delete {
+
+
+  display:inline-flex;
+
+
+  align-items:center;
+
+
+  justify-content:center;
+
+
+  padding:8px 14px;
+
+
+  border-radius:10px;
+
+
+  border:1px solid #fecaca;
+
+
+  background:white;
+
+
+  color:#dc2626;
+
+
+  font-size:13px;
+
+
+  font-weight:600;
+
+
+  cursor:pointer;
+
+
+  transition:.2s;
+
+
+}
+
+
+
+
+.delete:hover {
+
+
+  background:#dc2626;
+
+
+  color:white;
+
+
+  border-color:#dc2626;
+
+
+  transform:translateY(-1px);
+
+
+}
+
+
+
+
+
+/* ==========================
+   TABELA
+========================== */
+
+
+.container table {
+
+
+  width:100%;
+
+
+}
+
+
+
+.container td {
+
+
+  vertical-align:middle;
+
+
+}
+
+
+
+
+
+/* ==========================
+   MODAL / CAMPOS
+========================== */
+
+
+.container input {
+
+
+  width:100%;
+
+
+  height:44px;
+
+
+  padding:0 14px;
+
+
+  border-radius:12px;
+
+
+  border:1px solid #d1d5db;
+
+
+  font-size:14px;
+
+
+  outline:none;
+
+
+  transition:.2s;
+
+
+}
+
+
+
+.container input:focus {
+
+
+  border-color:#2563eb;
+
+
+  box-shadow:
+  0 0 0 3px rgba(37,99,235,.15);
+
+
+}
+
+
+
+.container input::placeholder {
+
+
+  color:#9ca3af;
+
+
+}
+
+
+
+
+
+/* ==========================
+   CHECKBOX TURMAS
+========================== */
+
+
+.container label {
+
+
+  cursor:pointer;
+
+
+}
+
+
+
+.container input[type="checkbox"] {
+
+
+  width:auto;
+
+
+  height:auto;
+
+
+  accent-color:#2563eb;
+
+
+}
+
+
+
+
+
+/* ==========================
+   ANIMAÇÃO
+========================== */
+
+
+@keyframes fadeIn {
+
+
+  from {
+
+
+    opacity:0;
+
+
+    transform:translateY(10px);
+
+
+  }
+
+
+
+  to {
+
+
+    opacity:1;
+
+
+    transform:translateY(0);
+
+
+  }
+
+
+}
+
+
+
+
+
+
+
+/* ==========================
+   RESPONSIVIDADE
+========================== */
+
 
 @media(max-width:768px){
 
 
-  .container {
-
-    padding: 16px;
-
-  }
+.container {
 
 
-  .grid {
-
-    grid-template-columns: 1fr;
-
-  }
+  padding:16px;
 
 
-  .actions {
+}
 
-    flex-direction: column;
 
-  }
+
+.button {
+
+
+  width:100%;
+
+
+  justify-content:center;
+
+
+}
+
+
+
+.edit,
+.delete {
+
+
+  width:100%;
+
+
+  margin-top:5px;
+
+
+}
+
 
 
 }
