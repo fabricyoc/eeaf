@@ -7,6 +7,7 @@ import styles from "./DisciplineTable.module.css";
 
 function DisciplineTable({
   disciplines,
+  buscaAtiva,
   onEdit,
   onManageClassrooms,
   onDelete

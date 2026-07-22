@@ -2,429 +2,78 @@
   width: 100%;
   min-height: 100%;
   padding: 24px;
-
   animation: fadeIn .35s ease;
 }
-
 
 /* ==========================
    BOTÃO NOVA DISCIPLINA
 ========================== */
-
-
 .button {
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
-
-
-  background:linear-gradient(
-    135deg,
-    #2563eb,
-    #1d4ed8
-  );
-
-
-  color:white;
-
-
-  border:none;
-
-
-  padding:12px 20px;
-
-
-  border-radius:12px;
-
-
-  font-size:14px;
-
-
-  font-weight:600;
-
-
-  cursor:pointer;
-
-
-  transition:.25s;
-
-
-  box-shadow:
-  0 8px 20px rgba(37,99,235,.25);
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg,
+      #2563eb,
+      #1d4ed8);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, .25);
 }
-
-
 
 .button:hover {
-
-
-  transform:translateY(-2px);
-
-
+  transform: translateY(-2px);
   box-shadow:
-  0 12px 28px rgba(37,99,235,.35);
-
-
+    0 12px 28px rgba(37, 99, 235, .35);
 }
-
-
 
 .button svg {
-
-  font-size:16px;
-
+  font-size: 15px;
 }
-
-
-
-
 
 /* ==========================
-   BOTÕES DE AÇÃO DA TABELA
+   ÁREA PRINCIPAL
 ========================== */
-
-
-.edit {
-
-
-  display:inline-flex;
-
-
-  align-items:center;
-
-
-  justify-content:center;
-
-
-  gap:8px;
-
-
-  padding:8px 14px;
-
-
-  border-radius:10px;
-
-
-  border:1px solid #bfdbfe;
-
-
-  background:white;
-
-
-  color:#2563eb;
-
-
-  font-size:13px;
-
-
-  font-weight:600;
-
-
-  cursor:pointer;
-
-
-  transition:.2s;
-
-
+.content {
+  margin-top: 24px;
 }
-
-
-
-.edit:hover {
-
-
-  background:#2563eb;
-
-
-  color:white;
-
-
-  border-color:#2563eb;
-
-
-  transform:translateY(-1px);
-
-
-}
-
-
-
-
-.delete {
-
-
-  display:inline-flex;
-
-
-  align-items:center;
-
-
-  justify-content:center;
-
-
-  padding:8px 14px;
-
-
-  border-radius:10px;
-
-
-  border:1px solid #fecaca;
-
-
-  background:white;
-
-
-  color:#dc2626;
-
-
-  font-size:13px;
-
-
-  font-weight:600;
-
-
-  cursor:pointer;
-
-
-  transition:.2s;
-
-
-}
-
-
-
-
-.delete:hover {
-
-
-  background:#dc2626;
-
-
-  color:white;
-
-
-  border-color:#dc2626;
-
-
-  transform:translateY(-1px);
-
-
-}
-
-
-
-
-
-/* ==========================
-   TABELA
-========================== */
-
-
-.container table {
-
-
-  width:100%;
-
-
-}
-
-
-
-.container td {
-
-
-  vertical-align:middle;
-
-
-}
-
-
-
-
-
-/* ==========================
-   MODAL / CAMPOS
-========================== */
-
-
-.container input {
-
-
-  width:100%;
-
-
-  height:44px;
-
-
-  padding:0 14px;
-
-
-  border-radius:12px;
-
-
-  border:1px solid #d1d5db;
-
-
-  font-size:14px;
-
-
-  outline:none;
-
-
-  transition:.2s;
-
-
-}
-
-
-
-.container input:focus {
-
-
-  border-color:#2563eb;
-
-
-  box-shadow:
-  0 0 0 3px rgba(37,99,235,.15);
-
-
-}
-
-
-
-.container input::placeholder {
-
-
-  color:#9ca3af;
-
-
-}
-
-
-
-
-
-/* ==========================
-   CHECKBOX TURMAS
-========================== */
-
-
-.container label {
-
-
-  cursor:pointer;
-
-
-}
-
-
-
-.container input[type="checkbox"] {
-
-
-  width:auto;
-
-
-  height:auto;
-
-
-  accent-color:#2563eb;
-
-
-}
-
-
-
-
 
 /* ==========================
    ANIMAÇÃO
 ========================== */
-
-
 @keyframes fadeIn {
-
-
   from {
-
-
-    opacity:0;
-
-
-    transform:translateY(10px);
-
-
+    opacity: 0;
+    transform:
+      translateY(8px);
   }
-
-
 
   to {
-
-
-    opacity:1;
-
-
-    transform:translateY(0);
-
-
+    opacity: 1;
+    transform:
+      translateY(0);
   }
-
-
 }
-
-
-
-
-
-
 
 /* ==========================
-   RESPONSIVIDADE
+   RESPONSIVO
 ========================== */
+@media(max-width:768px) {
+  .container {
+    padding: 16px;
+  }
 
-
-@media(max-width:768px){
-
-
-.container {
-
-
-  padding:16px;
-
-
-}
-
-
-
-.button {
-
-
-  width:100%;
-
-
-  justify-content:center;
-
-
-}
-
-
-
-.edit,
-.delete {
-
-
-  width:100%;
-
-
-  margin-top:5px;
-
-
-}
-
-
-
+  .button {
+    width: 100%;
+  }
 }

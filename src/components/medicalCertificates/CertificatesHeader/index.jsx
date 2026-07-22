@@ -16,12 +16,19 @@ const SEARCH_FIELDS = [
 
 
 function CertificatesHeader({
+
   atestados,
+
   onSearch,
+
   setBuscaAtiva,
+
   onNovo,
+
   canCreateCertificates,
+
 }) {
+
 
   return (
 
@@ -29,31 +36,48 @@ function CertificatesHeader({
       title="Atestados dos Alunos"
     >
 
-      <SearchBar
-        items={atestados}
-        onSearch={onSearch}
-        setBuscaAtiva={setBuscaAtiva}
-        fields={SEARCH_FIELDS}
-        placeholder="Pesquise aluno(a), turma ou data..."
-      />
+
+      <div className={styles.actions}>
 
 
-      {
-        canCreateCertificates && (
+        <SearchBar
 
-          <button
-            className={styles.button}
-            onClick={onNovo}
-          >
+          items={atestados}
 
-            <FaPlus />
+          onSearch={onSearch}
 
-            Novo Atestado
+          setBuscaAtiva={setBuscaAtiva}
 
-          </button>
+          fields={SEARCH_FIELDS}
 
-        )
-      }
+          placeholder="Pesquise aluno(a), turma ou data..."
+
+        />
+
+
+
+        {
+          canCreateCertificates && (
+
+            <button
+
+              className={styles.button}
+
+              onClick={onNovo}
+
+            >
+
+              <FaPlus />
+
+              Novo Atestado
+
+            </button>
+
+          )
+        }
+
+
+      </div>
 
 
     </HeaderDashboard>
@@ -61,5 +85,6 @@ function CertificatesHeader({
   );
 
 }
+
 
 export default CertificatesHeader;

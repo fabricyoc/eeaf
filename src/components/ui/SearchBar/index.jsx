@@ -18,9 +18,63 @@ function SearchBar({
   const [pesquisa, setPesquisa] = useState("");
 
   function getNestedValue(obj, path) {
-    return path
-      .split(".")
-      .reduce((acc, key) => acc?.[key], obj);
+
+    const keys = path.split(".");
+
+
+    function resolver(valor, index) {
+
+
+      if (valor == null) {
+
+        return [];
+
+      }
+
+
+
+      if (index === keys.length) {
+
+        return Array.isArray(valor)
+
+          ? valor
+
+          : [valor];
+
+      }
+
+
+
+      const chave = keys[index];
+
+
+
+      if (Array.isArray(valor)) {
+
+
+        return valor.flatMap(item =>
+
+          resolver(item, index)
+
+        );
+
+
+      }
+
+
+
+      return resolver(
+        valor[chave],
+        index + 1
+      );
+
+
+    }
+
+
+
+    return resolver(obj, 0);
+
   }
 
   function formatarData(valor) {
@@ -64,8 +118,17 @@ function SearchBar({
 
           const valor = getNestedValue(item, field);
 
+
           return normalizarTexto(
-            formatarData(valor)
+
+            Array.isArray(valor)
+
+              ? valor
+                .map(v => formatarData(v))
+                .join(" ")
+
+              : formatarData(valor)
+
           );
 
         })

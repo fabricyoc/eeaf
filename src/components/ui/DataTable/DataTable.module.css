@@ -1,79 +1,94 @@
-.wrapper{
-  width:100%;
-  overflow-x:auto;
-
-  background:#fff;
-
-  border-radius:12px;
-
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
 }
 
-.table{
-
-  width:100%;
-  border-collapse:collapse;
-
-  min-width:850px;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 850px;
 }
 
-.table thead{
-
-  background:#1e3a8a;
-  color:#fff;
+.table thead {
+  background: #1e3a8a;
+  color: #fff;
 }
 
-.table th{
-
-  padding:16px;
-
-  text-align:left;
-
-  font-size:.95rem;
-
-  font-weight:600;
+.table th {
+  padding: 16px;
+  text-align: left;
+  font-size: .95rem;
+  font-weight: 600;
 }
 
-.table td{
-
-  padding:16px;
-
-  border-bottom:1px solid #e2e8f0;
-
-  color:#334155;
-
-  vertical-align:middle;
+.table td {
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  vertical-align: middle;
 }
 
-.table tbody tr{
-
-  transition:.2s;
+.table tbody tr {
+  transition: .2s;
 }
 
-.table tbody tr:hover{
-
-  background:#f8fafc;
+.table tbody tr:hover {
+  background: #f8fafc;
 }
 
-.actions{
-
-  display:flex;
-
-  gap:8px;
+.actions {
+  display: flex;
+  gap: 8px;
 }
 
-.actionsColumn{
-
-  width:180px;
+.actionsColumn {
+  width: 180px;
 }
 
-.empty{
+.empty {
+  padding: 50px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 500;
+}
 
-  padding:50px;
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 0;
+}
 
-  text-align:center;
+.pagination button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid #dbeafe;
+  background: white;
+  color: #2563eb;
+  cursor: pointer;
+  transition: .2s;
+}
 
-  color:#64748b;
+.pagination button:hover:not(:disabled) {
+  background: #2563eb;
+  color: white;
+}
 
-  font-weight:500;
+.pagination button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
 }

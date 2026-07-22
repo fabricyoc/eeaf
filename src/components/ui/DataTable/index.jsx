@@ -1,5 +1,12 @@
+import {
+  useState,
+  useMemo
+} from "react";
+import {
+  FaChevronLeft,
+  FaChevronRight
+} from "react-icons/fa";
 import styles from "./DataTable.module.css";
-
 function DataTable({
   columns = [],
   data = [],
@@ -7,33 +14,60 @@ function DataTable({
   emptyMessage = "Nenhum registro encontrado.",
   actions,
   onRowClick,
-  rowClassName
-}){
-  if(loading){
-    return(
+  rowClassName,
+  pagination = true,
+  pageSize = 5
+}) {
+  const [page, setPage] = useState(1);
+  const totalPages = Math.ceil(
+    data.length / pageSize
+  );
+  const paginatedData = useMemo(() => {
+    if (!pagination) {
+      return data;
+    }
+    const start =
+      (page - 1) * pageSize;
+    return data.slice(
+      start,
+      start + pageSize
+    );
+  }, [
+    data,
+    page,
+    pageSize,
+    pagination
+  ]);
+  function changePage(newPage) {
+    if (
+      newPage < 1 ||
+      newPage > totalPages
+    ) {
+      return;
+    }
+    setPage(newPage);
+  }
+  if (loading) {
+    return (
       <div className={styles.empty}>
         Carregando...
       </div>
     );
   }
-  return(
+  return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
         <thead>
           <tr>
             {
-              columns.map(column=>(
+              columns.map(column => (
                 <th
                   key={column.key}
                   style={{
-                    width:column.width,
-                    textAlign:column.align ?? "left"
+                    width: column.width,
+                    textAlign:
+                      column.align ?? "left"
                   }}
-                  className={
-                    column.sortable
-                      ? styles.sortable
-                      : ""
-                  }
                 >
                   {column.label}
                 </th>
@@ -42,7 +76,9 @@ function DataTable({
             {
               actions && (
                 <th
-                  className={styles.actionsColumn}
+                  className={
+                    styles.actionsColumn
+                  }
                 >
                   Ações
                 </th>
@@ -52,13 +88,14 @@ function DataTable({
         </thead>
         <tbody>
           {
-            data.length===0
-              ?(
+            paginatedData.length === 0
+              ?
+              (
                 <tr>
                   <td
                     colSpan={
-                      columns.length+
-                      (actions?1:0)
+                      columns.length +
+                      (actions ? 1 : 0)
                     }
                     className={styles.empty}
                   >
@@ -66,23 +103,24 @@ function DataTable({
                   </td>
                 </tr>
               )
-              :(
-                data.map(row=>(
+              :
+              (
+                paginatedData.map(row => (
                   <tr
                     key={row.id}
                     className={
                       rowClassName
-                        ? rowClassName(row)
-                        : ""
+                        ?
+                        rowClassName(row)
+                        :
+                        ""
                     }
-                    onClick={()=>{
-                      if(onRowClick){
-                        onRowClick(row);
-                      }
+                    onClick={() => {
+                      onRowClick?.(row);
                     }}
                   >
                     {
-                      columns.map(column=>(
+                      columns.map(column => (
                         <td
                           key={column.key}
                           style={{
@@ -92,8 +130,10 @@ function DataTable({
                         >
                           {
                             column.render
-                              ? column.render(row)
-                              : row[column.key]
+                              ?
+                              column.render(row)
+                              :
+                              row[column.key]
                           }
                         </td>
                       ))
@@ -101,8 +141,13 @@ function DataTable({
                     {
                       actions && (
                         <td
-                          className={styles.actions}
-                          onClick={e=>e.stopPropagation()}
+                          className={
+                            styles.actions
+                          }
+                          onClick={
+                            e =>
+                              e.stopPropagation()
+                          }
                         >
                           {actions(row)}
                         </td>
@@ -114,6 +159,37 @@ function DataTable({
           }
         </tbody>
       </table>
+      {
+        pagination &&
+        totalPages > 1 &&
+        (
+          <div className={styles.pagination}>
+            <button
+              disabled={
+                page === 1
+              }
+              onClick={() =>
+                changePage(page - 1)
+              }
+            >
+              <FaChevronLeft />
+            </button>
+            <span>
+              Página {page} de {totalPages}
+            </span>
+            <button
+              disabled={
+                page === totalPages
+              }
+              onClick={() =>
+                changePage(page + 1)
+              }
+            >
+              <FaChevronRight />
+            </button>
+          </div>
+        )
+      }
     </div>
   );
 }
