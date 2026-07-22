@@ -1,7 +1,5 @@
 import { FaTrash } from "react-icons/fa";
-
 import ConfirmDialog from "../../ui/ConfirmDialog";
-
 import styles from "./CertificateDeleteDialog.module.css";
 
 function CertificateDeleteDialog({
@@ -12,7 +10,6 @@ function CertificateDeleteDialog({
 }) {
 
   return (
-
     <ConfirmDialog
       open={open}
       title="Excluir Atestado"
@@ -26,44 +23,50 @@ function CertificateDeleteDialog({
 
       <div className={styles.content}>
 
-        <p className={styles.info}>
+        <div className={styles.info}>
+          <p>
+            <strong>Aluno:</strong>{" "}
+            {atestado?.alunos?.nome?.toUpperCase() || "-"}
+          </p>
+          <p>
+            <strong>Turma:</strong>{" "}
+            {atestado?.alunos?.turmas?.nome?.toUpperCase() || "-"}
+          </p>
+          <p>
+            <strong>Período:</strong>{" "}
+            {atestado?.data_inicio ?
+              atestado.data_inicio.substring(0, 10)
+                .split("-")
+                .reverse()
+                .join("/")
+              : "-"
+            }
+            {" "}até{" "}
+            {atestado?.data_fim ?
+              atestado.data_fim.substring(0, 10)
+                .split("-")
+                .reverse()
+                .join("/")
+              : "-"
+            }
+          </p>
+        </div>
 
-          <strong>Aluno:</strong>{" "}
-          {atestado?.alunos?.nome || "-"}
+        <div className={styles.warning}>
+          <strong>Atenção</strong>
+          <p>
+            Ao excluir este atestado, o registro será removido
+            permanentemente do sistema. Essa ação poderá afetar
+            o histórico de afastamentos e justificativas do aluno.
+          </p>
+        </div>
 
-          <br />
-
-          <strong>Turma:</strong>{" "}
-          {atestado?.alunos?.turmas?.nome?.toUpperCase() || "-"}
-
-          <br />
-
-          <strong>Período:</strong>{" "}
-
-          {atestado?.data_inicio}{" "}
-          até{" "}
-          {atestado?.data_fim}
-
-        </p>
-
-        <p className={styles.warning}>
-
-          ⚠️ Ao excluir este atestado, todas as informações relacionadas a este registro serão removidas permanentemente do sistema.
-
-        </p>
-
-        <p className={styles.finalWarning}>
-
-          Esta ação não poderá ser desfeita.
-
+        <p className={styles.irreversible}>
+          Esta ação não poderá ser desfeita!
         </p>
 
       </div>
-
     </ConfirmDialog>
-
   );
-
 }
-
 export default CertificateDeleteDialog;
