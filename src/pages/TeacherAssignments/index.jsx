@@ -1,26 +1,36 @@
+import { useEffect, useState } from "react";
+
 import styles from "./TeacherAssignments.module.css";
 
-import { useState } from "react";
-import { FaUserTie, FaPlus } from "react-icons/fa";
-import { toast } from "react-toastify";
-
 import Loading from "../../components/Loading";
-import HeaderDashboard from "../../components/HeaderDashboard";
-import DataTable from "../../components/ui/DataTable";
-import ProfileModal from "../../components/ui/ProfileModal";
+
+import TeacherAssignmentsHeader
+  from "../../components/teacherAssignments/TeacherAssignmentsHeader";
+
+import TeacherAssignmentsTable
+  from "../../components/teacherAssignments/TeacherAssignmentsTable";
+
+import TeacherAssignmentModal
+  from "../../components/teacherAssignments/TeacherAssignmentModal";
+
+import TeacherAssignmentDeleteDialog
+  from "../../components/teacherAssignments/TeacherAssignmentDeleteDialog";
 
 import {
   useTeacherAssignments
 } from "../../hooks/useTeacherAssignments";
 
 import {
-  createTeacherAssignment,
-  deleteTeacherAssignment,
-  getTurmas,
-  getDisciplinasDisponiveisPorTurma
-} from "../../services/teacherAssignmentService";
+  useUsers
+} from "../../hooks/useUsers";
 
-import { useUsers } from "../../hooks/useUsers";
+import {
+  useTeacherAssignmentForm
+} from "../../hooks/useTeacherAssignmentForm";
+
+import {
+  useTeacherAssignmentDelete
+} from "../../hooks/useTeacherAssignmentDelete";
 
 function TeacherAssignments() {
 
@@ -30,133 +40,34 @@ function TeacherAssignments() {
     carregar
   } = useTeacherAssignments();
 
-  const { users } = useUsers();
+  const {    users  } = useUsers();
 
-  const [modal, setModal] = useState(false);
+  const {
+    modal,
+    form,
+    turmas,
+    disciplinas,
+    abrirModal,
+    fecharModal,
+    alterarCampo,
+    salvar
+  } = useTeacherAssignmentForm({    carregar  });
 
-  const [turmas, setTurmas] = useState([]);
+  const {
+    confirmOpen,
+    assignmentSelecionada,
+    solicitarExclusao,
+    confirmarExclusao,
+    fecharConfirmacao
+  } = useTeacherAssignmentDelete({ carregar });
 
-  const [disciplinas, setDisciplinas] = useState([]);
+  const [lista, setLista] = useState([]);
 
-  const [form, setForm] = useState({
-    professor_id: "",
-    turma_id: "",
-    disciplina_id: ""
-  });
+  const [buscaAtiva, setBuscaAtiva] = useState(false);
 
-  async function abrirModal() {
-
-    setForm({
-      professor_id: "",
-      turma_id: "",
-      disciplina_id: ""
-    });
-
-    setDisciplinas([]);
-
-    setModal(true);
-
-    try {
-      const data = await getTurmas();
-      setTurmas(data);
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao carregar turmas");
-    }
-  }
-
-  function alterar(name, value) {
-
-    if (name === "turma_id" && !value) {
-      return;
-    }
-
-    setForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
-
-    if (name === "turma_id") {
-      buscarDisciplinas(value);
-    }
-  }
-
-  async function buscarDisciplinas(turmaId) {
-
-    try {
-      const data =
-        await getDisciplinasDisponiveisPorTurma(
-          turmaId
-        );
-
-      setDisciplinas(data);
-
-      setForm(prev => ({
-        ...prev,
-        disciplina_id: ""
-      }));
-
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao carregar disciplinas");
-    }
-
-  }
-
-  async function salvar() {
-
-    try {
-      if (
-        !form.professor_id ||
-        !form.turma_id ||
-        !form.disciplina_id
-      ) {
-        toast.warning("Preencha todos os campos");
-        return;
-      }
-
-      await createTeacherAssignment(form);
-      toast.success("Professor alocado!");
-
-      carregar();
-
-      fecharModal();
-
-    } catch (error) {
-
-      console.error(error);
-      toast.error("Erro ao alocar professor");
-    }
-
-  }
-
-  function fecharModal() {
-
-    setModal(false);
-
-    setForm({
-      professor_id: "",
-      turma_id: "",
-      disciplina_id: ""
-    });
-
-    setDisciplinas([]);
-  }
-
-  async function excluir(row) {
-
-    try {
-      await deleteTeacherAssignment(row.id);
-      toast.success("Alocação removida");
-
-      carregar();
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao remover");
-
-    }
-
-  }
+  useEffect(() => {
+    setLista(assignments);
+  }, [assignments]);
 
   if (loading) {
     return (
@@ -166,134 +77,40 @@ function TeacherAssignments() {
     );
   }
 
-  const columns = [
-    {
-      key: "professor",
-      label: "Professor",
-      render: (row) => row.users?.name || "-"
-    },
-
-    {
-      key: "turma",
-      label: "Turma",
-      render: (row) => row.turmas?.nome.toUpperCase() || "-"
-    },
-
-    {
-      key: "disciplina",
-      label: "Disciplina",
-      render: (row) => row.disciplinas?.nome || "-"
-    }
-  ];
-
   return (
 
     <section className={styles.container}>
 
-      <HeaderDashboard
-        title="Alocação de Docentes"
-      >
-        <button
-          className={styles.button}
-          onClick={abrirModal}
-        >
-          <FaPlus />
-          Nova Alocação
-        </button>
-      </HeaderDashboard>
-
-      <DataTable
-        columns={columns}
-        data={assignments}
-        actions={
-          (row) => (
-            <button
-              className={styles.delete}
-              onClick={() => excluir(row)}
-            >
-              Excluir
-            </button>
-          )
-
-        }
+      <TeacherAssignmentsHeader
+        assignments={assignments}
+        onSearch={setLista}
+        setBuscaAtiva={setBuscaAtiva}
+        onNovo={abrirModal}
       />
 
-      {
-        modal &&
-        <ProfileModal
-          title="Alocar Professor"
-          icon={<FaUserTie />}
-          form={form}
-          fields={[
-            {
-              name: "professor_id",
-              label: "Professor",
-              type: "select",
-              options: [
-                {
-                  value: "",
-                  label: "Selecione um professor",
-                  disabled: true
-                },
-                ...users
-                  .filter(u => u.role === "teacher")
-                  .map(u => ({
-                    value: u.id,
-                    label: u.name
-                  })
-                  )
-              ]
-            },
+      <TeacherAssignmentsTable
+        assignments={lista}
+        buscaAtiva={buscaAtiva}
+        onDelete={solicitarExclusao}
+      />
 
-            {
-              name: "turma_id",
-              label: "Turma",
-              type: "select",
-              options: [
-                {
-                  value: "",
-                  label: "Selecione uma turma",
-                  disabled: true
-                },
-                ...turmas.map(
-                  t => ({
-                    value: t.id,
-                    label: t.nome.toUpperCase()
-                  })
-                )
-              ]
+      <TeacherAssignmentModal
+        open={modal}
+        form={form}
+        users={users}
+        turmas={turmas}
+        disciplinas={disciplinas}
+        onChange={alterarCampo}
+        onSave={salvar}
+        onClose={fecharModal}
+      />
 
-            },
-
-            {
-              name: "disciplina_id",
-              label: "Disciplina",
-              type: "select",
-              options: [
-                {
-                  value: "",
-                  label: "Selecione uma disciplina",
-                  disabled: true
-                },
-                ...disciplinas.map(
-                  d => ({
-                    value: d.id,
-                    label: d.nome
-                  })
-                )
-              ]
-            }
-          ]}
-
-          onChange={alterar}
-
-          onSave={salvar}
-
-          onClose={fecharModal}
-
-        />
-
-      }
+      <TeacherAssignmentDeleteDialog
+        open={confirmOpen}
+        assignment={assignmentSelecionada}
+        onConfirm={confirmarExclusao}
+        onClose={fecharConfirmacao}
+      />
 
     </section>
 

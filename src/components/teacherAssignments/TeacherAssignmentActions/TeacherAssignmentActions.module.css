@@ -1,0 +1,107 @@
+.actions {
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+}
+
+
+
+.delete {
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+
+  height:36px;
+
+  padding:0 14px;
+
+
+  border-radius:10px;
+
+
+  border:1px solid #fecaca;
+
+
+  background:#fff;
+
+
+  color:#dc2626;
+
+
+  font-size:13px;
+
+
+  font-weight:600;
+
+
+  cursor:pointer;
+
+
+  transition:.2s ease;
+
+}
+
+
+
+.delete:hover {
+
+  background:#dc2626;
+
+  color:#fff;
+
+  border-color:#dc2626;
+
+
+  transform:translateY(-1px);
+
+}
+
+
+
+.delete svg {
+
+  font-size:14px;
+
+}
+
+
+
+.delete:active {
+
+  transform:translateY(0);
+
+}
+
+
+
+@media(max-width:768px){
+
+
+  .actions {
+
+    width:100%;
+
+  }
+
+
+
+  .delete {
+
+    width:100%;
+
+  }
+
+
+}

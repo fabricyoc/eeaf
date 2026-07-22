@@ -1,106 +1,47 @@
-import {
-useCallback,
-useEffect,
-useState
-} from "react";
-
+import { useCallback, useEffect, useState } from "react";
 
 import {
-getTeacherAssignments
+  getTeacherAssignments
 } from "../services/teacherAssignmentService";
 
+export function useTeacherAssignments() {
 
+  const [assignments, setAssignments] = useState([]);
 
-export function useTeacherAssignments(){
+  const [loading, setLoading] = useState(true);
 
+  const carregar = useCallback(async () => {
 
-const [
-assignments,
-setAssignments
-]=useState([]);
+    try {
 
+      setLoading(true);
 
+      const data = await getTeacherAssignments();
 
-const [
-loading,
-setLoading
-]=useState(true);
+      setAssignments(data);
 
+    } finally {
 
+      setLoading(false);
 
+    }
 
+  }, []);
 
-const carregar = useCallback(
-async()=>{
+  useEffect(() => {
 
+    carregar();
 
-try{
+  }, [carregar]);
 
+  return {
 
-setLoading(true);
+    assignments,
 
+    loading,
 
+    carregar
 
-const data =
-await getTeacherAssignments();
-
-
-
-setAssignments(data);
-
-
-
-}catch(error){
-
-
-console.error(error);
-
-
-
-}
-finally{
-
-
-setLoading(false);
-
-
-}
-
-
-},[]);
-
-
-
-
-
-
-useEffect(()=>{
-
-
-carregar();
-
-
-},[
-carregar
-]);
-
-
-
-
-
-return {
-
-
-assignments,
-
-
-loading,
-
-
-carregar
-
-
-};
-
+  };
 
 }
