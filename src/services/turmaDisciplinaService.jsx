@@ -1,120 +1,149 @@
 import { supabase } from "../utils/supabase";
 
-
-
+/**
+ * Retorna todas as turmas vinculadas
+ * a uma disciplina.
+ */
 export async function getTurmasDaDisciplina(
- disciplinaId
-){
+  disciplinaId
+) {
 
-const {
- data,
- error
-}=await supabase
+  const {
+    data,
+    error
+  } = await supabase
+    .from("turma_disciplina")
+    .select(`
+      turma_id,
+      turmas(
+        id,
+        nome
+      )
+    `)
+    .eq("disciplina_id", disciplinaId);
 
-.from("turma_disciplina")
+  if (error) {
+    throw error;
+  }
 
-.select(`
-
-turma_id,
-
-turmas(
- id,
- nome
-)
-
-`)
-
-.eq(
-"disciplina_id",
-disciplinaId
-);
-
-
-
-if(error){
-
-throw error;
+  return (data || [])
+    .map(item => item.turmas)
+    .filter(Boolean);
 
 }
 
-
-return (
-
-data || []
-
-)
-
-.map(
-item=>item.turmas
-)
-
-.filter(Boolean);
-
-
-}
-
-
-
-
-
-
+/**
+ * Atualiza as turmas vinculadas
+ * a uma disciplina.
+ *
+ * Caso uma turma seja removida,
+ * todas as alocações docentes
+ * dessa disciplina naquela turma
+ * também serão removidas.
+ */
 export async function salvarTurmasDisciplina(
-disciplinaId,
-turmas
-){
+  disciplinaId,
+  turmas
+) {
 
+  /**
+   * Busca as turmas atuais
+   */
+  const {
+    data: atuais,
+    error: erroBusca
+  } = await supabase
+    .from("turma_disciplina")
+    .select("turma_id")
+    .eq("disciplina_id", disciplinaId);
 
-await supabase
+  if (erroBusca) {
+    throw erroBusca;
+  }
 
-.from("turma_disciplina")
+  const turmasAtuais =
+    (atuais || []).map(
+      item => item.turma_id
+    );
 
-.delete()
+  /**
+   * Descobre quais turmas foram removidas
+   */
+  const turmasRemovidas =
+    turmasAtuais.filter(
+      turmaId => !turmas.includes(turmaId)
+    );
 
-.eq(
-"disciplina_id",
-disciplinaId
-);
+  /**
+   * Remove todas as alocações docentes
+   * referentes às turmas removidas.
+   */
+  if (turmasRemovidas.length > 0) {
 
+    const {
+      error: erroProfessor
+    } = await supabase
+      .from("professor_turma_disciplina")
+      .delete()
+      .eq(
+        "disciplina_id",
+        disciplinaId
+      )
+      .in(
+        "turma_id",
+        turmasRemovidas
+      );
 
+    if (erroProfessor) {
+      throw erroProfessor;
+    }
 
-if(!turmas.length){
+  }
 
-return;
+  /**
+   * Remove todos os vínculos atuais
+   */
+  const {
+    error: erroDelete
+  } = await supabase
+    .from("turma_disciplina")
+    .delete()
+    .eq(
+      "disciplina_id",
+      disciplinaId
+    );
 
-}
+  if (erroDelete) {
+    throw erroDelete;
+  }
 
+  /**
+   * Caso não reste nenhuma turma,
+   * finaliza aqui.
+   */
+  if (!turmas.length) {
+    return;
+  }
 
+  /**
+   * Recria os vínculos.
+   */
+  const registros =
+    turmas.map(
+      turmaId => ({
+        disciplina_id: disciplinaId,
+        turma_id: turmaId
+      })
+    );
 
-const registros =
-turmas.map(
-turmaId=>({
+  const {
+    error: erroInsert
+  } = await supabase
+    .from("turma_disciplina")
+    .insert(registros);
 
-disciplina_id:disciplinaId,
-
-turma_id:turmaId
-
-})
-);
-
-
-
-const {
-error
-}=await supabase
-
-.from("turma_disciplina")
-
-.insert(
-registros
-);
-
-
-
-if(error){
-
-throw error;
-
-}
-
+  if (erroInsert) {
+    throw erroInsert;
+  }
 
 }

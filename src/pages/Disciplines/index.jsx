@@ -1,299 +1,231 @@
-import {
-  useState
-} from "react";
-
 import styles from "./Disciplines.module.css";
 
 import {
-  FaBook,
-  FaPlus,
-  FaUsers
+  FaPlus
 } from "react-icons/fa";
 
-import {
-  toast
-} from "react-toastify";
 
 import Loading from "../../components/Loading";
 import HeaderDashboard from "../../components/HeaderDashboard";
-import ProfileModal from "../../components/ui/ProfileModal";
-import DataTable from "../../components/ui/DataTable";
+
+
+import DisciplineTable 
+from "../../components/disciplines/DisciplineTable";
+
+
+import DisciplineModal 
+from "../../components/disciplines/DisciplineModal";
+
+
+import DisciplineClassroomsModal 
+from "../../components/disciplines/DisciplineClassroomsModal";
+
 
 import {
-  useDisciplines
-} from "../../hooks/useDisciplines";
+  useDisciplinePage
+} from "../../hooks/useDisciplinePage";
 
-import ClassroomCheckboxSelector from "../../components/ClassroomCheckboxSelector";
 
-const initialForm = {
-  nome: "",
-  codigo: ""
-};
 
 function Disciplines() {
 
+
   const {
+
     disciplines,
+
     loading,
-    salvarDisciplina,
-    excluirDisciplina,
-    atualizarTurmas
-  } = useDisciplines();
-  const [modal, setModal] = useState(false);
-  const [turmaModal, setTurmaModal] = useState(false);
-  const [disciplinaSelecionada, setDisciplinaSelecionada] = useState(null);
-  const [form, setForm] = useState(initialForm);
-  const [turmasSelecionadas, setTurmasSelecionadas] = useState([]);
 
-  function abrirNova() {
+    modal,
 
-    setDisciplinaSelecionada(null);
+    turmaModal,
 
-    setForm({
-      ...initialForm
-    });
+    disciplinaAtual,
 
-    setModal(true);
-  }
+    form,
 
-  function editar(disciplina) {
+    turmasSelecionadas,
 
-    setDisciplinaSelecionada(disciplina);
 
-    setForm({
-      nome: disciplina.nome,
-      codigo: disciplina.codigo || ""
-    });
+    abrirNova,
 
-    setModal(true);
-  }
+    editar,
 
-  function abrirTurmas(disciplina) {
-    setDisciplinaSelecionada(disciplina);
+    abrirTurmas,
 
-    const ids = disciplina.turma_disciplina?.map(
-      item => item.turma_id
-    ) || [];
 
-    setTurmasSelecionadas(ids);
+    alterarCampo,
 
-    setTurmaModal(true);
-  }
+    alterarTurmas,
 
-  function alterarCampo(name, value) {
-    setForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
 
-  }
+    salvar,
 
-  async function salvar() {
-    try {
-      await salvarDisciplina({
-        ...form,
-        id: disciplinaSelecionada?.id
-      });
+    salvarTurmas,
 
-      toast.success(disciplinaSelecionada
-        ? "Disciplina atualizada!"
-        : "Disciplina criada!"
-      );
 
-      fecharModal();
+    excluir,
 
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao salvar disciplina");
-    }
-  }
 
-  async function salvarTurmas() {
-    try {
-      await atualizarTurmas(
-        disciplinaSelecionada.id,
-        turmasSelecionadas
-      );
+    fecharModal,
 
-      toast.success("Turmas atualizadas!");
+    fecharTurmaModal
 
-      fecharTurmaModal();
 
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao vincular turmas");
-    }
+  } = useDisciplinePage();
 
-  }
 
-  async function excluir(disciplina) {
-    try {
-      await excluirDisciplina(disciplina.id);
 
-      toast.success("Disciplina removida!");
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast.error("Error: Disciplina alocada.");
-    }
-
-  }
-
-  function fecharModal() {
-
-    setModal(false);
-
-    setDisciplinaSelecionada(null);
-
-    setForm({
-      ...initialForm
-    });
-
-  }
-
-  function fecharTurmaModal() {
-
-    setTurmaModal(false);
-
-    setDisciplinaSelecionada(null);
-
-    setTurmasSelecionadas([]);
-
-  }
 
   if (loading) {
+
     return (
+
       <Loading
+
         text="Carregando componentes curriculares..."
+
       />
+
     );
 
   }
 
-  const columns = [
-    {
-      key: "nome",
-      label: "Disciplina"
-    },
 
-    {
-      key: "codigo",
-      label: "Código"
-    },
 
-    {
-      key: "turmas",
-      label: "Turmas",
-      render: (disciplina) =>
-        disciplina.turma_disciplina?.length
-          ? disciplina.turma_disciplina
-            .map(t => t.turmas?.nome.toUpperCase())
-            .filter(Boolean)
-            .join(", ")
-          : "Sem turma"
-    }
-  ];
+
 
   return (
 
-    <section className={styles.container}>
+    <section
+
+      className={styles.container}
+
+    >
+
+
+
       <HeaderDashboard
+
         title="Componentes Curriculares"
+
       >
+
+
         <button
+
           className={styles.button}
+
           onClick={abrirNova}
+
         >
+
           <FaPlus />
+
           Nova Disciplina
+
+
         </button>
+
+
+
       </HeaderDashboard>
 
-      <DataTable
-        columns={columns}
-        data={disciplines}
-        actions={(disciplina) => (
 
-          <>
-            <button
-              className={styles.edit}
-              onClick={() => editar(disciplina)}
-            >
-              Editar
-            </button>
 
-            <button
-              className={styles.edit}
-              onClick={() => abrirTurmas(disciplina)}
-            >
-              <FaUsers />
-              Turmas
-            </button>
 
-            <button
-              className={styles.delete}
-              onClick={() => excluir(disciplina)}
-            >
-              Excluir
-            </button>
-          </>
-        )}
+
+
+
+      <DisciplineTable
+
+
+        disciplines={disciplines}
+
+
+        onEdit={editar}
+
+
+        // onClassrooms={abrirTurmas}
+          onManageClassrooms={abrirTurmas}
+
+
+
+        onDelete={excluir}
+
+
       />
 
-      {
-        modal &&
-        <ProfileModal
-          title={disciplinaSelecionada
-            ? "Editar disciplina"
-            : "Nova disciplina"
-          }
-          icon={<FaBook />}
-          form={form}
-          fields={[
-            {
-              name: "nome",
-              label: "Nome"
-            },
-            {
-              name: "codigo",
-              label: "Código"
-            }
-          ]}
 
-          onChange={alterarCampo}
-          onSave={salvar}
-          onClose={fecharModal}
-        />
 
-      }
 
-      {
-        turmaModal &&
-        <ProfileModal
-          title="Associar turmas"
-          subtitle={disciplinaSelecionada?.nome}
-          icon={<FaUsers />}
-          form={{}}
-          fields={[]}
-          onSave={salvarTurmas}
-          saveText="Salvar turmas"
-          onClose={fecharTurmaModal}
-        >
 
-          <ClassroomCheckboxSelector
-            turmasSelecionadas={turmasSelecionadas}
-            setTurmasSelecionadas={setTurmasSelecionadas}
-          />
-        </ProfileModal>
 
-      }
+
+
+      <DisciplineModal
+
+
+        open={modal}
+
+
+        disciplina={disciplinaAtual}
+
+
+        form={form}
+
+
+        onChange={alterarCampo}
+
+
+        onSave={salvar}
+
+
+        onClose={fecharModal}
+
+
+      />
+
+
+
+
+
+
+
+
+
+      <DisciplineClassroomsModal
+
+
+        open={turmaModal}
+
+
+        disciplina={disciplinaAtual}
+
+
+        turmasSelecionadas={turmasSelecionadas}
+
+
+        setTurmasSelecionadas={alterarTurmas}
+
+
+        onSave={salvarTurmas}
+
+
+        onClose={fecharTurmaModal}
+
+
+      />
+
+
+
 
     </section>
+
 
   );
 
 }
+
 
 export default Disciplines;

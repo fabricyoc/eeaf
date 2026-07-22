@@ -1,0 +1,20 @@
+.container {
+  width: 100%;
+}
+
+.container table {
+  width: 100%;
+}
+
+.container td,
+.container th {
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+
+  .container {
+    overflow-x: auto;
+  }
+
+}

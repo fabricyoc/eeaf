@@ -1,0 +1,192 @@
+.actions {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-start;
+
+  gap: 10px;
+
+  flex-wrap: nowrap;
+
+  white-space: nowrap;
+
+}
+
+
+
+/* =========================
+   BOTÕES
+========================= */
+
+
+.edit,
+.delete {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+
+  height: 36px;
+
+  padding: 0 14px;
+
+
+  border-radius: 10px;
+
+  border: 1px solid transparent;
+
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+
+  cursor: pointer;
+
+  transition: .2s ease;
+
+
+  white-space: nowrap;
+
+}
+
+
+
+
+/* =========================
+   EDITAR / TURMAS
+========================= */
+
+
+.edit {
+
+  background: #ffffff;
+
+  color: #2563eb;
+
+  border-color: #bfdbfe;
+
+}
+
+
+
+.edit:hover {
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+  0 6px 14px rgba(37,99,235,.25);
+
+}
+
+
+
+
+.edit svg {
+
+  font-size: 14px;
+
+}
+
+
+
+
+
+/* =========================
+   EXCLUIR
+========================= */
+
+
+.delete {
+
+  background:#ffffff;
+
+  color:#dc2626;
+
+  border-color:#fecaca;
+
+}
+
+
+
+.delete:hover {
+
+  background:#dc2626;
+
+  color:#ffffff;
+
+  transform:translateY(-2px);
+
+  box-shadow:
+  0 6px 14px rgba(220,38,38,.25);
+
+}
+
+
+
+
+.delete svg {
+
+  font-size:14px;
+
+}
+
+
+
+
+
+/* =========================
+   AJUSTE PARA TABELAS
+========================= */
+
+
+.actions button {
+
+  flex-shrink:0;
+
+}
+
+
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media(max-width:768px){
+
+
+  .actions {
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+    width:100%;
+
+  }
+
+
+
+  .edit,
+  .delete {
+
+    width:100%;
+
+  }
+
+
+}
