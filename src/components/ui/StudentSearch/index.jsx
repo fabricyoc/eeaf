@@ -19,7 +19,7 @@ function StudentSearch({
   alunoSelecionado
 }) {
 
-  const [pesquisa, setPesquisa] = useState(alunoSelecionado?.nome || "");
+  const [pesquisa, setPesquisa] = useState("");
 
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);

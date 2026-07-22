@@ -1,257 +1,38 @@
 .container {
-
-  width:100%;
-
-  padding:32px;
-
+  width: 100%;
+  padding: 32px;
 }
-
-/* =========================
-   CONTEÚDO
-========================= */
 
 .content {
-
-  margin-top:24px;
-
-  background:white;
-
-  border-radius:24px;
-
-  padding:24px;
-
-  border:1px solid rgba(37,99,235,.12);
-
-  box-shadow:
-    0 15px 40px rgba(0,0,0,.06);
-
+  margin-top: 24px;
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
 }
-
-/* =========================
-   BOTÃO PRINCIPAL
-========================= */
-
-.button {
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
-
-  padding:12px 20px;
-
-  border:none;
-
-  border-radius:14px;
-
-  cursor:pointer;
-
-  font-weight:700;
-
-  font-size:.95rem;
-
-  color:white;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--blue-500),
-      var(--blue-700)
-    );
-
-  transition:.25s;
-
-}
-
-.button:hover {
-
-  transform:translateY(-2px);
-
-  box-shadow:
-    0 10px 25px rgba(37,99,235,.25);
-
-}
-
-/* =========================
-   BOTÕES DE AÇÃO
-========================= */
-
-.edit,
-.delete {
-
-  width:38px;
-
-  height:38px;
-
-  border-radius:12px;
-
-  border:none;
-
-  display:inline-flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  cursor:pointer;
-
-  transition:.25s;
-
-  margin-right:8px;
-
-}
-
-.edit {
-
-  background:#dbeafe;
-
-  color:#2563eb;
-
-}
-
-.edit:hover {
-
-  background:#2563eb;
-
-  color:white;
-
-  transform:translateY(-2px);
-
-}
-
-.delete {
-
-  background:#fee2e2;
-
-  color:#dc2626;
-
-}
-
-.delete:hover {
-
-  background:#dc2626;
-
-  color:white;
-
-  transform:translateY(-2px);
-
-}
-
-/* =========================
-   ESTADO VAZIO
-========================= */
-
-.empty {
-
-  width:100%;
-
-  padding:40px 20px;
-
-  display:flex;
-
-  justify-content:center;
-
-  align-items:center;
-
-  text-align:center;
-
-  color:#64748b;
-
-  font-size:1.05rem;
-
-  font-weight:600;
-
-  background:#f8fafc;
-
-  border-radius:18px;
-
-  border:
-
-    1px dashed #cbd5e1;
-
-}
-
-/* =========================
-   PERSONALIZAÇÕES
-   PARA DADOS
-========================= */
 
 .content table {
-
-  width:100%;
-
+  width: 100%;
 }
 
-/* badge futuro para turno */
+@media (max-width: 900px) {
+  .container {
+    padding: 20px;
+  }
 
-.turno {
-
-  padding:6px 14px;
-
-  border-radius:999px;
-
-  background:#dbeafe;
-
-  color:#2563eb;
-
-  font-size:.8rem;
-
-  font-weight:700;
-
+  .content {
+    padding: 16px;
+    border-radius: 18px;
+  }
 }
 
-/* =========================
-   RESPONSIVO
-========================= */
+@media (max-width: 600px) {
+  .container {
+    padding: 14px;
+  }
 
-@media(max-width:900px){
-
-.container {
-
-  padding:20px;
-
-}
-
-.content {
-
-  padding:16px;
-
-  border-radius:18px;
-
-}
-
-.button {
-
-  width:100%;
-
-  justify-content:center;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.container {
-
-  padding:14px;
-
-}
-
-.content {
-
-  overflow-x:auto;
-
-}
-
-.edit,
-.delete {
-
-  width:34px;
-
-  height:34px;
-
-}
-
+  .content {
+    overflow-x: auto;
+  }
 }
