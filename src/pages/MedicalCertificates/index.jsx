@@ -1,35 +1,63 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState
+} from "react";
 
 import styles from "./MedicalCertificates.module.css";
 
 import Loading from "../../components/Loading";
 
-import CertificatesHeader from "../../components/medicalCertificates/CertificatesHeader";
-import CertificatesTable from "../../components/medicalCertificates/CertificatesTable";
-import CertificateModal from "../../components/medicalCertificates/CertificateModal";
+import CertificatesHeader
+  from "../../components/medicalCertificates/CertificatesHeader";
 
-import { useAtestados } from "../../hooks/useAtestados";
-import { useAtestadoForm } from "../../hooks/useAtestadoForm";
-import { useAtestadoActions } from "../../hooks/useAtestadoActions";
-import { useRole } from "../../hooks/useRole";
+import CertificatesTable
+  from "../../components/medicalCertificates/CertificatesTable";
+
+import CertificateModal
+  from "../../components/medicalCertificates/CertificateModal";
+
+import CertificateDeleteDialog
+  from "../../components/medicalCertificates/CertificateDeleteDialog";
+
+import {
+  useAtestados
+} from "../../hooks/useAtestados";
+
+import {
+  useAtestadoForm
+} from "../../hooks/useAtestadoForm";
+
+import {
+  useAtestadoActions
+} from "../../hooks/useAtestadoActions";
+
+import {
+  useCertificateDelete
+} from "../../hooks/useCertificateDelete";
+
+import {
+  useRole
+} from "../../hooks/useRole";
 
 function MedicalCertificates() {
+
   const {
     canCreateCertificates,
     canEditCertificates,
     canDeleteCertificates,
     isSecretary,
     isCoordinator,
-    isAdmin,
+    isAdmin
   } = useRole();
 
   const {
     atestados,
     loading,
     salvarAtestado,
-    excluirAtestado,
+    excluirAtestado
   } = useAtestados();
 
+  // FORMULÁRIO
   const {
     modal,
     form,
@@ -39,17 +67,26 @@ function MedicalCertificates() {
     editar,
     fecharModal,
     alterarCampo,
-    selecionarAluno,
+    selecionarAluno
   } = useAtestadoForm();
 
-  const { salvar, excluir } = useAtestadoActions({
+  //  SALVAR E EDITAR
+  const { salvar } = useAtestadoActions({
     form,
     atestadoSelecionado,
     salvarAtestado,
-    excluirAtestado,
     fecharModal,
-    canCreateCertificates,
+    canCreateCertificates
   });
+
+  // EXCLUSÃO
+  const {
+    confirmOpen,
+    atestadoSelecionado: atestadoSelecionadoDelete,
+    solicitarExclusao,
+    confirmarExclusao,
+    fecharConfirmacao
+  } = useCertificateDelete({ excluirAtestado });
 
   const [lista, setLista] = useState([]);
 
@@ -66,12 +103,18 @@ function MedicalCertificates() {
 
   if (loading) {
     return (
-      <Loading text="Carregando atestados..." />
+      <Loading
+        text="Carregando atestados..."
+      />
     );
   }
 
   return (
-    <section className={styles.container}>
+
+    <section
+      className={styles.container}
+    >
+
       <CertificatesHeader
         atestados={atestados}
         onSearch={setLista}
@@ -80,28 +123,42 @@ function MedicalCertificates() {
         canCreateCertificates={canCreateCertificates}
       />
 
-      <div className={styles.content}>
+      <div
+        className={styles.content}
+      >
         <CertificatesTable
           lista={lista}
           buscaAtiva={buscaAtiva}
           onEditar={editar}
-          onExcluir={excluir}
+          onExcluir={solicitarExclusao}
           canEditCertificates={canEditCertificates}
           canDeleteCertificates={canDeleteCertificates}
           canShowActions={canShowActions}
         />
       </div>
 
-      <CertificateModal
-        modal={modal}
-        atestadoSelecionado={atestadoSelecionado}
-        form={form}
-        alunoSelecionado={alunoSelecionado}
-        onChange={alterarCampo}
-        onSave={salvar}
-        onClose={fecharModal}
-        onSelectAluno={selecionarAluno}
+      {
+        modal && (
+          <CertificateModal
+            modal={modal}
+            atestadoSelecionado={atestadoSelecionado}
+            form={form}
+            alunoSelecionado={alunoSelecionado}
+            onChange={alterarCampo}
+            onSave={salvar}
+            onClose={fecharModal}
+            onSelectAluno={selecionarAluno}
+          />
+        )
+      }
+
+      <CertificateDeleteDialog
+        open={confirmOpen}
+        atestado={atestadoSelecionadoDelete}
+        onConfirm={confirmarExclusao}
+        onClose={fecharConfirmacao}
       />
+
     </section>
   );
 }
