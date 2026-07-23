@@ -1,27 +1,66 @@
+/* =========================
+   BOTÕES DE AÇÃO
+========================= */
+
+.view,
 .edit,
 .delete {
 
-  width:38px;
+  width: 38px;
+  height: 38px;
 
-  height:38px;
+  border: none;
+  border-radius: 12px;
 
-  border:none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  border-radius:12px;
+  cursor: pointer;
 
-  display:inline-flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  cursor:pointer;
-
-  transition:.25s;
-
-  margin-right:8px;
+  transition:
+    transform .25s,
+    background .25s,
+    color .25s,
+    box-shadow .25s;
 
 }
+
+
+.view svg,
+.edit svg,
+.delete svg {
+
+  font-size: 15px;
+
+}
+
+
+
+/* =========================
+   VISUALIZAR
+========================= */
+
+.view {
+
+  background: #dcfce7;
+  color: #16a34a;
+
+}
+
+
+.view:hover {
+
+  background: #16a34a;
+  color: #fff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(22, 163, 74, .25);
+
+}
+
 
 
 /* =========================
@@ -30,22 +69,24 @@
 
 .edit {
 
-  background:#dbeafe;
-
-  color:#2563eb;
+  background: #dbeafe;
+  color: #2563eb;
 
 }
 
 
 .edit:hover {
 
-  background:#2563eb;
+  background: #2563eb;
+  color: #fff;
 
-  color:white;
+  transform: translateY(-2px);
 
-  transform:translateY(-2px);
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, .25);
 
 }
+
 
 
 /* =========================
@@ -54,51 +95,42 @@
 
 .delete {
 
-  background:#fee2e2;
-
-  color:#dc2626;
+  background: #fee2e2;
+  color: #dc2626;
 
 }
 
 
 .delete:hover {
 
-  background:#dc2626;
+  background: #dc2626;
+  color: #fff;
 
-  color:white;
+  transform: translateY(-2px);
 
-  transform:translateY(-2px);
+  box-shadow:
+    0 8px 18px rgba(220, 38, 38, .25);
 
 }
+
 
 
 /* =========================
-   TURNO
+   GRUPO DE AÇÕES
 ========================= */
 
-.turno {
+.actions {
 
-  display:inline-flex;
+  display: flex;
 
-  align-items:center;
+  align-items: center;
 
-  justify-content:center;
+  justify-content: center;
 
-  padding:6px 14px;
-
-  border-radius:999px;
-
-  background:#dbeafe;
-
-  color:#2563eb;
-
-  font-size:.8rem;
-
-  font-weight:700;
-
-  text-transform:uppercase;
+  gap: 8px;
 
 }
+
 
 
 /* =========================
@@ -107,45 +139,103 @@
 
 .empty {
 
-  width:100%;
+  width: 100%;
 
-  padding:40px 20px;
+  min-height: 180px;
 
-  display:flex;
+  padding: 40px 20px;
 
-  justify-content:center;
+  display: flex;
 
-  align-items:center;
+  justify-content: center;
 
-  text-align:center;
+  align-items: center;
 
-  color:#64748b;
+  text-align: center;
 
-  font-size:1.05rem;
 
-  font-weight:600;
+  color: #64748b;
 
-  background:#f8fafc;
+  font-size: 1rem;
 
-  border-radius:18px;
+  font-weight: 600;
 
-  border:1px dashed #cbd5e1;
+
+  background: #f8fafc;
+
+  border-radius: 18px;
+
+  border: 1px dashed #cbd5e1;
 
 }
 
+/* =========================
+   CADASTRADO POR
+========================= */
+
+.registeredBy {
+
+  color: #64748b;
+
+  font-size: .85rem;
+
+  font-style: italic;
+
+  font-weight: 500;
+
+  letter-spacing: .2px;
+
+  opacity: .9;
+
+  display: inline-flex;
+
+  align-items: center;
+
+}
+
+
+/* pequeno detalhe visual */
+
+.registeredBy::before {
+
+  margin-right: 6px;
+
+  color: #94a3b8;
+
+  font-size: 1rem;
+
+}
 
 /* =========================
    RESPONSIVO
 ========================= */
 
-@media(max-width:600px){
+@media(max-width:600px) {
 
+  .view,
   .edit,
   .delete {
 
-    width:34px;
+    width: 34px;
+    height: 34px;
 
-    height:34px;
+    border-radius: 10px;
+
+  }
+
+
+  .view svg,
+  .edit svg,
+  .delete svg {
+
+    font-size: 14px;
+
+  }
+
+
+  .actions {
+
+    gap: 6px;
 
   }
 

@@ -1,83 +1,113 @@
-import { FaEdit, FaTrash } from "react-icons/fa";
-
+import {
+  FaEdit,
+  FaTrash,
+  FaEye
+} from "react-icons/fa";
 import DataTable from "../../ui/DataTable";
-
+import { useRole } from "../../../hooks/useRole";
 import styles from "./CertificatesTable.module.css";
-
 function somenteData(data) {
   if (!data) {
     return "";
   }
-
   return data.substring(0, 10);
 }
-
+function formatarData(data) {
+  const dataLimpa = somenteData(data);
+  if (!dataLimpa) {
+    return "-";
+  }
+  return dataLimpa
+    .split("-")
+    .reverse()
+    .join("/");
+}
 function CertificatesTable({
   lista,
   buscaAtiva,
+  onVisualizar,
   onEditar,
   onExcluir,
   canEditCertificates,
   canDeleteCertificates,
   canShowActions,
 }) {
+  const {
+    role
+  } = useRole();
+  const mostrarCadastradoPor =
+    ![
+      "secretary",
+      "coordinator",
+      "admin"
+    ].includes(role);
   const columns = [
     {
       key: "aluno",
       label: "Aluno(a)",
-      render: (row) => row.alunos?.nome?.toUpperCase() || "-",
+      render: (row) =>
+        row.alunos?.nome?.toUpperCase()
+        ||
+        "-",
     },
-
     {
       key: "turma",
       label: "Turma",
-      render: (row) => row.alunos?.turmas?.nome?.toUpperCase() || "-",
+      render: (row) =>
+        row.alunos?.turmas?.nome?.toUpperCase()
+        ||
+        "-",
     },
-
     {
       key: "inicio",
       label: "Início",
       render: (row) =>
-        somenteData(row.data_inicio)
-          .split("-")
-          .reverse()
-          .join("/"),
+        formatarData(
+          row.data_inicio
+        ),
     },
-
     {
       key: "fim",
       label: "Fim",
       render: (row) =>
-        somenteData(row.data_fim)
-          .split("-")
-          .reverse()
-          .join("/"),
-    },
-
-    {
-      key: "turno",
-      label: "Turno",
-      render: (row) =>
-        row.turno ? (
-          <span className={styles.turno}>
-            {row.turno.toUpperCase()}
-          </span>
-        ) : (
-          <span className={styles.turno}>
-            INTEGRAL
-          </span>
+        formatarData(
+          row.data_fim
         ),
     },
   ];
+  if (mostrarCadastradoPor) {
 
-  if (buscaAtiva && lista.length === 0) {
+    columns.push({
+
+      key: "cadastrado_por",
+
+      label: "Cadastrado por",
+
+      render: (row) => (
+
+        <span className={styles.registeredBy}>
+
+          {
+            row.usuarioCadastro?.name?.toUpperCase() || "-"
+          }
+
+        </span>
+
+      ),
+
+    });
+
+  }
+  if (
+    buscaAtiva &&
+    lista.length === 0
+  ) {
     return (
       <div className={styles.empty}>
         Nenhum atestado encontrado.
       </div>
     );
   }
-
   return (
     <DataTable
       columns={columns}
@@ -85,36 +115,54 @@ function CertificatesTable({
       actions={
         canShowActions
           ? (row) => (
-              <>
-                {canEditCertificates && (
+            <div className={styles.actions}>
+              {
+                onVisualizar && (
+                  <button
+                    type="button"
+                    className={styles.view}
+                    onClick={() =>
+                      onVisualizar(row)
+                    }
+                    title="Visualizar atestado"
+                  >
+                    <FaEye />
+                  </button>
+                )
+              }
+              {
+                canEditCertificates && (
                   <button
                     type="button"
                     className={styles.edit}
-                    onClick={() => onEditar(row)}
+                    onClick={() =>
+                      onEditar(row)
+                    }
                     title="Editar atestado"
-                    aria-label="Editar atestado"
                   >
                     <FaEdit />
                   </button>
-                )}
-
-                {canDeleteCertificates && (
+                )
+              }
+              {
+                canDeleteCertificates && (
                   <button
                     type="button"
                     className={styles.delete}
-                    onClick={() => onExcluir(row)}
+                    onClick={() =>
+                      onExcluir(row)
+                    }
                     title="Excluir atestado"
-                    aria-label="Excluir atestado"
                   >
                     <FaTrash />
                   </button>
-                )}
-              </>
-            )
+                )
+              }
+            </div>
+          )
           : null
       }
     />
   );
 }
-
 export default CertificatesTable;

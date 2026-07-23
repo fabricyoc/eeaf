@@ -60,13 +60,16 @@ function ConfirmDialog({
 
         <div className={styles.footer}>
 
-          <button
-            type="button"
-            className={styles.cancel}
-            onClick={onClose}
-          >
-            {cancelText}
-          </button>
+          {
+            cancelText && (
+              <button
+                className={styles.cancel}
+                onClick={onClose}
+              >
+                {cancelText}
+              </button>
+            )
+          }
 
           <button
             type="button"

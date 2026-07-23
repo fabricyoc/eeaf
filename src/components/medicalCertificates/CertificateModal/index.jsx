@@ -75,6 +75,7 @@ function CertificateModal({
       onChange={onChange}
       onSave={onSave}
       onClose={onClose}
+      closeText="Cancelar"
     >
       <StudentSearch
         alunoSelecionado={alunoSelecionado}
