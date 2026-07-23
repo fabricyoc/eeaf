@@ -75,94 +75,84 @@ function CertificatesTable({
         ),
     },
   ];
+  
   if (mostrarCadastradoPor) {
-
     columns.push({
-
       key: "cadastrado_por",
-
       label: "Cadastrado por",
-
       render: (row) => (
-
         <span className={styles.registeredBy}>
-
           {
             row.usuarioCadastro?.name?.toUpperCase() || "-"
           }
-
         </span>
-
       ),
-
     });
-
   }
-  if (
-    buscaAtiva &&
-    lista.length === 0
-  ) {
+
+  if (buscaAtiva && lista.length === 0) {
     return (
       <div className={styles.empty}>
         Nenhum atestado encontrado.
       </div>
     );
   }
+
   return (
+
     <DataTable
       columns={columns}
       data={lista}
       actions={
-        canShowActions
-          ? (row) => (
-            <div className={styles.actions}>
-              {
-                onVisualizar && (
-                  <button
-                    type="button"
-                    className={styles.view}
-                    onClick={() =>
-                      onVisualizar(row)
-                    }
-                    title="Visualizar atestado"
-                  >
-                    <FaEye />
-                  </button>
-                )
-              }
-              {
-                canEditCertificates && (
-                  <button
-                    type="button"
-                    className={styles.edit}
-                    onClick={() =>
-                      onEditar(row)
-                    }
-                    title="Editar atestado"
-                  >
-                    <FaEdit />
-                  </button>
-                )
-              }
-              {
-                canDeleteCertificates && (
-                  <button
-                    type="button"
-                    className={styles.delete}
-                    onClick={() =>
-                      onExcluir(row)
-                    }
-                    title="Excluir atestado"
-                  >
-                    <FaTrash />
-                  </button>
-                )
-              }
-            </div>
-          )
-          : null
+        canShowActions ? (row) => (
+
+          <div className={styles.actions}>
+
+            {
+              onVisualizar && (
+                <button
+                  type="button"
+                  className={styles.view}
+                  onClick={() => onVisualizar(row)}
+                  title="Visualizar atestado"
+                >
+                  <FaEye />
+                </button>
+              )
+            }
+
+            {
+              canEditCertificates && (
+                <button
+                  type="button"
+                  className={styles.edit}
+                  onClick={() => onEditar(row)}
+                  title="Editar atestado"
+                >
+                  <FaEdit />
+                </button>
+              )
+            }
+
+            {
+              canDeleteCertificates && (
+                <button
+                  type="button"
+                  className={styles.delete}
+                  onClick={() => onExcluir(row)}
+                  title="Excluir atestado"
+                >
+                  <FaTrash />
+                </button>
+              )
+            }
+
+          </div>
+        ) : null
       }
     />
   );
+
 }
+
 export default CertificatesTable;

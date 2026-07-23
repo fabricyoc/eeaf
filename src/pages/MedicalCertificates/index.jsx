@@ -1,7 +1,3 @@
-import {
-  useEffect,
-  useState
-} from "react";
 import styles from "./MedicalCertificates.module.css";
 import Loading from "../../components/Loading";
 import CertificatesHeader
@@ -27,9 +23,19 @@ import {
   useCertificateDelete
 } from "../../hooks/useCertificateDelete";
 import {
+  useCertificateFilter
+} from "../../hooks/useCertificateFilter";
+import {
+  useCertificateView
+} from "../../hooks/useCertificateView";
+import {
   useRole
 } from "../../hooks/useRole";
 function MedicalCertificates() {
+
+  // ==========================
+  // PERMISSÕES
+  // ==========================
   const {
     canCreateCertificates,
     canEditCertificates,
@@ -38,12 +44,27 @@ function MedicalCertificates() {
     isCoordinator,
     isAdmin
   } = useRole();
+
+  // ==========================
+  // DADOS DOS ATESTADOS
+  // ==========================
   const {
     atestados,
     loading,
     salvarAtestado,
     excluirAtestado
   } = useAtestados();
+
+  // ==========================
+  // FILTRO / BUSCA
+  // ==========================
+  const {
+    lista,
+    buscaAtiva,
+    filtrar,
+    setBuscaAtiva
+  } = useCertificateFilter(atestados);
+
   // ==========================
   // FORMULÁRIO
   // ==========================
@@ -58,67 +79,45 @@ function MedicalCertificates() {
     alterarCampo,
     selecionarAluno
   } = useAtestadoForm();
+
   // ==========================
   // SALVAR / EDITAR
   // ==========================
-  const {
-    salvar
-  } = useAtestadoActions({
+  const { salvar } = useAtestadoActions({
     form,
     atestadoSelecionado,
     salvarAtestado,
     fecharModal,
     canCreateCertificates
   });
+
   // ==========================
   // EXCLUSÃO
   // ==========================
   const {
     confirmOpen,
     atestadoSelecionado:
-      atestadoSelecionadoDelete,
+    atestadoSelecionadoDelete,
     solicitarExclusao,
     confirmarExclusao,
     fecharConfirmacao
-  } = useCertificateDelete({
-    excluirAtestado
-  });
+  } = useCertificateDelete({ excluirAtestado });
+
   // ==========================
   // VISUALIZAÇÃO
   // ==========================
-  const [
-    visualizarOpen,
-    setVisualizarOpen
-  ] = useState(false);
-  const [
-    atestadoVisualizar,
-    setAtestadoVisualizar
-  ] = useState(null);
-  function visualizar(atestado) {
-    setAtestadoVisualizar(atestado);
-    setVisualizarOpen(true);
-  }
-  function fecharVisualizacao() {
-    setVisualizarOpen(false);
-    setAtestadoVisualizar(null);
-  }
-  const [
-    lista,
-    setLista
-  ] = useState([]);
-  const [
-    buscaAtiva,
-    setBuscaAtiva
-  ] = useState(false);
-  useEffect(() => {
-    setLista(atestados);
-  }, [
-    atestados
-  ]);
+  const {
+    open: visualizarOpen,
+    atestado: atestadoVisualizar,
+    visualizar,
+    fechar: fecharVisualizacao
+  } = useCertificateView();
+
   const canShowActions =
     isSecretary ||
     isCoordinator ||
     isAdmin;
+
   if (loading) {
     return (
       <Loading
@@ -127,18 +126,18 @@ function MedicalCertificates() {
     );
   }
   return (
+
     <section
       className={styles.container}
     >
       <CertificatesHeader
         atestados={atestados}
-        onSearch={setLista}
+        onSearch={filtrar}
         setBuscaAtiva={setBuscaAtiva}
         onNovo={abrirNovo}
-        canCreateCertificates={
-          canCreateCertificates
-        }
+        canCreateCertificates={canCreateCertificates}
       />
+
       <div
         className={styles.content}
       >
@@ -148,57 +147,38 @@ function MedicalCertificates() {
           onVisualizar={visualizar}
           onEditar={editar}
           onExcluir={solicitarExclusao}
-          canEditCertificates={
-            canEditCertificates
-          }
-          canDeleteCertificates={
-            canDeleteCertificates
-          }
-          canShowActions={
-            canShowActions
-          }
+          canEditCertificates={canEditCertificates}
+          canDeleteCertificates={canDeleteCertificates}
+          canShowActions={canShowActions}
         />
       </div>
+
       {
         modal && (
           <CertificateModal
             modal={modal}
-            atestadoSelecionado={
-              atestadoSelecionado
-            }
+            atestadoSelecionado={atestadoSelecionado}
             form={form}
-            alunoSelecionado={
-              alunoSelecionado
-            }
+            alunoSelecionado={alunoSelecionado}
             onChange={alterarCampo}
             onSave={salvar}
             onClose={fecharModal}
-            onSelectAluno={
-              selecionarAluno
-            }
+            onSelectAluno={selecionarAluno}
           />
         )
       }
+
       <CertificateDeleteDialog
         open={confirmOpen}
-        atestado={
-          atestadoSelecionadoDelete
-        }
-        onConfirm={
-          confirmarExclusao
-        }
-        onClose={
-          fecharConfirmacao
-        }
+        atestado={atestadoSelecionadoDelete}
+        onConfirm={confirmarExclusao}
+        onClose={fecharConfirmacao}
       />
+
       <CertificateViewDialog
         open={visualizarOpen}
-        atestado={
-          atestadoVisualizar
-        }
-        onClose={
-          fecharVisualizacao
-        }
+        atestado={atestadoVisualizar}
+        onClose={fecharVisualizacao}
       />
     </section>
   );
